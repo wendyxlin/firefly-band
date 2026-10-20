@@ -1,0 +1,23 @@
+# XcodeGen spec: `brew install xcodegen && xcodegen` in this folder creates Firefly.xcodeproj
+name: Firefly
+options:
+  bundleIdPrefix: com.example.firefly   # change to your own reverse-domain id
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  Firefly:
+    type: application
+    platform: iOS
+    sources: [Firefly]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.firefly.app
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: "Firefly connects to your band over Bluetooth to relay alerts from your group."
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Firefly uses your location as the anchor that places your friends on the map."
+        INFOPLIST_KEY_UIBackgroundModes: "bluetooth-central"
+        SWIFT_VERSION: "5.9"

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Firefly App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e0d16">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single phone-first app shell (top bar, scrolling screen, bottom tab bar). Single dark nightlife look by design; on desktop it sits in a phone-sized column. */
+:root{
+  --bg:#0e0d16; --panel:#17161f; --panel2:#201f2b; --line:#2b2a38; --fg:#efecf6; --muted:#9a95ad;
+  --accent:#f5b544; --accent-fg:#1a1200; --ok:#5ed39a; --warn:#f08c4a; --bad:#ef5b6b; --info:#6fa8ff;
+  --display:"Outfit",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.45;overscroll-behavior:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit}
+.app{max-width:440px;margin:0 auto;height:100%;display:flex;flex-direction:column;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+header.bar{display:flex;align-items:center;gap:10px;padding-block:12px 8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.bar h1{font:700 1.35rem var(--display);margin:0;letter-spacing:-.01em}
+header.bar .sess{margin-left:auto;font:500 .7rem var(--mono);color:var(--muted);text-align:right}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px;box-shadow:0 0 8px var(--ok)}
+main{flex:1;overflow:auto;min-height:0;padding-block:4px 16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.tabs{display:flex;border-top:1px solid var(--line);background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.tabs button{flex:1;background:none;border:none;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font:600 .68rem var(--display);color:#7d7891;cursor:pointer;position:relative}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected="true"]{color:var(--accent)}
+nav.tabs .badge{position:absolute;top:6px;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:8px;background:var(--bad);color:#fff;font:600 .6rem var(--mono);display:grid;place-items:center;padding:0 4px}
+h2{font:600 1.05rem var(--display);margin:14px 0 8px}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--panel);margin-bottom:8px;border:1px solid transparent;cursor:pointer;width:100%;text-align:left}
+.row:focus-visible,.btn:focus-visible,nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row.alert{border-color:var(--bad);background:#2a151c}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:600 .95rem var(--display);flex:none;position:relative}
+.av .st{position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--panel)}
+.nm{font-weight:600}
+.sub{font:400 .72rem var(--mono);color:var(--muted)}
+.pill{margin-left:auto;font:600 .66rem var(--mono);padding:4px 8px;border-radius:999px;background:var(--panel2);white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:#fff;background:var(--bad)}.pill.info{color:var(--info)}
+.btn{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:10px 14px;font:600 .85rem var(--display);cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.danger{background:var(--bad);color:#fff;border-color:var(--bad)}
+.btn.wide{width:100%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.stats div{background:var(--panel);border-radius:12px;padding:10px}
+.stats b{display:block;font:700 1.3rem var(--display)}
+.stats span{font-size:.7rem;color:var(--muted)}
+.mapbox{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#121119}
+.mapbox canvas{display:block;width:100%;touch-action:none}
+.mapbox .ctl{position:absolute;right:8px;bottom:8px;display:flex;flex-direction:column;gap:6px}
+.mapbox .ctl button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(23,22,31,.9);font:600 1rem var(--display);cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.72rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.compass{display:flex;align-items:center;gap:16px;padding:16px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.compass svg{flex:none}
+.big{font:700 2.6rem var(--display);line-height:1}
+.steps{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.steps li{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border-radius:12px;padding:10px 12px;font-size:.85rem}
+.steps li b{flex:none;width:22px;height:22px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font:600 .72rem var(--display);color:var(--accent)}
+.bars{display:inline-flex;gap:2px;vertical-align:middle;margin-left:6px}
+.bars i{width:4px;border-radius:1px;background:#3a384c}
+.bars i.on{background:var(--accent)}
+.feed .ev{display:flex;gap:10px;padding:10px 12px;border-radius:12px;background:var(--panel);margin-bottom:8px;border-left:3px solid var(--info);font-size:.85rem}
+.feed .ev.ok{border-left-color:var(--ok)}.feed .ev.help{border-left-color:var(--warn)}.feed .ev.sos{border-left-color:var(--bad);background:#2a151c}
+.feed .t{font:400 .68rem var(--mono);color:var(--muted)}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--panel);margin-bottom:8px}
+.toggle small{display:block;color:var(--muted);font-size:.72rem;margin-top:2px}
+.sw{position:relative;width:46px;height:28px;flex:none}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.sw span{position:absolute;inset:0;border-radius:999px;background:#3a384c;transition:background .2s;pointer-events:none}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#cfcadf;transition:transform .2s}
+.sw input:checked+span{background:var(--accent)}
+.sw input:checked+span::after{transform:translateX(18px);background:#1a1200}
+.sw input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+/* full-screen SOS */
+.sos{position:fixed;inset:0;z-index:20;background:radial-gradient(circle at 50% 30%,#5a1220,#1a070c 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px max(24px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px));text-align:center}
+.sos h3{font:700 2rem var(--display);margin:0}
+.sos .ring{width:120px;height:120px;border-radius:50%;border:3px solid var(--bad);display:grid;place-items:center;font:700 2rem var(--display);animation:ring 1.2s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(239,91,107,.6)}100%{box-shadow:0 0 0 30px rgba(239,91,107,0)}}
+.sos .actions{display:grid;gap:10px;width:100%;max-width:340px}
+.sheet{position:fixed;inset:auto 0 0 0;z-index:15;max-width:440px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -20px 50px rgba(0,0,0,.5)}
+.sheet h3{font:600 1.1rem var(--display);margin:0 0 6px}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.85rem;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.demo{border:1px dashed var(--line);border-radius:16px;padding:12px;margin-top:14px}
+.demo .grid2 .btn{font-size:.78rem;padding:9px 8px}
+.onb{display:flex;flex-direction:column;gap:14px;padding-top:10px}
+.onb .hero{border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#2a2440,#121119);padding:22px;text-align:center}
+.onb .pod{width:170px;height:56px;margin:14px auto;border-radius:28px;background:linear-gradient(180deg,#c9a46a,#7d6236);position:relative;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.onb .pod::after{content:"";position:absolute;left:30px;right:30px;top:24px;height:8px;border-radius:4px;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+.onb .pod.pairing::after{animation:breathe 1s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.25}}
+.progress{height:4px;border-radius:2px;background:var(--panel2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+@media (prefers-reduced-motion: reduce){ .sos .ring,.onb .pod.pairing::after{animation:none} }
+</style>
+
+<div class="app" id="app">
+  <header class="bar">
+    <h1>Firefly</h1>
+    <div class="sess" id="sess"></div>
+  </header>
+  <main id="screen" aria-live="polite"></main>
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="group" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 6 2 6 5.5"/></svg>Group</button>
+    <button role="tab" data-tab="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Map</button>
+    <button role="tab" data-tab="alerts" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts<span class="badge" id="badge" hidden>0</span></button>
+    <button role="tab" data-tab="band" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="8" width="14" height="8" rx="4"/><path d="M9 12h6"/></svg>My band</button>
+    <button role="tab" data-tab="privacy" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>Privacy</button>
+  </nav>
+</div>
+<div class="sos" id="sos" hidden role="alertdialog" aria-labelledby="sosTitle"></div>
+<div class="sheet" id="sheet" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ===== World model: a 126 × 80 m block around a club, metres; north is up ===== */
+const VENUE={x:10,y:12,w:40,h:25};
+const LANDMARKS=[{n:'the bar',x:19,y:34.5},{n:'the DJ booth',x:44.5,y:15.5},{n:'the restrooms',x:46.5,y:34.5},{n:'the dance floor',x:30,y:24},{n:'the entrance',x:12,y:37.5},{n:'the pizza place',x:99,y:60},{n:'the deli',x:81,y:20},{n:'the bodega',x:25,y:59}];
+const BLE_R=25, LORA_R=300;
+const S = {
+  me:{id:'me', name:'You', color:'#5ed39a', pos:{x:20,y:22}, phone:78, band:88, gps:true},
+  friends:[
+    {id:'jordan', name:'Jordan', color:'#f5b544', pos:{x:44,y:31}, phone:0,  band:71, last:'11:50 PM', state:'ok', wander:1},
+    {id:'priya',  name:'Priya',  color:'#c9a0ff', pos:{x:33,y:17}, phone:9,  band:64, last:'11:46 PM', state:'ok', wander:1},
+    {id:'sam',    name:'Sam',    color:'#6fa8ff', pos:{x:98,y:60}, phone:0,  band:45, last:'11:05 PM', state:'away', wander:0.3},
+  ],
+  events:[], unread:0, tab:'group', nav:null, session:{start:Date.now()-2.2*3600e3, endsAt:'6:00 AM'}, paired:false, pinged:{},
+  settings:{shareGps:true, history:false, relay:false, help:{jordan:true,priya:true,sam:false}, haptics:true}
+};
+const $=id=>document.getElementById(id);
+const fmtT=()=>new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+const dist=(a,b)=>Math.hypot(a.pos.x-b.pos.x,a.pos.y-b.pos.y);
+const inVenue=f=>f.pos.x>=VENUE.x&&f.pos.x<=VENUE.x+VENUE.w&&f.pos.y>=VENUE.y&&f.pos.y<=VENUE.y+VENUE.h;
+const link=d=>d<BLE_R?'Bluetooth':d<LORA_R?'LoRa':'out of range';
+const bars=d=>d<5?4:d<12?3:d<BLE_R?2:d<LORA_R?1:0;
+const compass=(dx,dy)=>['N','NE','E','SE','S','SW','W','NW'][Math.round(((Math.atan2(dx,-dy)*180/Math.PI+360)%360)/45)%8];
+const nearest=f=>LANDMARKS.reduce((b,l)=>{const d=Math.hypot(l.x-f.pos.x,l.y-f.pos.y);return d<b.d?{l,d}:b},{l:null,d:1e9}).l;
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function toast(t){ const el=$('toast'); el.textContent=t; el.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>el.hidden=true,2600); }
+function addEvent(kind,f,msg){ S.events.unshift({kind,who:f?f.name:'You',fid:f?f.id:null,msg,t:fmtT()}); if(S.tab!=='alerts'){ S.unread++; } updateBadge(); }
+function updateBadge(){ const b=$('badge'); b.hidden=!S.unread; b.textContent=S.unread; }
+function barsHtml(n){ return `<span class="bars" aria-label="${n} of 4 bars">${[6,9,12,15].map((h,i)=>`<i class="${i<n?'on':''}" style="height:${h}px"></i>`).join('')}</span>`; }
+function statusOf(f){ const d=dist(S.me,f); if(f.state==='sos') return ['SOS','bad']; if(f.state==='help') return ['needs help','bad']; if(d>LORA_R) return ['out of range','warn']; if(f.state==='come') return ['come find me','info']; if(f.phone===0) return ['phone dead','warn']; return ['okay','ok']; }
+
+/* ===== Screens ===== */
+function render(){
+  $('sess').innerHTML = S.paired ? `<span class="dot"></span>Saturday night · 4 bands<br>ends ${S.session.endsAt}` : 'not paired';
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===S.tab || (S.tab==='nav'&&b.dataset.tab==='map'))));
+  const sc=$('screen');
+  if(!S.paired){ sc.innerHTML=onboarding(); bindOnb(); return; }
+  if(S.tab==='group') sc.innerHTML=groupScreen();
+  else if(S.tab==='map'){ sc.innerHTML=mapScreen(); drawMap($('map'),{interactive:true}); }
+  else if(S.tab==='nav'){ sc.innerHTML=navScreen(); drawMap($('navmap'),{target:S.nav}); }
+  else if(S.tab==='alerts'){ sc.innerHTML=alertsScreen(); S.unread=0; updateBadge(); }
+  else if(S.tab==='band') sc.innerHTML=bandScreen();
+  else sc.innerHTML=privacyScreen();
+}
+function onboarding(){ return `<div class="onb">
+  <div class="hero"><div class="pod" id="onbPod"></div><h2 style="margin:6px 0 4px;font-size:1.3rem">Pair your band</h2><p class="muted" style="margin:0;font-size:.88rem">Hold <b>Button 1</b> on your band for 3 seconds until the light breathes. Keep it near your phone.</p></div>
+  <div class="progress"><i id="onbProg"></i></div>
+  <button class="btn primary wide" id="onbPair">Find my band</button>
+  <div class="card" style="font-size:.85rem"><b>Then start the night:</b> everyone holds Button 1 together for 5 seconds. The bands agree on tonight's private group key and buzz twice. Friends without the app don't need to do anything else.</div>
+  <p class="muted" style="font-size:.75rem;text-align:center">This is a working demo with simulated bands. Real pairing uses Bluetooth once the hardware is built.</p></div>`; }
+function bindOnb(){ $('onbPair').onclick=()=>{ const pod=$('onbPod'), pr=$('onbProg'), b=$('onbPair'); pod.classList.add('pairing'); b.disabled=true; b.textContent='Searching…'; let k=0;
+  const steps=['Searching…','Found "Firefly-7A2C"','Pairing…','Joining Saturday night…'];
+  const iv=setInterval(()=>{ k++; pr.style.width=(k*25)+'%'; b.textContent=steps[Math.min(k,3)]; if(k>=4){ clearInterval(iv); S.paired=true; addEvent('ok',null,'Paired with your band. Group key exchanged with 3 bands.'); S.unread=0; toast('Band paired · 3 friends in your group'); render(); } },700); }; }
+function groupScreen(){
+  const fs=[...S.friends].sort((a,b)=>rank(b)-rank(a));
+  const okN=S.friends.filter(f=>statusOf(f)[1]==='ok').length, inRange=S.friends.filter(f=>dist(S.me,f)<LORA_R).length;
+  return `<div class="stats"><div><b>${inRange}/${S.friends.length}</b><span>in range</span></div><div><b>${okN}</b><span>checked in okay</span></div><div><b>${elapsed()}</b><span>out tonight</span></div></div>
+  <h2>Your group</h2>
+  ${fs.map(f=>{ const d=dist(S.me,f), [lab,cls]=statusOf(f); return `<button class="row ${cls==='bad'?'alert':''}" data-nav="${f.id}" aria-label="Find ${esc(f.name)}">
+    <div class="av" style="background:${f.color}22;color:${f.color}">${f.name[0]}<span class="st" style="background:var(--${cls==='bad'?'bad':cls==='warn'?'warn':cls==='info'?'info':'ok'})"></span></div>
+    <div style="min-width:0"><div class="nm">${esc(f.name)}</div><div class="sub">${Math.round(d)} m · ${link(d)}${barsHtml(bars(d))}</div><div class="sub">band ${f.band}% · phone ${f.phone}% · check-in ${f.last}</div></div>
+    <span class="pill ${cls}">${lab}</span></button>`; }).join('')}
+  <div class="grid2" style="margin-top:6px"><button class="btn" onclick="pingAll()">Ping all bands</button><button class="btn" onclick="askCheckin()">Ask for check-in</button></div>
+  ${demoPanel()}`;
+}
+function rank(f){ const c=statusOf(f)[1]; return c==='bad'?3:c==='info'?2:c==='warn'?1:0; }
+function elapsed(){ const m=Math.floor((Date.now()-S.session.start)/60000); return `${Math.floor(m/60)}h ${String(m%60).padStart(2,'0')}m`; }
+function mapScreen(){ return `<h2>Everyone, right now</h2>
+  <div class="mapbox"><canvas id="map" width="760" height="680" aria-label="Map of your group around the club"></canvas><div class="ctl"><button onclick="zoom(1.25)" aria-label="Zoom in">+</button><button onclick="zoom(0.8)" aria-label="Zoom out">−</button><button onclick="recenter()" aria-label="Fit everyone or center on me">◎</button></div></div>
+  <div class="legend">${[S.me,...S.friends].map(f=>`<span><i style="background:${f.color}"></i>${esc(f.name)}</span>`).join('')}<span><i style="background:transparent;border:1px dashed var(--muted)"></i>Bluetooth range</span></div>
+  <p class="muted" style="font-size:.78rem;margin-top:8px">Tap a friend to get directions. Your phone is the only GPS here, so friends are placed by their band's signal relative to you: close is precise, far is a rough estimate.</p>`; }
+function navScreen(){ const f=S.nav, d=dist(S.me,f), dx=f.pos.x-S.me.pos.x, dy=f.pos.y-S.me.pos.y, ang=Math.atan2(dx,-dy)*180/Math.PI, lm=nearest(f);
+  const steps=[]; if(d<3) steps.push(`${f.name} is right here. Look for the glowing band.`);
+  else if(!inVenue(f)&&inVenue(S.me)) steps.push(`${f.name} has left the club. Go out the entrance, then head ${compass(dx,dy)} toward ${lm.n}.`);
+  else if(inVenue(f)&&!inVenue(S.me)) steps.push(`${f.name} is inside, near ${lm.n}. Go back in through the entrance.`);
+  else steps.push(`Head ${compass(dx,dy)} about ${Math.round(d)} m. ${f.name} is near ${lm.n}.`);
+  steps.push(d<BLE_R?'You\'re in Bluetooth range. Your own band pulses faster as you get closer.':d<LORA_R?'In LoRa range. The arrow sharpens once you\'re within 25 m.':'Out of range. Showing the last known spot.');
+  steps.push(S.pinged[f.id]?`${f.name}'s band is lit and buzzing. They know you're coming.`:'Ping their band so they stop and wait.');
+  return `<div style="display:flex;align-items:center;gap:10px;margin-top:6px"><button class="btn" onclick="go('group')" aria-label="Back">‹</button><h2 style="margin:0">Find ${esc(f.name)}</h2><span class="pill ${statusOf(f)[1]}">${statusOf(f)[0]}</span></div>
+  <div class="compass" style="margin-top:10px"><svg viewBox="0 0 100 100" width="110" height="110" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="#2b2a38" stroke-width="2"/>${['N','E','S','W'].map((c,i)=>`<text x="${50+38*Math.sin(i*Math.PI/2)}" y="${54-38*Math.cos(i*Math.PI/2)}" text-anchor="middle" font-size="9" fill="#7d7891" font-family="IBM Plex Mono">${c}</text>`).join('')}<g style="transform:rotate(${ang}deg);transform-origin:50px 50px;transition:transform .4s"><path d="M50 14 L66 62 L50 52 L34 62 Z" fill="${f.color}"/></g></svg>
+    <div><div class="big">${d<3?'Here':Math.round(d)+' m'}</div><div class="sub" style="margin-top:6px">${compass(dx,dy)} · ${link(d)}${barsHtml(bars(d))}</div><div class="sub">near ${lm.n}</div></div></div>
+  <div class="mapbox" style="margin-top:10px"><canvas id="navmap" width="760" height="380" aria-label="Route map"></canvas></div>
+  <ol class="steps">${steps.map((s,i)=>`<li><b>${i+1}</b><span>${esc(s)}</span></li>`).join('')}</ol>
+  <div class="grid2" style="margin-top:10px"><button class="btn primary" onclick="ping('${f.id}')">${S.pinged[f.id]?'Ping again':'Ping their band'}</button><button class="btn" onclick="walkSim()">Walk toward ${esc(f.name)}</button></div>
+  ${f.state==='sos'||f.state==='help'?`<button class="btn danger wide" style="margin-top:8px" onclick="resolve('${f.id}')">Found them · clear alert</button>`:''}`; }
+function alertsScreen(){ return `<h2>Tonight</h2><div class="feed">${S.events.length?S.events.map(e=>`<div class="ev ${e.kind}"><div style="flex:1"><div class="t">${e.t} · ${esc(e.who)}</div>${esc(e.msg)}</div>${e.fid&&(e.kind==='sos'||e.kind==='help'||e.kind==='find')?`<button class="btn" style="align-self:center;padding:6px 10px" data-nav="${e.fid}">Go ›</button>`:''}</div>`).join(''):'<p class="muted">Nothing yet. Check-ins and alerts from your group show up here.</p>'}</div>`; }
+function bandScreen(){ return `<h2>My band</h2>
+  <div class="card" style="display:flex;gap:14px;align-items:center"><div class="onb" style="padding:0"><div class="pod" style="width:110px;height:38px;margin:0"></div></div><div><div class="nm">Firefly-7A2C</div><div class="sub">connected · Bluetooth · band ${S.me.band}%</div><div class="sub">firmware 0.3.1 · Saturday night group</div></div></div>
+  <h2>Send from my band</h2>
+  <div class="grid2"><button class="btn" onclick="myBand('checkin')">I'm okay</button><button class="btn" onclick="myBand('come')">Come find me</button><button class="btn" onclick="myBand('help')" style="color:var(--warn)">I need help</button><button class="btn danger" onclick="myBand('sos')">SOS</button></div>
+  <h2>Button guide</h2>
+  <div class="card" style="font-size:.85rem"><b>Button 1 · Find</b><br>1× find friends · 2× come find me · hold: I'm okay<br><br><b>Button 2 · Safety</b> (the dimpled one)<br>1× discreet "I need help" · 2× cancel · hold 3 s: SOS<br><br><b>Both, 5 s:</b> leave the group</div>
+  <div class="toggle" style="margin-top:8px"><div>Vibrate my band for alerts<small>Your wrist buzzes when a friend sends help or SOS</small></div><label class="sw"><input type="checkbox" ${S.settings.haptics?'checked':''} onchange="S.settings.haptics=this.checked"><span></span></label></div>`; }
+function privacyScreen(){ const st=S.settings; return `<h2>Privacy</h2>
+  ${tog('shareGps','Share my GPS with the group','Only during this session. Deleted when it ends.')}
+  ${tog('history','Keep a location history','Off: tonight\'s trail is wiped at session end.')}
+  ${tog('relay','Cloud relay for alerts','Lets alerts reach friends at another venue over cell. Off: nothing leaves the phones and bands.')}
+  <h2>Who gets "I need help"</h2>
+  ${S.friends.map(f=>`<div class="toggle"><div>${esc(f.name)}<small>${st.help[f.id]?'Gets discreet help alerts':'Only gets SOS'}</small></div><label class="sw"><input type="checkbox" ${st.help[f.id]?'checked':''} onchange="S.settings.help['${f.id}']=this.checked;render()"><span></span></label></div>`).join('')}
+  <h2>Session</h2>
+  <div class="card" style="font-size:.85rem">Started ${elapsed()} ago · ends ${S.session.endsAt}. When it ends, every band forgets the group key and this phone deletes the night's locations.</div>
+  <div class="grid2" style="margin-top:8px"><button class="btn" onclick="extend()">Extend 1 hour</button><button class="btn" onclick="endSession()">End night now</button></div>`; }
+function tog(k,t,sub){ return `<div class="toggle"><div>${t}<small>${sub}</small></div><label class="sw"><input type="checkbox" ${S.settings[k]?'checked':''} onchange="S.settings['${k}']=this.checked"><span></span></label></div>`; }
+function demoPanel(){ return `<div class="demo"><div class="sub" style="margin-bottom:8px">DEMO · simulate what friends' bands send</div><div class="grid2">
+  <button class="btn" onclick="sim('jordan','come')">Jordan: come find me</button><button class="btn" onclick="sim('priya','checkin')">Priya: I'm okay</button>
+  <button class="btn" onclick="sim('priya','help')">Priya: I need help</button><button class="btn" onclick="sim('jordan','sos')">Jordan: SOS</button>
+  <button class="btn" onclick="sim('sam','leave')">Sam wanders off</button><button class="btn" onclick="sim('all','reset')">Reset demo</button></div></div>`; }
+
+/* ===== Map ===== */
+let view={cx:34,cy:30,scale:1.5,fit:true};
+function zoom(k){ if(view.fit){ view.fit=false; } view.scale=Math.max(0.6,Math.min(4,view.scale*k)); render(); }
+function recenter(){ view.fit=!view.fit; if(!view.fit){ view.cx=S.me.pos.x; view.cy=S.me.pos.y; view.scale=1.8; } render(); }
+function drawMap(cv,opts){ if(!cv) return; const cw=cv.clientWidth||380, dpr=Math.min(3,window.devicePixelRatio||1); const ratio=cv.height/cv.width; cv.width=Math.round(cw*dpr); cv.height=Math.round(cw*ratio*dpr); const c=cv.getContext('2d'), W=cv.width, H=cv.height; const k=dpr;
+  let cx=view.cx, cy=view.cy, sc=Math.min(W/126,H/80)*view.scale;
+  if(view.fit && !opts.target){ const ps=[S.me,...S.friends].map(f=>f.pos); const x0=Math.min(...ps.map(p=>p.x))-12, x1=Math.max(...ps.map(p=>p.x))+24, y0=Math.min(...ps.map(p=>p.y))-10, y1=Math.max(...ps.map(p=>p.y))+10; cx=(x0+x1)/2; cy=(y0+y1)/2; sc=Math.min(W/(x1-x0),H/(y1-y0)); }
+  if(opts.target){ const t=opts.target; cx=(S.me.pos.x+t.pos.x)/2+4; cy=(S.me.pos.y+t.pos.y)/2; const span=Math.max(34,Math.abs(t.pos.x-S.me.pos.x)*1.4+26,(Math.abs(t.pos.y-S.me.pos.y)*1.4+16)*W/H); sc=W/span; }
+  const X=x=>W/2+(x-cx)*sc, Y=y=>H/2+(y-cy)*sc;
+  c.fillStyle='#121119'; c.fillRect(0,0,W,H);
+  c.fillStyle='#1b1a26'; c.fillRect(0,Y(43),W,8*sc); c.fillRect(X(60),0,7*sc,H); c.fillRect(0,Y(72),W,6*sc);
+  c.strokeStyle='#34324a'; c.setLineDash([8,6]); c.lineWidth=2; c.beginPath(); c.moveTo(0,Y(47)); c.lineTo(W,Y(47)); c.moveTo(X(63.5),0); c.lineTo(X(63.5),H); c.stroke(); c.setLineDash([]);
+  const block=(x,y,w,h,label,fill)=>{ c.fillStyle=fill||'#23222f'; c.fillRect(X(x),Y(y),w*sc,h*sc); c.fillStyle='#7d7891'; c.font=`500 ${Math.max(11*k,1.6*sc)}px IBM Plex Mono, monospace`; c.fillText(label,X(x)+6,Y(y)+Math.max(13*k,1.9*sc)); };
+  block(10,12,40,25,'CLUB','#262434'); block(70,10,22,20,'deli'); block(92,55,14,10,'pizza'); block(10,52,30,14,'bodega'); block(75,52,12,14,'');
+  c.fillStyle='#2f2d40'; c.fillRect(X(11),Y(31),16*sc,3*sc); c.fillRect(X(40),Y(13),9*sc,5*sc); c.fillRect(X(44),Y(31),5*sc,5*sc);
+  c.fillStyle='#5e5a72'; c.font=`500 ${Math.max(10*k,1.3*sc)}px IBM Plex Mono, monospace`; c.fillText('bar',X(12),Y(33.4)); c.fillText('DJ',X(41),Y(16.5)); c.fillText('WC',X(44.5),Y(34)); c.fillText('entrance ▾',X(10.5),Y(39.6));
+  c.fillStyle='#9a95ad'; c.font=`600 ${15*k}px IBM Plex Sans, sans-serif`; c.fillText('W 3rd St',10*k,Y(46));
+  // north arrow and scale bar
+  c.fillStyle='#9a95ad'; c.beginPath(); c.moveTo(W-20*k,10*k); c.lineTo(W-14*k,24*k); c.lineTo(W-20*k,20*k); c.lineTo(W-26*k,24*k); c.closePath(); c.fill(); c.font=`600 ${14*k}px IBM Plex Mono`; c.fillText('N',W-24*k,36*k);
+  c.fillRect(12*k,H-16*k,10*sc,2*k); c.font=`500 ${13*k}px IBM Plex Mono`; c.fillText('10 m',12*k,H-21*k);
+  // ranges
+  c.strokeStyle='rgba(94,211,154,.4)'; c.setLineDash([6,6]); c.beginPath(); c.arc(X(S.me.pos.x),Y(S.me.pos.y),BLE_R*sc,0,Math.PI*2); c.stroke(); c.setLineDash([]);
+  // route line to target
+  if(opts.target){ c.strokeStyle=opts.target.color; c.lineWidth=4; c.setLineDash([2,10]); c.lineCap='round'; c.beginPath(); c.moveTo(X(S.me.pos.x),Y(S.me.pos.y)); const t=opts.target;
+    if(inVenue(S.me)!==inVenue(t)){ c.lineTo(X(12),Y(37.5)); } c.lineTo(X(t.pos.x),Y(t.pos.y)); c.stroke(); c.setLineDash([]); c.lineWidth=1; }
+  // people
+  for(const f of [...S.friends,S.me]){ const x=X(f.pos.x), y=Y(f.pos.y), d=dist(S.me,f);
+    if(f!==S.me && d>BLE_R){ c.fillStyle=f.color+'22'; c.beginPath(); c.arc(x,y,Math.min(60,(4+d*0.08)*sc),0,Math.PI*2); c.fill(); }
+    if(f.state==='sos'||f.state==='help'){ const r=(14+6*Math.abs(Math.sin(Date.now()/250)))*k; c.strokeStyle='#ef5b6b'; c.lineWidth=3; c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.stroke(); c.lineWidth=1; }
+    c.fillStyle='#0e0d16'; c.beginPath(); c.arc(x,y,13*k*0.75,0,Math.PI*2); c.fill(); c.fillStyle=f.color; c.beginPath(); c.arc(x,y,10*k*0.75,0,Math.PI*2); c.fill();
+    c.fillStyle='#0e0d16'; c.font=`700 ${11*k}px Outfit, sans-serif`; c.textAlign='center'; c.fillText(f===S.me?'•':f.name[0],x,y+3.5*k); c.textAlign='left';
+    c.fillStyle='#efecf6'; c.font=`600 ${16*k}px IBM Plex Sans, sans-serif`; c.fillText(f===S.me?'You':f.name,x+13*k,y-2*k);
+    c.fillStyle='#9a95ad'; c.font=`500 ${13*k}px IBM Plex Mono, monospace`; c.fillText(f===S.me?'GPS':`~${Math.round(d)} m`,x+13*k,y+11*k); }
+  if(opts.interactive){ cv.onclick=e=>{ const r=cv.getBoundingClientRect(); const px=(e.clientX-r.left)/r.width*W, py=(e.clientY-r.top)/r.height*H; let best=null,bd=30*k; for(const f of S.friends){ const d=Math.hypot(X(f.pos.x)-px,Y(f.pos.y)-py); if(d<bd){bd=d;best=f;} } if(best) openNav(best.id); }; }
+}
+
+/* ===== Actions ===== */
+function go(t){ S.tab=t; render(); $('screen').scrollTop=0; }
+function openNav(id){ S.nav=S.friends.find(f=>f.id===id); go('nav'); }
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-nav]'); if(b) openNav(b.dataset.nav); });
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+function ping(id){ const f=S.friends.find(x=>x.id===id); S.pinged[id]=Date.now(); addEvent('find',f,`You pinged ${f.name}'s band: 3 buzzes, light on for 10 s`); S.unread=Math.max(0,S.unread-1); updateBadge(); toast(`${f.name}'s band is buzzing`); render(); }
+function pingAll(){ S.friends.forEach(f=>{ if(dist(S.me,f)<LORA_R) S.pinged[f.id]=Date.now(); }); addEvent('find',null,'Pinged every band in range'); S.unread=Math.max(0,S.unread-1); updateBadge(); toast('All bands in range are buzzing'); }
+function askCheckin(){ addEvent('find',null,'Asked the group to check in'); S.unread=Math.max(0,S.unread-1); updateBadge(); toast('Check-in request sent');
+  setTimeout(()=>{ const f=S.friends.find(x=>x.id==='priya'); f.last=fmtT(); addEvent('ok',f,'Checked in: okay'); render(); },1800);
+  setTimeout(()=>{ const f=S.friends.find(x=>x.id==='jordan'); f.last=fmtT(); addEvent('ok',f,'Checked in: okay'); render(); },3200); }
+function myBand(kind){ const m={checkin:['ok',"You checked in: I'm okay"],come:['find','You sent "Come find me"'],help:['help','You sent a discreet "I need help" to '+S.friends.filter(f=>S.settings.help[f.id]).map(f=>f.name).join(' and ')],sos:['sos','You sent an SOS to every band in range']}[kind]; addEvent(m[0],null,m[1]); toast(m[1]); render(); }
+function sim(id,kind){
+  if(kind==='reset'){ S.friends[0].pos={x:44,y:31}; S.friends[1].pos={x:33,y:17}; S.friends[2].pos={x:98,y:60}; S.friends.forEach(f=>{f.state=f.id==='sam'?'away':'ok';}); S.me.pos={x:20,y:22}; S.events=[]; S.unread=0; S.pinged={}; updateBadge(); toast('Demo reset'); render(); return; }
+  const f=S.friends.find(x=>x.id===id);
+  if(kind==='come'){ f.state='come'; addEvent('find',f,'Come find me'); toast(`${f.name}: come find me · ${Math.round(dist(S.me,f))} m`); buzz([80,60,80]); }
+  if(kind==='checkin'){ f.state='ok'; f.last=fmtT(); addEvent('ok',f,"Checked in: I'm okay"); toast(`${f.name} checked in`); }
+  if(kind==='help'){ if(!S.settings.help[f.id]){ toast(`${f.name} isn't a help contact`); } f.state='help'; addEvent('help',f,'I need help (discreet)'); showSOS(f,false); buzz([200,100,200]); }
+  if(kind==='sos'){ f.state='sos'; addEvent('sos',f,'SOS · urgent'); showSOS(f,true); buzz([400,100,400,100,400]); }
+  if(kind==='leave'){ f.pos={x:118,y:76}; f.state='away'; addEvent('help',f,'Out of LoRa range. Last seen walking east on W 3rd St'); toast(`${f.name} is drifting out of range`); }
+  render(); }
+function buzz(p){ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} }
+function showSOS(f,urgent){ const el=$('sos'), d=Math.round(dist(S.me,f));
+  el.innerHTML=`<div class="ring">${f.name[0]}</div><h3 id="sosTitle">${urgent?'SOS':'Help'} · ${esc(f.name)}</h3><p style="margin:0;color:#f3c5cc">${urgent?'Urgent alert from their band.':'Discreet "I need help" from their band.'} ${d} m ${compass(f.pos.x-S.me.pos.x,f.pos.y-S.me.pos.y)}, near ${nearest(f).n}.</p>
+  <div class="actions"><button class="btn primary" id="sosGo">Walk me there</button><div class="card" style="background:rgba(0,0,0,.25);font-size:.82rem;text-align:left">Call ${esc(f.name)}: their phone is ${f.phone?'on':'dead, so call won\'t ring'}. For an emergency call <b>911</b>.</div><button class="btn" id="sosLater">Dismiss · keep alert open</button></div>`;
+  el.hidden=false; $('sosGo').onclick=()=>{ el.hidden=true; openNav(f.id); }; $('sosLater').onclick=()=>{ el.hidden=true; }; }
+function resolve(id){ const f=S.friends.find(x=>x.id===id); f.state='ok'; f.last=fmtT(); addEvent('ok',f,'Alert cleared: found and okay'); S.unread=Math.max(0,S.unread-1); updateBadge(); toast(`Marked ${f.name} as found`); render(); }
+function walkSim(){ const f=S.nav; let n=0; const iv=setInterval(()=>{ const dx=f.pos.x-S.me.pos.x, dy=f.pos.y-S.me.pos.y, d=Math.hypot(dx,dy); if(d<2.5||n++>80||S.tab!=='nav'){ clearInterval(iv); if(d<2.5){ toast(`You found ${f.name}`); buzz([60,40,60,40,60]); } return; }
+  let tx=f.pos.x, ty=f.pos.y; if(inVenue(S.me)!==inVenue(f) && Math.hypot(S.me.pos.x-12,S.me.pos.y-37.5)>2){ tx=12; ty=37.5; } const a=Math.atan2(ty-S.me.pos.y,tx-S.me.pos.x); S.me.pos.x+=Math.cos(a)*1.6; S.me.pos.y+=Math.sin(a)*1.6; render(); },220); }
+function extend(){ S.session.endsAt='7:00 AM'; toast('Session extended to 7:00 AM'); render(); }
+function endSession(){ const sh=$('sheet'); sh.innerHTML=`<h3>End the night?</h3><p class="muted" style="font-size:.88rem;margin:0 0 12px">Every band forgets the group key and this phone deletes tonight's locations and alerts. This can't be undone.</p><div class="grid2"><button class="btn" id="shNo">Keep going</button><button class="btn danger" id="shYes">End night</button></div>`; sh.hidden=false;
+  $('shNo').onclick=()=>sh.hidden=true; $('shYes').onclick=()=>{ sh.hidden=true; S.paired=false; S.events=[]; S.unread=0; updateBadge(); toast('Night ended · data deleted'); render(); }; }
+
+/* ===== Live loop: friends drift a little, like real signal ===== */
+setInterval(()=>{ if(!S.paired) return; for(const f of S.friends){ if(f.state==='sos'||f.state==='help') continue; const w=f.wander||0; f.pos.x+= (Math.random()-.5)*w; f.pos.y+=(Math.random()-.5)*w;
+  if(f.id!=='sam'){ f.pos.x=Math.max(VENUE.x+1,Math.min(VENUE.x+VENUE.w-1,f.pos.x)); f.pos.y=Math.max(VENUE.y+1,Math.min(VENUE.y+VENUE.h-1,f.pos.y)); } }
+  if(['group','map','nav'].includes(S.tab)) render(); },1500);
+render();
+</script>
+
+</body></html>

@@ -1,0 +1,1166 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Firefly Band</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long page with a sticky section nav; dark nightlife palette (indigo-black ground, firefly amber accent), light variant for daytime reading. */
+:root{
+  --bg:#0e0d16; --bg2:#15141f; --panel:#1b1a27; --line:#2a2838; --fg:#ece9f3; --muted:#9a95ad;
+  --accent:#f5b544; --accent-fg:#1a1200; --glow:rgba(245,181,68,.35);
+  --ok:#5ed39a; --warn:#f08c4a; --bad:#ef5b6b; --info:#6fa8ff;
+  --display:"Outfit",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f7f4ee; --bg2:#efebe2; --panel:#ffffff; --line:#dcd6c8; --fg:#1b1926; --muted:#5f5a70;
+  --accent:#c77a0a; --accent-fg:#fff8ea; --glow:rgba(199,122,10,.25); --ok:#1f8f5c; --warn:#c2611f; --bad:#c23747; --info:#2a63c9; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f7f4ee; --bg2:#efebe2; --panel:#ffffff; --line:#dcd6c8; --fg:#1b1926; --muted:#5f5a70;
+  --accent:#c77a0a; --accent-fg:#fff8ea; --glow:rgba(199,122,10,.25); --ok:#1f8f5c; --warn:#c2611f; --bad:#c23747; --info:#2a63c9; color-scheme:light }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.prose{max-width:66ch}
+.prose p+p{margin-top:.8em}
+
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+nav.top a{white-space:nowrap;font-family:var(--display);font-weight:600;font-size:.85rem;color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:999px}
+nav.top a:hover,nav.top a:focus-visible{color:var(--fg);background:var(--panel);outline:none}
+nav.top a.brand{color:var(--accent);margin-right:auto}
+
+/* hero */
+header.hero{padding-block:56px 36px;background:radial-gradient(900px 420px at 15% -10%,var(--glow),transparent 70%)}
+header.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
+.stat{border-top:2px solid var(--accent);padding-top:8px}
+.stat b{font-family:var(--display);font-size:1.5rem;display:block}
+.stat span{font-size:.8rem;color:var(--muted)}
+.band-illus{max-width:100%;width:100%;display:block}
+
+section{padding-block:48px;border-top:1px solid var(--line)}
+section .head{display:flex;flex-direction:column;gap:6px;margin-bottom:24px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{margin-bottom:6px}
+ul.clean{margin:0;padding-left:18px}
+ul.clean li+li{margin-top:5px}
+
+/* viewer */
+.viewer{position:relative;background:radial-gradient(700px 400px at 50% 110%,#2a2440,var(--bg2) 70%);border:1px solid var(--line);border-radius:16px;overflow:hidden;height:560px}
+.viewer canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.viewer .hud{position:absolute;left:12px;top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.viewer .info{position:absolute;right:12px;bottom:12px;left:12px;max-width:380px;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.85rem}
+.viewer .info b{font-family:var(--display)}
+.btn{font:600 .82rem var(--display);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.viewer .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.viewer .lab{position:absolute;transform:translate(-50%,-100%);font:500 .7rem var(--mono);color:var(--fg);background:color-mix(in srgb,var(--panel) 85%,transparent);border:1px solid var(--line);border-radius:6px;padding:2px 7px;white-space:nowrap;display:none}
+.viewer .lab::after{content:"";position:absolute;left:50%;bottom:-7px;width:1px;height:7px;background:var(--muted)}
+.viewer .lab.on{border-color:var(--accent);color:var(--accent)}
+.viewer .views{position:absolute;right:12px;top:12px;display:flex;gap:4px;align-items:center}
+.viewer .views .btn{padding:5px 9px;font-size:.74rem}
+.viewer .range{display:inline-flex;align-items:center;gap:6px;font:600 .74rem var(--display);color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.viewer .range input{width:90px;accent-color:var(--accent)}
+.viewer .range select{font:600 .74rem var(--display);padding:2px 4px;border-radius:6px;width:auto}
+.viewer .partlist{position:absolute;left:12px;top:56px;bottom:190px;width:250px;margin:0;padding:6px;list-style:none;overflow:auto;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:12px;font-size:.76rem}
+.viewer .partlist li{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer}
+.viewer .partlist li:hover,.viewer .partlist li.hover{background:var(--bg2)}
+.viewer .partlist li.sel{background:var(--accent);color:var(--accent-fg)}
+.viewer .partlist li i{width:10px;height:10px;border-radius:3px;flex:none}
+.viewer .partlist li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.viewer .partlist li em{font:400 .68rem var(--mono);opacity:.8}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;font-size:.82rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+/* drawings */
+.drawings{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.drawing{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;overflow-x:auto}
+.drawing svg{display:block;max-width:100%;height:auto;font-family:var(--mono)}
+.drawing .cap{font-size:.78rem;color:var(--muted);margin-top:8px}
+.lifesize{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:860px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:600;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--bg2)}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{font-weight:600;border-bottom:none;background:var(--bg2)}
+.sw{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:8px;vertical-align:middle}
+.chip{display:inline-block;font:500 .72rem var(--mono);padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+
+/* simulation */
+.sim{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+.simmap{background:var(--bg2);border:1px solid var(--line);border-radius:16px;overflow:hidden;position:relative}
+.simmap canvas{display:block;width:100%;height:auto;touch-action:none}
+.simmap .tip{position:absolute;left:12px;top:10px;font-size:.78rem;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);padding:4px 8px;border-radius:8px}
+.bracelet{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.pod{position:relative;margin:10px auto 4px;width:264px;height:66px;border-radius:33px;background:linear-gradient(180deg,#2a2938,#15141f);border:1px solid #3a384c;box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08)}
+.pod .leds{position:absolute;left:50%;top:18px;transform:translateX(-50%);display:flex;gap:10px}
+.pod .leds i{width:10px;height:10px;border-radius:50%;background:#2c2a38;transition:background .15s,box-shadow .15s}
+.pod .leds i.on{background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.pod .leds i.sos{background:var(--bad);box-shadow:0 0 12px var(--bad)}
+.pod .pb{position:absolute;bottom:-12px;width:54px;height:20px;border-radius:8px;border:1px solid #4a4860;background:#23222f;color:var(--fg);font:600 .68rem var(--mono);cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.pod .pb:active{transform:translateY(2px)}
+.pod .pb.b1{left:42px}.pod .pb.b2{right:42px;border-color:#6b3a44}
+.pod.buzz{animation:buzz .12s linear infinite}
+@keyframes buzz{0%{transform:translateX(-1px)}50%{transform:translateX(1px)}100%{transform:translateX(-1px)}}
+.gest{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px;font-size:.78rem}
+.gest div{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.gest b{font-family:var(--display);display:block;margin-bottom:4px}
+.status{margin-top:12px;font-size:.84rem;min-height:3.2em;border-left:3px solid var(--accent);padding-left:10px}
+.log{margin-top:12px;max-height:180px;overflow:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.log div+div{margin-top:3px}
+.friends{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.fr{border:1px solid var(--line);border-radius:10px;padding:8px;font-size:.76rem;min-width:0}
+.fr b{display:block;font-family:var(--display)}
+.fr .d{font-family:var(--mono);color:var(--muted)}
+
+/* phone */
+.appwrap{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start}
+.phone{width:320px;max-width:100%;height:640px;border-radius:40px;background:#0b0b12;border:6px solid #23222f;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:14px 12px 10px;display:flex;flex-direction:column;color:#ece9f3;position:relative;overflow:hidden}
+.phone .notch{width:110px;height:26px;background:#23222f;border-radius:14px;margin:0 auto 10px}
+.phone .screen{flex:1;overflow:auto;padding:4px 6px;min-height:0;scrollbar-width:none}
+.phone .tabs{display:flex;border-top:1px solid #23222f;padding-top:8px}
+.phone .tabs button{flex:1;background:none;border:none;color:#7d7891;font:600 .68rem var(--display);cursor:pointer;padding:4px 0}
+.phone .tabs button[aria-selected="true"]{color:#f5b544}
+.phone h4{font:600 1.05rem var(--display);margin:6px 0 10px}
+.prow{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#15141f;margin-bottom:8px}
+.prow .av{width:34px;height:34px;border-radius:50%;background:#2a2938;display:grid;place-items:center;font:600 .8rem var(--display)}
+.prow .nm{font-weight:600;font-size:.85rem}
+.prow .sub{font-size:.7rem;color:#9a95ad;font-family:var(--mono)}
+.prow .pill{margin-left:auto;font:600 .64rem var(--mono);padding:3px 7px;border-radius:999px;background:#23222f}
+.prow .pill.ok{color:#5ed39a}.prow .pill.warn{color:#f08c4a}.prow .pill.bad{color:#ef5b6b}
+.alert{padding:10px;border-radius:12px;background:#15141f;margin-bottom:8px;font-size:.8rem;border-left:3px solid #6fa8ff}
+.alert.sos{border-left-color:#ef5b6b;background:#2a151c}.alert.help{border-left-color:#f08c4a}.alert.ok{border-left-color:#5ed39a}
+.alert .t{font-family:var(--mono);font-size:.66rem;color:#9a95ad}
+.setting{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#15141f;margin-bottom:8px;font-size:.8rem}
+.setting small{display:block;color:#9a95ad;font-size:.68rem}
+.tog{width:38px;height:22px;border-radius:999px;background:#f5b544;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:#1a1200}
+.tog.off{background:#3a384c}.tog.off::after{right:auto;left:3px;background:#9a95ad}
+.minimap{height:200px;border-radius:12px;background:#15141f;position:relative;overflow:hidden;margin-bottom:10px}
+.minimap canvas{width:100%;height:100%;display:block;cursor:pointer}
+.navbtn{font:600 .68rem var(--display);color:#f5b544;background:#23222f;border:1px solid #3a384c;border-radius:8px;padding:5px 9px;cursor:pointer;margin-left:6px;white-space:nowrap}
+.navbtn.wide{width:100%;margin:8px 0 0;padding:10px;background:#f5b544;color:#1a1200;font-size:.8rem}
+.navcard{display:flex;align-items:center;gap:14px;padding:12px;border-radius:14px;background:#15141f;margin-bottom:8px}
+.navdist{font:700 2rem var(--display);line-height:1}
+.navsteps{margin:8px 0 0;padding-left:18px;font-size:.76rem;color:#c9c4dc}
+.navsteps li+li{margin-top:5px}
+.appnotes .card+.card{margin-top:12px}
+
+/* waitlist */
+.wl{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+form.wlform{display:grid;gap:12px}
+label{font-size:.8rem;font-weight:600;display:grid;gap:5px}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.cta{font:600 .95rem var(--display);background:var(--accent);color:var(--accent-fg);border:none;border-radius:12px;padding:12px 18px;cursor:pointer}
+.cta:disabled{opacity:.6;cursor:default}
+.count{font-family:var(--display);font-size:3rem;font-weight:700;line-height:1}
+.notice{font-size:.84rem;padding:10px 12px;border-radius:10px;background:var(--bg2);border:1px solid var(--line)}
+.notice.ok{border-color:var(--ok)}.notice.err{border-color:var(--bad)}
+.admin{margin-top:16px}
+.admin table{min-width:0}
+
+ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:step;display:grid;gap:10px}
+ol.steps li{counter-increment:step;position:relative;padding:12px 14px 12px 52px;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--muted)}
+ol.steps li b{color:var(--fg);font-family:var(--display)}
+ol.steps li::before{content:counter(step);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font:600 .8rem var(--display);display:grid;place-items:center}
+pre.code{font-family:var(--mono);font-size:.72rem;line-height:1.45;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;margin:0;color:var(--fg)}
+code{font-family:var(--mono);font-size:.85em;background:var(--bg2);padding:1px 5px;border-radius:5px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gallery figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gallery img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.gallery figcaption{font-size:.78rem;color:var(--muted);padding:8px 10px}
+@media (max-width:860px){.gallery{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.gallery{grid-template-columns:1fr}}
+footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+
+@media (max-width:860px){
+  .viewer .views{display:none}
+  .viewer .partlist{width:200px;top:96px}
+  header.hero .grid,.cols,.drawings,.sim,.appwrap,.wl{grid-template-columns:1fr}
+  .cols-3{grid-template-columns:1fr}
+  .friends{grid-template-columns:repeat(2,1fr)}
+  .viewer{height:420px}
+}
+@media (prefers-reduced-motion: reduce){ .pod.buzz{animation:none} }
+</style>
+
+<nav class="top"><div class="wrap">
+  <a class="brand" href="#top">Firefly</a>
+  <a href="#problem">Problem</a><a href="#model">3D model</a><a href="#drawings">Drawings</a><a href="#parts">Parts &amp; cost</a><a href="#build">Build guide</a><a href="#sim">Simulation</a><a href="#connect">How it connects</a><a href="#app">App</a><a href="#privacy">Privacy</a><a href="#waitlist">Waitlist</a>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap grid">
+  <div>
+    <div class="eyebrow">Concept &amp; build plan · Oct 2026</div>
+    <h1 style="margin-top:10px">A bracelet that finds your friends when your phone is dead.</h1>
+    <p class="prose muted" style="margin-top:16px;font-size:1.05rem">Firefly is a two-button jewelry-weight band with its own radio. It keeps a friend group connected inside a packed bar or club with no signal, and it never needs the wearer's phone. One friend with battery runs the app; everyone else just wears the band.</p>
+    <div class="hero-stats">
+      <div class="stat"><b id="statWeight">27 g</b><span>total weight, target under 30 g</span></div>
+      <div class="stat"><b>44 × 24 × 11 mm</b><span>pod, modeled to real size</span></div>
+      <div class="stat"><b>30+ h</b><span>battery, target 12–24 h</span></div>
+    </div>
+  </div>
+  <img class="band-illus" src="renders/firefly-product-champagne.jpg" alt="Firefly band render, champagne finish" style="border-radius:18px;object-fit:cover;aspect-ratio:16/11">
+</div></header>
+
+<section id="problem"><div class="wrap">
+  <div class="head"><div class="eyebrow">Why</div><h2>What goes wrong on a night out</h2></div>
+  <div class="cols-3">
+    <div class="card"><h3>Phones die</h3><p class="muted">Photos, Maps, location sharing and group chats drain the battery before the night ends. The person with the dead phone is the one nobody can reach.</p></div>
+    <div class="card"><h3>No signal, no sightline</h3><p class="muted">Basements and packed floors kill GPS and cell reception. Even with a shared location you cannot spot someone across a dark, loud room.</p></div>
+    <div class="card"><h3>Groups split</h3><p class="muted">Drinks, restrooms, Ubers. One person ends up coordinating everyone, and someone gets left behind without anyone noticing.</p></div>
+  </div>
+  <div class="cols" style="margin-top:24px">
+    <div class="card"><h3>Requirements the design has to meet</h3>
+      <ul class="clean muted">
+        <li>Under 30 g, looks like jewelry, no screen</li>
+        <li>12–24 h battery, works with the wearer's phone dead</li>
+        <li>Splash-proof (spilled drinks, rain), survives crowd impacts</li>
+        <li>Finds connected friends within range; guides by vibration and light</li>
+        <li>Distinguishes "come find me" from "I need help"</li>
+        <li>One or two simple actions, usable in the dark</li>
+        <li>Private by default, affordable</li>
+      </ul></div>
+    <div class="card"><h3>How the two roles work</h3>
+      <p class="muted">Every friend wears a band. The <b>responsible friend</b>, whoever still has phone battery, runs the Firefly app. Their phone pairs with their own band over Bluetooth and becomes the group's bridge: bands talk to each other directly over a 915 MHz long-range radio, and the app turns those signals into a live group view, a map, and alerts.</p>
+      <p class="muted" style="margin-top:8px">The <b>non-responsible friend</b> needs nothing but the band. Finding, "come find me", check-ins and SOS all run band-to-band without any phone.</p></div>
+  </div>
+</div></section>
+
+<section id="model"><div class="wrap">
+  <div class="head"><div class="eyebrow">3D model · units in millimetres</div><h2>Every part at its real size</h2><p class="muted prose">Drag to rotate, scroll to zoom, click a part for its spec. The wrist is a 165 mm circumference ellipse (an average adult wrist) and the coin is a US quarter, both to scale.</p></div>
+  <div class="viewer" id="viewer">
+    <canvas id="three"></canvas>
+    <div class="labels" id="labels"></div>
+    <div class="hud">
+      <button class="btn" id="btnExplode" aria-pressed="false">Explode</button>
+      <label class="range"><span>Explode</span><input type="range" id="explodeRange" min="0" max="100" value="0" aria-label="Explode amount"></label>
+      <button class="btn" id="btnLabels" aria-pressed="false">Labels</button>
+      <button class="btn" id="btnParts" aria-pressed="false">Part list</button>
+      <button class="btn" id="btnShell" aria-pressed="false">X-ray shell</button>
+      <button class="btn" id="btnWrist" aria-pressed="true">Wrist</button>
+      <button class="btn" id="btnCoin" aria-pressed="false">Quarter</button>
+      <button class="btn" id="btnSpin" aria-pressed="true">Auto-rotate</button>
+      <label class="range"><span>Finish</span><select id="finish" aria-label="Shell finish"><option value="graphite">Graphite</option><option value="champagne">Champagne</option><option value="rose">Rose</option><option value="silver">Silver</option></select></label>
+    </div>
+    <div class="views">
+      <span class="eyebrow" style="font-size:.62rem">View</span>
+      <button class="btn" data-view="iso">Iso</button><button class="btn" data-view="top">Top</button><button class="btn" data-view="front">Front</button><button class="btn" data-view="side">Side</button><button class="btn" data-view="back">Back</button>
+    </div>
+    <ul class="partlist" id="partList" hidden></ul>
+    <div class="info" id="partInfo"><b>Firefly pod</b> · 44 × 24 × 11 mm · ~27 g with strap<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span></div>
+  </div>
+  <p class="muted" style="font-size:.82rem;margin-top:10px">Click the two button caps on the model to press them: the LED strip and the simulation below react. The amber glow is the real LED strip state; in finding mode it shows how many LEDs light at the current distance.</p>
+  <div class="legend" id="legend"></div>
+  <h3 style="margin-top:28px;margin-bottom:12px">Renders</h3>
+  <div class="gallery">
+    <figure><img src="renders/firefly-product-champagne.jpg" alt="Firefly band in champagne finish, amber light strip glowing" loading="lazy"><figcaption>Champagne finish · amber strip shows the band is in a group</figcaption></figure>
+    <figure><img src="renders/firefly-on-wrist.jpg" alt="Firefly band on a wrist" loading="lazy"><figcaption>On a 165 mm wrist, to scale</figcaption></figure>
+    <figure><img src="renders/firefly-product-graphite.jpg" alt="Firefly band in graphite finish" loading="lazy"><figcaption>Graphite finish · Find button left, Safety button right</figcaption></figure>
+    <figure><img src="renders/firefly-inside.jpg" alt="X-ray view of the parts inside the pod" loading="lazy"><figcaption>Inside: boards left, battery and motor right, antenna under the lid</figcaption></figure>
+    <figure><img src="renders/firefly-exploded.jpg" alt="Exploded view with every part labeled" loading="lazy"><figcaption>Exploded, every part labeled</figcaption></figure>
+    <figure><img src="renders/firefly-scale-quarter.jpg" alt="Firefly band next to a US quarter" loading="lazy"><figcaption>Rose finish, next to a US quarter</figcaption></figure>
+  </div>
+
+</div></section>
+
+<section id="drawings"><div class="wrap">
+  <div class="head"><div class="eyebrow">Drawings · scale 4 px per mm</div><h2>Dimensioned views</h2><p class="muted prose">Generated from the same part data as the 3D model, so the numbers always match. Internal parts are shown as dashed outlines in the top view.</p></div>
+  <div class="drawings" id="drawingGrid"></div>
+  <div class="drawing" style="margin-top:16px">
+    <div class="lifesize">
+      <div><h3>Life-size on screen</h3><p class="cap">Drawn in real millimetres. Most laptop screens show this within about 10% of true size; hold a quarter up to the circle to check.</p></div>
+      <svg id="lifesize" width="44mm" height="26mm" viewBox="0 0 44 26" aria-label="Life-size pod outline"></svg>
+      <svg width="26mm" height="26mm" viewBox="0 0 26 26" aria-label="Life-size US quarter"><circle cx="13" cy="13" r="12.13" fill="none" stroke="var(--muted)" stroke-width=".4"/><text x="13" y="14" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">24.26 mm</text></svg>
+      <svg width="46mm" height="12mm" viewBox="0 0 46 12" aria-label="Life-size side profile"><rect x="1" y="0.5" width="44" height="11" rx="5.5" fill="none" stroke="var(--fg)" stroke-width=".4"/><text x="23" y="7.2" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">11 mm thick</text></svg>
+    </div>
+  </div>
+</div></section>
+
+<section id="parts"><div class="wrap">
+  <div class="head"><div class="eyebrow">Bill of materials · prototype, single-unit prices</div><h2>What to order</h2><p class="muted prose">Prices are typical US listings as of October 2026 and move around; the Amazon links are searches so they stay valid. Seeed sells the two boards direct for about $10 each if you can wait for shipping. Everything here fits in the pod shown above.</p></div>
+  <div class="tablewrap"><table id="bom"></table></div>
+  <div class="cols-3" style="margin-top:20px">
+    <div class="card"><h3>Prototype cost</h3><p class="count mono" id="costProto">—</p><p class="muted">per band, off-the-shelf parts, 3D-printed shell</p></div>
+    <div class="card"><h3>At 1,000 units</h3><p class="count mono">~$19</p><p class="muted">custom PCB (nRF52840 + SX1262 on one 30 × 18 mm board), injection-molded shell, braided strap. Supports a $59–79 retail price.</p></div>
+    <div class="card"><h3>Weight budget</h3><p class="count mono" id="weightTotal">—</p><p class="muted">pod + strap, against the 30 g limit. A production shell drops another 3–4 g.</p></div>
+  </div>
+  <div class="cols" style="margin-top:20px">
+    <div class="card"><h3>Power budget (150 mAh cell)</h3>
+      <div class="tablewrap" style="border:none"><table style="min-width:0">
+        <tr><th>State</th><th class="num">Duty</th><th class="num">Avg draw</th></tr>
+        <tr><td>Deep sleep (nRF52840 + SX1262 asleep)</td><td class="num">~85%</td><td class="num">0.02 mA</td></tr>
+        <tr><td>BLE advertising, 1 s interval (band ↔ band proximity)</td><td class="num">100%</td><td class="num">0.3 mA</td></tr>
+        <tr><td>LoRa listen window, 200 ms every 2 s</td><td class="num">10%</td><td class="num">1.1 mA</td></tr>
+        <tr><td>LoRa transmit (check-ins, alerts), 22 dBm bursts</td><td class="num">~1%</td><td class="num">1.2 mA</td></tr>
+        <tr><td>Vibration + LEDs during finding mode</td><td class="num">~5%</td><td class="num">1.5 mA</td></tr>
+        <tr class="total"><td>Average</td><td class="num"></td><td class="num">~4.1 mA → ~36 h</td></tr>
+      </table></div></div>
+    <div class="card"><h3>Why these radios</h3>
+      <p class="muted"><b>Bluetooth LE</b> (built into the nRF52840) gives short-range proximity between bands and the link to the responsible friend's phone. Signal strength falls off predictably over 0–25 m indoors, which is what drives the hot/cold vibration in finding mode.</p>
+      <p class="muted" style="margin-top:8px"><b>LoRa at 915 MHz</b> (SX1262) is the phone-independent backbone. It is license-free in the US, punches through walls and crowds far better than 2.4 GHz, and reaches hundreds of metres indoors and over a kilometre outdoors at a few bytes per message, which is all a check-in or an SOS needs. Meshtastic devices use the same chip.</p>
+      <p class="muted" style="margin-top:8px"><b>Not included on purpose:</b> GPS (indoor accuracy is poor and it costs 25 mA), Wi-Fi, and a screen. A future version could add ultra-wideband for true arrow-style direction.</p></div>
+  </div>
+</div></section>
+
+<section id="build"><div class="wrap">
+  <div class="head"><div class="eyebrow">Build guide · prototype</div><h2>How to actually build one</h2><p class="muted prose">Everything below is for the off-the-shelf prototype: the two Seeed boards, a battery, a motor, four LEDs, two buttons and a printed shell. Budget about $55 in parts per band, an afternoon for the first one, and under three hours for each one after that. Build at least two so you can test band-to-band.</p></div>
+
+  <div class="cols">
+    <div class="card"><h3>Shopping list</h3>
+      <p class="muted">The main parts are in the table above. You also need these small items (one kit of each covers ten bands):</p>
+      <ul class="clean muted" style="margin-top:8px">
+        <li><b>AO3400 N-channel MOSFET</b> (SOT-23) or 2N7002, to switch the motor · <a href="https://www.amazon.com/s?k=AO3400+MOSFET+SOT-23" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>1N4148 diode</b> across the motor (flyback) · <a href="https://www.amazon.com/s?k=1N4148+diode" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>Resistors:</b> 10 kΩ ×2, 3.3 kΩ, 15 kΩ, 330 Ω, 100 Ω (any ¼ W assortment) · <a href="https://www.amazon.com/s?k=resistor+assortment+kit" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>47 µF capacitor</b> (6.3 V, electrolytic or ceramic) across the motor supply</li>
+        <li><b>Low-profile 2.54 mm headers</b>, 1.5 mm body (or cut standard pins to 3 mm) · <a href="https://www.amazon.com/s?k=2.54mm+low+profile+pin+header" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>JST-PH 2-pin</b> connector pair (most 502020 cells come with one)</li>
+        <li><b>Thin perfboard strip</b> 26 × 4 mm for the four LEDs (or a 4-LED SK6812 "stick" if you can find one under 5 mm wide)</li>
+        <li><b>30 AWG silicone wire</b>, Kapton tape, 1 mm foam tape, 1 mm silicone O-ring cord · <a href="https://www.amazon.com/s?k=30+awg+silicone+wire" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>M1.6 × 6 mm screws ×4</b> and M1.6 heat-set inserts, or design snap fits in the shell</li>
+        <li><b>Resin or PLA filament</b>, plus a 1 mm frosted acrylic offcut for the diffuser</li>
+      </ul></div>
+    <div class="card"><h3>Tools</h3>
+      <ul class="clean muted">
+        <li>Temperature-controlled soldering iron with a fine tip, leaded or lead-free solder, flux pen</li>
+        <li>Tweezers, wire strippers for 30 AWG, flush cutters</li>
+        <li>Multimeter (continuity and current ranges)</li>
+        <li>3D printer (resin gives the nicest finish; 0.2 mm FDM works) or a print service like Craftcloud / JLC3DP</li>
+        <li>Hot glue or E6000, UV resin pen for sealing the button openings</li>
+        <li>USB-C cable and a laptop with Arduino IDE 2.x</li>
+        <li>Optional: a USB power meter or a $20 bench supply to measure sleep current</li>
+      </ul>
+      <h3 style="margin-top:16px">Safety</h3>
+      <ul class="clean muted">
+        <li>LiPo cells: never puncture, never solder directly to the cell tabs if you can avoid it, charge only through the XIAO's charger, keep the protection board.</li>
+        <li>915 MHz is a license-free ISM band in the US for hobby use; selling a product needs FCC Part 15 testing. In the EU use 868 MHz.</li>
+        <li>Keep the antenna connected whenever the radio transmits; transmitting into nothing can damage the SX1262.</li>
+      </ul></div>
+  </div>
+
+  <h3 style="margin-top:28px;margin-bottom:10px">Wiring: which pin goes where</h3>
+  <p class="muted prose" style="margin-bottom:12px">The Wio-SX1262 takes eight of the XIAO's eleven pins through the stacked header, so the buttons share one analog pin with a resistor ladder, the LEDs use one data pin, and the motor uses one. Pin names are the XIAO's silkscreen labels.</p>
+  <div class="tablewrap"><table style="min-width:640px">
+    <thead><tr><th>Signal</th><th>XIAO pin</th><th>Connects to</th><th>Notes</th></tr></thead><tbody>
+    <tr><td>SPI clock / MISO / MOSI</td><td class="mono">D8 / D9 / D10</td><td>Wio-SX1262 (through the stacked header)</td><td class="muted">Do not use these for anything else</td></tr>
+    <tr><td>LoRa chip select</td><td class="mono">D4</td><td>Wio-SX1262 NSS</td><td class="muted">Through the header</td></tr>
+    <tr><td>LoRa interrupt</td><td class="mono">D1</td><td>Wio-SX1262 DIO1</td><td class="muted">Wakes the chip when a packet arrives</td></tr>
+    <tr><td>LoRa reset / busy</td><td class="mono">D2 / D3</td><td>Wio-SX1262 RESET / BUSY</td><td class="muted"></td></tr>
+    <tr><td>RF switch</td><td class="mono">D5</td><td>Wio-SX1262 antenna switch</td><td class="muted">Drive HIGH in firmware before using the radio</td></tr>
+    <tr><td>Buttons (ladder)</td><td class="mono">D0 (A0)</td><td>10 kΩ pull-up to 3V3; Button 1 to GND through 3.3 kΩ; Button 2 to GND through 15 kΩ</td><td class="muted">Idle ≈ 3.3 V, Button 2 ≈ 2.0 V, Button 1 ≈ 0.8 V, both ≈ 0.7 V</td></tr>
+    <tr><td>Motor</td><td class="mono">D6</td><td>MOSFET gate through 100 Ω, 10 kΩ gate pull-down; motor between 3V3 and the MOSFET drain; 1N4148 across the motor (stripe to 3V3); 47 µF across 3V3–GND</td><td class="muted">The GPIO cannot drive the motor directly</td></tr>
+    <tr><td>LED data</td><td class="mono">D7</td><td>330 Ω then SK6812 #1 DIN; LEDs chained DOUT → DIN; VDD to 3V3, GND to GND</td><td class="muted">4 LEDs at 40% draw ~20 mA max</td></tr>
+    <tr><td>Battery</td><td class="mono">BAT+ / BAT− pads (underside)</td><td>LiPo through its protection board and JST plug</td><td class="muted">Charger is on the XIAO</td></tr>
+    <tr><td>Charging</td><td class="mono">5V / GND pads</td><td>Magnetic pogo receptacle (+ and −)</td><td class="muted">5 V in on this pin feeds the onboard charger the same way USB does</td></tr>
+    </tbody></table></div>
+
+  <h3 style="margin-top:28px;margin-bottom:10px">Assembly, step by step</h3>
+  <ol class="steps">
+    <li><b>Print the shells.</b> Model two halves of a 44 × 24 mm rounded rectangle (corner radius 9 mm), each 5.5 mm tall with 1.2 mm walls and a flat floor, so the inside is 41.6 × 21.6 × 8.6 mm when closed. Add a 30 × 5 mm slot in the lid for the diffuser, two 7 × 3 mm openings on one long side at 9 mm either side of centre for the button caps, two Ø2 mm holes in the floor for the pogo pins, and a 1 mm groove around the rim for the O-ring. Add a 5.5 mm channel across the underside for the cord. Print in resin at 0.05 mm layers or FDM at 0.12 mm. Tinkercad is enough for this, or use the STL files generated from these exact numbers (<code>hardware/firefly_shell_bottom.stl</code> and <code>hardware/firefly_shell_lid.stl</code> in the <a href="https://github.com/wendyxlin/firefly-band" target="_blank" rel="noopener">GitHub repo</a>).</li>
+    <li><b>Flash the XIAO first.</b> Plug it in over USB-C, install the Seeed nRF52 board package (steps below), and upload the Blink example. If the orange LED blinks, the board is good. Do this before soldering anything; a dead board is easier to return bare.</li>
+    <li><b>Stack the radio.</b> Solder low-profile headers into the Wio-SX1262 so the XIAO sits on top of it, USB-C up, with about 1.5 mm between the boards. Trim the pins flush underneath. Plug the FPC antenna into the U.FL socket; it clicks. Route the antenna out the back edge of the stack.</li>
+    <li><b>Build the button ladder.</b> Solder the two tactile switches to a 20 × 6 mm scrap of perfboard with their plungers facing outward. Wire: 3V3 → 10 kΩ → D0; D0 → Button 1 → 3.3 kΩ → GND; D0 → Button 2 → 15 kΩ → GND. Check with the multimeter: D0 should read 3.3 V idle, about 0.8 V with Button 1 held, about 2.0 V with Button 2.</li>
+    <li><b>Wire the motor driver.</b> MOSFET source to GND, gate to D6 through 100 Ω with 10 kΩ to GND, drain to one motor lead; other motor lead to 3V3. Diode across the motor leads, stripe toward 3V3. 47 µF across 3V3 and GND right at the motor. Glue the motor to the top of the battery with a dot of E6000 after the next step.</li>
+    <li><b>Make the LED strip.</b> Four SK6812 Mini-E on the 26 mm perfboard strip, 6 mm apart, DOUT of each to DIN of the next. 330 Ω from D7 to the first DIN. VDD to 3V3, GND to GND. Test with the NeoPixel "strandtest" example before you build it in.</li>
+    <li><b>Battery and charging.</b> Solder the JST socket's leads to BAT+ and BAT− on the underside of the XIAO (check polarity twice: red is +). Solder the two pogo receptacle leads to the 5V and GND pads. Wrap the cell in Kapton. Plug the cell in; the XIAO's charge LED should light when the magnetic cable is attached.</li>
+    <li><b>Dry fit.</b> Boards left, battery and motor right, LED strip under the lid slot, antenna along the back inside of the lid on foam tape, button board against the front wall with caps through the openings. Nothing should need force. If the stack is more than 8.5 mm tall, shorten the header pins.</li>
+    <li><b>Flash the real firmware and test the radios.</b> Upload the Firefly sketch (below) to two bands. With both on the bench, a double-press on one should buzz the other within a second. Walk one band down the hall; it should still receive at the far end of the building. Then test finding mode: the pulse should speed up as the bands approach.</li>
+    <li><b>Measure current.</b> Put the multimeter in series with the battery. Idle should sit under 5 mA average with the LoRa listen window on, and under 0.1 mA with the radio off. If it is higher, the SX1262 is not sleeping between windows; check <code>radio.sleep()</code> in the loop.</li>
+    <li><b>Close it up.</b> Glue the diffuser into the slot, fill the button openings' edges with a thin bead of UV resin so the caps move but water cannot get in, seat the O-ring, screw or snap the halves together, and thread the cord through the channel. Test the seal with a damp paper towel before trusting it near drinks.</li>
+    <li><b>Pair a group.</b> Hold Button 1 on every band for 5 seconds within 10 seconds of each other; the bands exchange a random group key over LoRa and buzz twice when done. The app pairs to its wearer's band over Bluetooth from the Group tab.</li>
+  </ol>
+
+  <div class="cols" style="margin-top:24px">
+    <div class="card"><h3>Firmware setup</h3>
+      <ol class="clean muted" style="padding-left:18px">
+        <li>Install <a href="https://www.arduino.cc/en/software" target="_blank" rel="noopener">Arduino IDE 2.x</a>.</li>
+        <li>File → Preferences → Additional boards URL: <code>https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json</code></li>
+        <li>Boards Manager → install <b>Seeed nRF52 Boards</b>. Select <b>Seeed XIAO nRF52840</b>.</li>
+        <li>Library Manager → install <b>RadioLib</b> (SX1262 driver) and <b>Adafruit NeoPixel</b> (SK6812). Bluetooth comes with the board package (Bluefruit).</li>
+        <li>Open the sketch, set <code>GROUP_SEED</code> to any number, and upload. Double-tap the XIAO's reset button if the port does not appear.</li>
+      </ol>
+      <p class="muted" style="margin-top:8px">Shortcut for testing the radio: flash <a href="https://meshtastic.org" target="_blank" rel="noopener">Meshtastic</a> on two stacks first. It supports this exact XIAO + Wio-SX1262 pairing, and proves the hardware before you debug your own code.</p></div>
+    <div class="card"><h3>Firmware skeleton</h3>
+<pre class="code">#include &lt;RadioLib.h&gt;
+#include &lt;Adafruit_NeoPixel.h&gt;
+#include &lt;bluefruit.h&gt;
+
+SX1262 radio = new Module(D4, D1, D2, D3);   // NSS, DIO1, RESET, BUSY
+Adafruit_NeoPixel leds(4, D7, NEO_GRB + NEO_KHZ800);
+const int PIN_BTN = A0, PIN_MOTOR = D6, PIN_RFSW = D5;
+enum Msg : uint8_t { CHECKIN=1, COME_FIND, HELP, SOS, CANCEL };
+struct __attribute__((packed)) Packet {
+  uint8_t magic = 0xF1, type, from; uint16_t seq; uint32_t mac; };
+uint8_t myId = 1;  uint16_t seq = 0;  uint32_t groupKey;   // set at pairing
+
+void setup() {
+  pinMode(PIN_MOTOR, OUTPUT);  pinMode(PIN_RFSW, OUTPUT);
+  digitalWrite(PIN_RFSW, HIGH);                 // antenna switch on
+  leds.begin();  leds.setBrightness(100);
+  radio.begin(915.0, 125.0, 9, 7, 0x12, 20);    // MHz, kHz, SF9, CR4/7, sync, dBm
+  radio.setDio2AsRfSwitch(true);  radio.setTCXO(1.6);
+  radio.startReceive();
+  Bluefruit.begin();  startAdvertising();       // group hash + myId, 1 s
+}
+int buttons() {                                 // resistor ladder on A0
+  int v = analogRead(PIN_BTN);                  // 12-bit, 3.3 V reference
+  return v > 3600 ? 0 : v > 2200 ? 2 : v > 950 ? 1 : 3; }
+void buzz(int ms) { digitalWrite(PIN_MOTOR, HIGH); delay(ms); digitalWrite(PIN_MOTOR, LOW); }
+void send(uint8_t type) {
+  Packet p; p.type = type; p.from = myId; p.seq = ++seq; p.mac = hmac32(p, groupKey);
+  radio.transmit((uint8_t*)&p, sizeof p);  radio.startReceive(); }
+void loop() {
+  switch (gesture(buttons())) {                 // single / double / long, per button
+    case B1_SINGLE: findingMode(); break;        // BLE scan → RSSI → pulse period
+    case B1_DOUBLE: send(COME_FIND); break;
+    case B1_LONG:   send(CHECKIN); buzz(80); break;
+    case B2_SINGLE: send(HELP); buzz(150); break;
+    case B2_DOUBLE: send(CANCEL); break;
+    case B2_LONG:   send(SOS); sosPattern(); break;
+  }
+  Packet p;
+  if (radio.available() &amp;&amp; radio.readData((uint8_t*)&p, sizeof p) == RADIOLIB_ERR_NONE
+      &amp;&amp; p.magic == 0xF1 &amp;&amp; p.mac == hmac32(p, groupKey)) handle(p);
+  radio.startReceive();
+  sd_app_evt_wait();                            // sleep until a BLE/LoRa/timer event
+}</pre>
+      <p class="muted" style="font-size:.8rem;margin-top:8px"><code>gesture()</code> is the same single/double/long timing the simulation uses (320 ms double-press window, 0.9 s and 3 s holds). <code>findingMode()</code> runs a Bluefruit scan for 60 s and maps the strongest group RSSI to a pulse period of 2.5 s down to 0.25 s. <code>hmac32()</code> is a truncated HMAC so strangers' packets are ignored.</p></div>
+  </div>
+</div></section>
+
+<section id="sim"><div class="wrap">
+  <div class="head"><div class="eyebrow">Simulation · a Saturday at a 40 × 25 m club</div><h2>Try the two buttons</h2><p class="muted prose">You are the friend with the dead phone. Drag your dot around the venue, then use the band. Everything you trigger here shows up in the responsible friend's app below.</p></div>
+  <div class="sim">
+    <div>
+      <div class="simmap"><canvas id="simCanvas" width="760" height="480"></canvas><div class="tip">Drag any dot. Amber is you, green is Maya (the app). Rings: BLE 25 m, LoRa 300 m.</div></div>
+      <div class="friends" id="friendCards"></div>
+    </div>
+    <div class="bracelet">
+      <div class="eyebrow">Your band</div>
+      <div class="pod" id="pod">
+        <div class="leds"><i></i><i></i><i></i><i></i></div>
+        <button class="pb b1" id="pb1" aria-label="Button 1: find and communicate">FIND</button>
+        <button class="pb b2" id="pb2" aria-label="Button 2: safety">SAFE</button>
+      </div>
+      <div class="gest">
+        <div><b>Button 1 · Find</b>1× find friends (press again to cycle)<br>2× "Come find me"<br>hold "I'm okay" check-in</div>
+        <div><b>Button 2 · Safety</b>1× discreet "I need help"<br>2× cancel accidental alert<br>hold 3 s urgent SOS</div>
+      </div>
+      <div class="status" id="simStatus">Band idle. Your phone is at 0%; the band does not care.</div>
+      <div class="log" id="simLog"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="connect"><div class="wrap">
+  <div class="head"><div class="eyebrow">Connectivity</div><h2>How the band talks to the app</h2><p class="muted prose">Two radios, two jobs. Bluetooth links the responsible friend's band to their phone. LoRa links every band to every other band, so the group stays connected with no phone, Wi-Fi or cell signal.</p></div>
+  <div class="drawing" style="padding:18px">
+    <svg viewBox="0 0 960 330" width="960" role="img" aria-label="Diagram: phone connects to Maya's band over Bluetooth; Maya's band connects to Jordan's and Sam's bands over LoRa">
+      <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--muted)"/></marker></defs>
+      <g font-family="IBM Plex Sans, sans-serif">
+        <rect x="20" y="110" width="150" height="110" rx="18" fill="var(--panel)" stroke="var(--line)"/>
+        <text x="95" y="145" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">Maya's phone</text>
+        <text x="95" y="166" text-anchor="middle" font-size="12" fill="var(--muted)">Firefly app · GPS</text>
+        <text x="95" y="186" text-anchor="middle" font-size="12" fill="var(--muted)">map, alerts, history</text>
+        <text x="95" y="206" text-anchor="middle" font-size="11" fill="var(--muted)">optional cloud relay</text>
+        <line x1="172" y1="165" x2="318" y2="165" stroke="var(--info)" stroke-width="3" marker-end="url(#arr)"/>
+        <line x1="318" y1="178" x2="172" y2="178" stroke="var(--info)" stroke-width="3" marker-end="url(#arr)"/>
+        <text x="245" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="var(--info)">Bluetooth LE</text>
+        <text x="245" y="200" text-anchor="middle" font-size="11" fill="var(--muted)">paired once · ~10–25 m</text>
+        <rect x="320" y="130" width="160" height="80" rx="40" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="400" y="165" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">Maya's band</text>
+        <text x="400" y="186" text-anchor="middle" font-size="11" fill="var(--muted)">the bridge</text>
+        <rect x="720" y="40" width="200" height="80" rx="40" fill="var(--panel)" stroke="var(--line)"/>
+        <text x="820" y="75" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">Jordan's band</text>
+        <text x="820" y="96" text-anchor="middle" font-size="11" fill="var(--muted)">phone dead · still works</text>
+        <rect x="720" y="210" width="200" height="80" rx="40" fill="var(--panel)" stroke="var(--line)"/>
+        <text x="820" y="245" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">Sam's band</text>
+        <text x="820" y="266" text-anchor="middle" font-size="11" fill="var(--muted)">across the street</text>
+        <path d="M482 160 C 590 120, 620 85, 718 80" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+        <path d="M482 180 C 590 220, 620 250, 718 250" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+        <path d="M820 122 L 820 208" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 5" marker-end="url(#arr)"/>
+        <text x="600" y="98" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">LoRa 915 MHz</text>
+        <text x="600" y="300" text-anchor="middle" font-size="11" fill="var(--muted)">band ↔ band · 300 m+ indoors · no phone needed</text>
+        <text x="836" y="170" font-size="11" fill="var(--muted)">bands relay for each other</text>
+      </g>
+    </svg>
+  </div>
+  <div class="cols-3" style="margin-top:16px">
+    <div class="card"><h3>1 · Pair once</h3><p class="muted">Open the app and hold Button 1. The phone finds the band over Bluetooth and saves it, like pairing AirPods. After that it reconnects by itself whenever the band is in range.</p></div>
+    <div class="card"><h3>2 · Join the group</h3><p class="muted">Everyone holds Button 1 together for 5 seconds. The bands agree on a random group key over LoRa and buzz twice. From then on they only listen to each other.</p></div>
+    <div class="card"><h3>3 · Messages relay</h3><p class="muted">Jordan double-presses: his band sends a 12-byte encrypted packet over LoRa. Maya's band receives it and hands it to her phone over Bluetooth, and the app shows "Jordan: come find me · 29 m". "Ping their band" travels the same path in reverse.</p></div>
+  </div>
+  <div class="tablewrap" style="margin-top:16px"><table style="min-width:620px">
+    <thead><tr><th>Link</th><th>Radio</th><th>Carries</th><th class="num">Range</th><th class="num">Payload</th></tr></thead><tbody>
+    <tr><td>Band ↔ app</td><td>Bluetooth LE (GATT, one custom service)</td><td>Alerts in, pings out, battery levels, group roster, raw signal strengths</td><td class="num">10–25 m</td><td class="num">20 B packets</td></tr>
+    <tr><td>Band ↔ band (messages)</td><td>LoRa SX1262, 915 MHz, SF9</td><td>Check-in, come find me, help, SOS, cancel, ping</td><td class="num">300 m+ indoors</td><td class="num">12 B</td></tr>
+    <tr><td>Band ↔ band (proximity)</td><td>Bluetooth LE advertising, 1 s</td><td>"I'm here" beacon with a rotating group ID; signal strength gives distance</td><td class="num">0–25 m</td><td class="num">beacon</td></tr>
+    <tr><td>Phone ↔ phone (optional)</td><td>Cell / Wi-Fi via the cloud relay</td><td>Alerts for a group split across venues, only if turned on</td><td class="num">anywhere</td><td class="num">—</td></tr>
+    </tbody></table></div>
+</div></section>
+
+<section id="app"><div class="wrap">
+  <div class="head"><div class="eyebrow">Companion app · for the responsible friend</div><h2>One phone keeps the whole group in view</h2><p class="prose" style="margin-bottom:6px"><a class="cta" style="display:inline-block;text-decoration:none;padding:10px 16px" href="https://claude.ai/artifact/AnJ2w1CRQSwcxozqw1CLnB" target="_blank" rel="noopener">Open the full Firefly app ↗</a> <span class="muted" style="font-size:.85rem">works on your phone; in Safari tap Share → Add to Home Screen</span></p><p class="muted prose">The preview below is wired to the simulation: alerts, check-ins and distances you trigger above appear here live. Switch tabs at the bottom of the phone.</p></div>
+  <div class="appwrap">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen" id="appScreen"></div>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-tab="group">Group</button>
+        <button role="tab" aria-selected="false" data-tab="map">Map</button>
+        <button role="tab" aria-selected="false" data-tab="alerts">Alerts</button>
+        <button role="tab" aria-selected="false" data-tab="settings">Privacy</button>
+      </div>
+    </div>
+    <div class="appnotes">
+      <div class="card"><h3>Group</h3><p class="muted">Each friend's band battery, whether their phone is alive, last check-in and approximate distance from the responsible friend. The person who needs attention floats to the top.</p></div>
+      <div class="card"><h3>Map</h3><p class="muted">Everyone is shown on a street map around the responsible friend. Only their phone has GPS, so friends are placed by band-to-band signal relative to it: an "about 15 m" estimate rather than a false pinpoint. If a second phone in the group is alive, two anchors give a real position.</p></div>
+      <div class="card"><h3>How to navigate back to a friend</h3>
+        <ol class="clean muted" style="padding-left:18px">
+          <li>Open <b>Group</b> and tap <b>Find ›</b> next to the friend, or tap their dot on the <b>Map</b>. An SOS or help alert has a <b>Walk me there ›</b> button that does the same.</li>
+          <li>Hold the phone flat. The big arrow points toward them and the number is the distance. The compass letters and the "near the bar" hint tell you where in the venue to head.</li>
+          <li>Walk. The arrow and the signal bars update every second; when you enter Bluetooth range (25 m) your own band starts pulsing faster the closer you get.</li>
+          <li>Tap <b>Ping their band</b> so their wrist buzzes three times and lights up; they stop and wait, and you can spot the glow in a dark room.</li>
+          <li>Try it above: drag Maya (green) toward Jordan in the simulation and watch the arrow and distance change.</li>
+        </ol></div>
+      <div class="card"><h3>Alerts</h3><p class="muted">Three tiers: check-in (quiet), come find me (notification), help and SOS (full-screen, loud, with one-tap call and a "walk me there" compass that follows signal strength). Cancels propagate everywhere within a second.</p></div>
+      <div class="card"><h3>Night session</h3><p class="muted">A session starts when the group taps bands together and ends automatically at a time the group picks (default 6 a.m.). When it ends, every band forgets the group key and the app deletes the night's location trail.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="privacy"><div class="wrap">
+  <div class="head"><div class="eyebrow">Privacy &amp; location</div><h2>Tracking that only the group can see, and only tonight</h2></div>
+  <div class="cols-3">
+    <div class="card"><h3>No location on the band</h3><p class="muted">The band has no GPS and stores no coordinates. It knows only that another band with tonight's group key is near, and how strong its signal is. If you lose the band, there is nothing on it to read.</p></div>
+    <div class="card"><h3>Keys that expire</h3><p class="muted">Tapping bands together at the start of the night exchanges a random group key over NFC. Every radio message is encrypted with it, so a stranger with the same hardware sees only noise. The key is wiped when the session ends.</p></div>
+    <div class="card"><h3>Nothing leaves the group</h3><p class="muted">Band-to-band messages never touch a server. The responsible friend's phone keeps the night's data on the device and deletes the trail at session end. No account is needed to wear a band; only the app user signs in.</p></div>
+    <div class="card"><h3>Consent, visibly</h3><p class="muted">Joining a session is a physical act (the tap) with a confirmation buzz. Anyone can leave a session by holding both buttons for five seconds; the group gets a "left the group" check-in rather than a silent disappearance.</p></div>
+    <div class="card"><h3>Coarse by design</h3><p class="muted">Signal strength gives distance bands (within 5 m, 15 m, 50 m, in LoRa range), not a dot on a map. That is enough to find a friend in a club and too little to stalk someone across a city.</p></div>
+    <div class="card"><h3>Open questions</h3><p class="muted">Whether to offer an opt-in cloud relay for groups that split across venues (needs any phone to be alive); how to handle a group member who refuses a check-in; FCC Part 15 testing for the 915 MHz radio before any sale.</p></div>
+  </div>
+  <div class="card" style="margin-top:20px"><h3>How finding works, step by step</h3>
+    <ul class="clean muted">
+      <li><b>0–25 m, same room:</b> BLE signal strength between the two bands. The band pulses faster and lights more LEDs as you get warmer. No direction arrow; you sweep and follow the pulse, like a metal detector.</li>
+      <li><b>25–300 m, next room or across the street:</b> LoRa carries "come find me" and the reply, plus the sender's rough distance band. The app shows which direction the signal came from if the responsible friend moves.</li>
+      <li><b>Out of LoRa range:</b> the band shows a slow red breathing LED so the wearer knows the group is gone. Any alive phone in the group can relay over cell if the opt-in relay is on.</li>
+    </ul></div>
+</div></section>
+
+<section id="waitlist"><div class="wrap">
+  <div class="head"><div class="eyebrow">Waitlist</div><h2>Would you wear one?</h2><p class="muted prose">We are measuring demand before building the first batch. Signups are saved to this page's private store; only the project owner can read the list.</p></div>
+  <div class="wl">
+    <form class="wlform" id="wlForm">
+      <label>Name<input id="wlName" required autocomplete="name" placeholder="First name is fine"></label>
+      <label>Email<input id="wlEmail" type="email" required autocomplete="email" placeholder="you@nyu.edu"></label>
+      <label>How often do you go out?<select id="wlFreq"><option>Most weekends</option><option>A few times a month</option><option>Once a month or less</option><option>Only for big events</option></select></label>
+      <label>What matters most to you?<select id="wlWhy"><option>Finding friends when my phone dies</option><option>A discreet way to ask for help</option><option>Knowing everyone got home</option><option>It has to look good</option></select></label>
+      <label>Anything else? <span class="muted" style="font-weight:400">(optional)</span><textarea id="wlNote" rows="2" placeholder="Where do you usually go out?"></textarea></label>
+      <button class="cta" id="wlSubmit" type="submit">Join the waitlist</button>
+      <div class="notice" id="wlNotice" hidden></div>
+    </form>
+    <div>
+      <div class="card"><div class="eyebrow">People on the list</div><div class="count" id="wlCount">—</div><p class="muted" id="wlCountNote">Loading…</p></div>
+      <div class="card admin" id="wlAdmin" hidden><h3>Signups (owner view)</h3><div class="tablewrap" style="border:none"><table id="wlTable"></table></div></div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Firefly Band concept · NYU class team project · all dimensions in millimetres · part prices are approximate and link to searches, not specific listings.</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ PART DATA (mm, g, USD) — single source for 3D, drawings and BOM ============ */
+// Pod coordinate frame: X = across the wrist (length 44), Y = up (height 11), Z = along the arm (width 24). Origin at pod centre.
+const PARTS = [
+ {id:'shellBot', name:'Bottom shell', role:'enclosure', dims:'44 × 24 × 5.5', size:[44,5.5,24], pos:[0,-2.75,0], color:0x3b3950, weight:3.2, price:1.5, qty:1, ex:-14,
+  spec:'Resin 3D print (or anodized aluminum for the premium version). Flat inner floor, 1.2 mm walls, pogo-pin charge pads underneath, IP54 gasket groove.',
+  buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service / local lab', shell:true},
+ {id:'shellTop', name:'Top shell', role:'enclosure', dims:'44 × 24 × 5.5', size:[44,5.5,24], pos:[0,2.75,0], color:0x3b3950, weight:2.8, price:1.5, qty:1, ex:14,
+  spec:'Matches the bottom shell. 30 × 5 mm slot for the LED diffuser, two 7 × 3 mm side openings for the buttons.', buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service / local lab', shell:true},
+ {id:'diffuser', name:'LED diffuser strip', role:'light', dims:'30 × 5 × 1', size:[30,1,5], pos:[0,5.75,0], color:0xf5b544, weight:0.3, price:0.5, qty:1, ex:20, emissive:true,
+  spec:'Frosted acrylic or clear resin. Four amber LEDs behind it read as one soft glow line, jewelry first, indicator second.', buy:'https://www.amazon.com/s?k=frosted+acrylic+sheet+1mm', buyLabel:'Amazon'},
+ {id:'xiao', name:'Seeed XIAO nRF52840', role:'brain + BLE', dims:'21 × 17.8 × 3.5', size:[21,3.5,17.8], pos:[-10.3,1.95,0], color:0x1d4d8f, weight:3.0, price:14, qty:1, ex:7,
+  spec:'Bluetooth 5.0 microcontroller with onboard LiPo charger (BQ25101) and 5 µA sleep. Runs the button logic, BLE proximity, LEDs and motor. Sits on top of the LoRa module on 1.5 mm low-profile headers, USB-C facing up for flashing. ~$9.90 direct from Seeed.',
+  buy:'https://www.amazon.com/s?k=Seeed+XIAO+nRF52840', buyLabel:'Amazon', alt:'https://www.seeedstudio.com/catalogsearch/result/?q=XIAO+nRF52840', altLabel:'Seeed'},
+ {id:'lora', name:'Wio-SX1262 LoRa module for XIAO', role:'long-range radio', dims:'21 × 17.8 × 3', size:[21,3,17.8], pos:[-10.3,-2.8,0], color:0x2e7d5b, weight:3.0, price:13, qty:1, ex:-5,
+  spec:'Semtech SX1262, 862–930 MHz, 22 dBm, 1.6 µA sleep. Mounts under the XIAO on 1.5 mm low-profile headers (8 mm stack instead of the stock 21 mm). U.FL antenna connector. ~$9.90 direct from Seeed.',
+  buy:'https://www.amazon.com/s?k=Wio-SX1262+XIAO+LoRa', buyLabel:'Amazon', alt:'https://www.seeedstudio.com/catalogsearch/result/?q=Wio-SX1262', altLabel:'Seeed'},
+ {id:'ant', name:'915 MHz flexible antenna', role:'antenna', dims:'38 × 7 × 0.2', size:[38,0.2,7], pos:[0,4.15,-6.5], color:0xc8a04a, weight:0.5, price:2, qty:1, ex:11,
+  spec:'FPC antenna with U.FL pigtail, stuck to the inside of the lid along the back edge. Keep it 1 mm off the battery and 5 mm from the strap metal, if any. A Seeed kit antenna works for testing.', buy:'https://www.amazon.com/s?k=915MHz+FPC+antenna+U.FL', buyLabel:'Amazon'},
+ {id:'batt', name:'LiPo cell 150 mAh (502020)', role:'power', dims:'20 × 20 × 5', size:[20,5,20], pos:[10.6,-1.8,0], color:0x8a8fa8, weight:3.8, price:5, qty:1, ex:-8,
+  spec:'3.7 V, with protection circuit and JST connector. 36 h at the modeled 4.1 mA average. Charges in under 2 h from the XIAO’s 100 mA charger.', buy:'https://www.amazon.com/s?k=3.7V+150mAh+lipo+battery+502020', buyLabel:'Amazon'},
+ {id:'motor', name:'Coin vibration motor 10 mm', role:'haptics', dims:'Ø10 × 2.7', size:[10,2.7,10], pos:[10.6,2.05,0], color:0xb8b2c4, weight:1.2, price:0.8, qty:1, ex:-1, cyl:true,
+  spec:'3 V ERM coin motor glued to the top of the battery, switched by a small MOSFET. Drives the hot/cold finding pulse and the alert patterns. Sold in 10-packs (~$8).', buy:'https://www.amazon.com/s?k=10mm+coin+vibration+motor+3V', buyLabel:'Amazon'},
+ {id:'btn1', name:'Button 1 (Find) tactile switch', role:'input', dims:'6 × 6 × 5 + cap', size:[6,5,6], pos:[-9,-1.3,7.8], color:0x6e6a85, weight:0.3, price:0.1, qty:1, ex:-3,
+  spec:'6 × 6 × 5 mm side-actuated tactile switch, 260 gf so it does not fire in a bag. Overmolded cap, 7 × 3 mm, flush with the shell.', buy:'https://www.amazon.com/s?k=6x6x5mm+tactile+switch', buyLabel:'Amazon'},
+ {id:'btn2', name:'Button 2 (Safety) tactile switch', role:'input', dims:'6 × 6 × 5 + cap', size:[6,5,6], pos:[9,-1.3,7.8], color:0x8a3d4a, weight:0.3, price:0.1, qty:1, ex:-3,
+  spec:'Same switch with a dimpled cap so it can be told apart by touch. Hold 3 s for SOS.', buy:'https://www.amazon.com/s?k=6x6x5mm+tactile+switch', buyLabel:'Amazon'},
+ {id:'leds', name:'SK6812 Mini-E addressable LEDs ×4', role:'light', dims:'3.2 × 2.8 × 1 each', size:[26,0.8,3], pos:[0,4.0,0], color:0xffd27a, weight:0.1, price:0.5, qty:4, ex:17, emissive:true,
+  spec:'Four addressable mini LEDs on a 26 mm strip of thin perfboard under the diffuser, one data pin (D7). Amber at 40% brightness reads as a soft line; LED count shows the proximity band in finding mode.', buy:'https://www.amazon.com/s?k=SK6812+Mini-E+addressable+LED', buyLabel:'Amazon'},
+ {id:'pogo', name:'Magnetic pogo-pin charge connector', role:'charging', dims:'Ø10 × 2 (2-pin)', size:[10,2,10], pos:[0,-4.6,0], color:0xd0b060, weight:1.0, price:7, qty:1, ex:-19, cyl:true,
+  spec:'2-pin magnetic connector set with USB cable. No port to seal; the band stays splash-proof.', buy:'https://www.amazon.com/s?k=2+pin+magnetic+pogo+pin+charging+connector', buyLabel:'Amazon'},
+ {id:'elec', name:'Driver parts: MOSFET, diode, resistors, JST-PH', role:'electronics', dims:'—', size:[0,0,0], pos:[0,0,0], color:0x777, weight:0.5, price:2, qty:1, ex:0, hidden:true,
+  spec:'AO3400 (or 2N7002) N-channel MOSFET, 1N4148 flyback diode, resistors 10 kΩ ×2, 3.3 kΩ, 15 kΩ, 330 Ω, 100 Ω, 47 µF capacitor, JST-PH 2-pin. One assortment kit covers ten bands.', buy:'https://www.amazon.com/s?k=AO3400+MOSFET+SOT-23', buyLabel:'Amazon'},
+ {id:'strap', name:'Braided cord strap', role:'strap', dims:'165 mm × Ø5', size:[0,0,0], pos:[0,0,0], color:0x2c2a3a, weight:6.5, price:6, qty:1, ex:0, strap:true,
+  spec:'Waxed braided nylon with hidden elastic core so it slides over the hand. Available in colours; the pod clips to a 5 mm cord so straps are swappable.', buy:'https://www.amazon.com/s?k=braided+nylon+cord+bracelet+5mm', buyLabel:'Amazon'},
+ {id:'misc', name:'Wires, Kapton tape, foam, gasket', role:'assembly', dims:'—', size:[0,0,0], pos:[0,0,0], color:0x555, weight:1.0, price:1, qty:1, ex:0, hidden:true,
+  spec:'30 AWG silicone wire, Kapton tape to insulate the battery, 1 mm foam to stop rattle, silicone gasket cord.', buy:'https://www.amazon.com/s?k=30+awg+silicone+wire+kapton+tape', buyLabel:'Amazon'}
+];
+const POD = {L:44, W:24, H:11, R:9};
+const totalWeight = PARTS.reduce((s,p)=>s+p.weight,0);
+const totalCost = PARTS.reduce((s,p)=>s+p.price,0);
+document.getElementById('statWeight').textContent = Math.round(totalWeight)+' g';
+document.getElementById('weightTotal').textContent = totalWeight.toFixed(1)+' g';
+document.getElementById('costProto').textContent = '$'+totalCost.toFixed(0);
+const hex = c => '#'+c.toString(16).padStart(6,'0');
+
+/* ============ BOM TABLE ============ */
+(function(){
+  const t = document.getElementById('bom');
+  let h = '<thead><tr><th>Part</th><th>Role</th><th>Spec</th><th class="num">Size (mm)</th><th class="num">Weight</th><th class="num">Qty</th><th class="num">Price</th><th>Where to buy</th></tr></thead><tbody>';
+  for(const p of PARTS){
+    h += `<tr><td><span class="sw" style="background:${hex(p.color)}"></span><b>${p.name}</b></td><td><span class="chip">${p.role}</span></td><td class="muted" style="min-width:260px">${p.spec}</td><td class="num">${p.dims}</td><td class="num">${p.weight.toFixed(1)} g</td><td class="num">${p.qty}</td><td class="num">$${p.price.toFixed(2)}</td><td><a href="${p.buy}" target="_blank" rel="noopener">${p.buyLabel}</a>${p.alt?` · <a href="${p.alt}" target="_blank" rel="noopener">${p.altLabel}</a>`:''}</td></tr>`;
+  }
+  h += `<tr class="total"><td colspan="4">Total per prototype band</td><td class="num">${totalWeight.toFixed(1)} g</td><td class="num"></td><td class="num">$${totalCost.toFixed(2)}</td><td></td></tr></tbody>`;
+  t.innerHTML = h;
+  const lg = document.getElementById('legend');
+  lg.innerHTML = PARTS.filter(p=>!p.hidden).map(p=>`<span><i style="background:${hex(p.color)}"></i>${p.name}</span>`).join('');
+})();
+
+/* ============ DRAWINGS (SVG from PARTS) ============ */
+(function(){
+  const S = 4; // px per mm
+  const fg='var(--fg)', mu='var(--muted)', ac='var(--accent)';
+  function dim(x1,y1,x2,y2,label,off){ // dimension line with ticks and label; horizontal if y1==y2
+    const horiz = y1===y2;
+    const ox = horiz?0:off, oy = horiz?off:0;
+    const X1=x1+ox,Y1=y1+oy,X2=x2+ox,Y2=y2+oy;
+    const ext = horiz?`<line x1="${x1}" y1="${y1}" x2="${X1}" y2="${Y1}" stroke="${mu}" stroke-width=".6"/><line x1="${x2}" y1="${y2}" x2="${X2}" y2="${Y2}" stroke="${mu}" stroke-width=".6"/>`
+                     :`<line x1="${x1}" y1="${y1}" x2="${X1}" y2="${Y1}" stroke="${mu}" stroke-width=".6"/><line x1="${x2}" y1="${y2}" x2="${X2}" y2="${Y2}" stroke="${mu}" stroke-width=".6"/>`;
+    const tx = horiz?(X1+X2)/2:X1+(off>0?10:-10), ty = horiz?Y1+(off>0?12:-5):(Y1+Y2)/2+3;
+    const anchor = horiz?'middle':(off>0?'start':'end');
+    return ext+`<line x1="${X1}" y1="${Y1}" x2="${X2}" y2="${Y2}" stroke="${ac}" stroke-width=".8" marker-start="url(#tick)" marker-end="url(#tick)"/><text x="${tx}" y="${ty}" text-anchor="${anchor}" font-size="10" fill="${fg}">${label}</text>`;
+  }
+  const defs = `<defs><marker id="tick" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><line x1="3" y1="0" x2="3" y2="6" stroke="${ac}" stroke-width="1"/></marker></defs>`;
+  function rr(x,y,w,h,r,stroke,dash,fill){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill||'none'}" stroke="${stroke}" stroke-width="1" ${dash?'stroke-dasharray="3 2"':''}/>`; }
+  const views = [];
+  // TOP VIEW: X across (L), Z down (W)
+  {
+    const ox=50, oy=40, W=POD.L*S, H=POD.W*S;
+    let s = `<svg viewBox="0 0 ${W+110} ${H+100}" width="${W+110}">${defs}`;
+    s += rr(ox,oy,W,H,POD.R*S,fg);
+    for(const p of PARTS){ if(p.hidden||p.strap||p.shell||p.id==='diffuser'||p.id==='leds'||p.id==='ant') continue;
+      const [sx,sy,sz]=p.size, [px,py,pz]=p.pos; const x=ox+(px-sx/2+POD.L/2)*S, y=oy+(pz-sz/2+POD.W/2)*S;
+      s += p.cyl? `<circle cx="${ox+(px+POD.L/2)*S}" cy="${oy+(pz+POD.W/2)*S}" r="${sx/2*S}" fill="none" stroke="${hex(p.color)}" stroke-width="1" stroke-dasharray="3 2"/>` : rr(x,y,sx*S,sz*S,2,hex(p.color),true);
+      if(!p.cyl && sx>8) s += `<text x="${x+sx*S/2}" y="${y+sz*S/2+3}" text-anchor="middle" font-size="8" fill="${mu}">${p.id==='xiao'?'XIAO + SX1262 (stacked)':p.id==='lora'?'':p.name.split(' ').slice(0,2).join(' ')}</text>`;
+    }
+    // diffuser slot
+    s += rr(ox+(POD.L/2-15)*S, oy+(POD.W/2-2.5)*S, 30*S, 5*S, 2, 'var(--accent)', false);
+    s += dim(ox,oy+H,ox+W,oy+H,'44',24);
+    s += dim(ox+W,oy,ox+W,oy+H,'24',24);
+    s += dim(ox+(POD.L/2-15)*S,oy,ox+(POD.L/2+15)*S,oy,'30 (LED slot)',-14);
+    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">TOP VIEW</text>`;
+    s += `</svg>`;
+    views.push({svg:s, cap:'Top view. Dashed outlines are internal parts: boards left, battery and motor right, buttons on the near edge.'});
+  }
+  // SIDE VIEW: X across, Y down (H)
+  {
+    const ox=50, oy=40, W=POD.L*S, H=POD.H*S;
+    let s = `<svg viewBox="0 0 ${W+110} ${H+110}" width="${W+110}">${defs}`;
+    s += rr(ox,oy,W,H,5.5*S,fg);
+    s += `<line x1="${ox}" y1="${oy+H/2}" x2="${ox+W}" y2="${oy+H/2}" stroke="${mu}" stroke-width=".6" stroke-dasharray="4 3"/>`;
+    for(const p of PARTS){ if(p.hidden||p.strap||p.shell) continue;
+      const [sx,sy,sz]=p.size, [px,py,pz]=p.pos; if(pz>5) continue; // buttons are on the far edge, skip in side
+      const x=ox+(px-sx/2+POD.L/2)*S, y=oy+(POD.H/2-py-sy/2)*S;
+      s += rr(x,y,sx*S,Math.max(sy*S,1.5),1,hex(p.color),true);
+    }
+    // button caps
+    s += rr(ox+(POD.L/2-9-3.5)*S, oy+(POD.H/2+1.3-1.5)*S, 7*S, 3*S, 2, hex(0x6e6a85), false, hex(0x6e6a85));
+    s += rr(ox+(POD.L/2+9-3.5)*S, oy+(POD.H/2+1.3-1.5)*S, 7*S, 3*S, 2, hex(0x8a3d4a), false, hex(0x8a3d4a));
+    s += dim(ox,oy+H,ox+W,oy+H,'44',34);
+    s += dim(ox+W,oy,ox+W,oy+H,'11',24);
+    s += dim(ox+(POD.L/2-9-3.5)*S,oy+H,ox+(POD.L/2-9+3.5)*S,oy+H,'7',16);
+    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">SIDE VIEW (button side)</text>`;
+    s += `</svg>`;
+    views.push({svg:s, cap:'Side view from the button edge. Both button caps sit flush; the parting line is at mid-height so the gasket runs level.'});
+  }
+  // END VIEW: Z across (W), Y down
+  {
+    const ox=50, oy=40, W=POD.W*S, H=POD.H*S;
+    let s = `<svg viewBox="0 0 ${W+140} ${H+110}" width="${W+140}">${defs}`;
+    s += rr(ox,oy,W,H,5.5*S,fg);
+    // stack: battery(4) + motor(2.7) and board stack
+    const stack=[['batt',10],['motor',10],['xiao',-11],['lora',-11],['ant',0],['leds',0],['diffuser',0]];
+    for(const [id] of stack){ const p=PARTS.find(q=>q.id===id); const [sx,sy,sz]=p.size,[px,py,pz]=p.pos;
+      const x=ox+(pz-sz/2+POD.W/2)*S, y=oy+(POD.H/2-py-sy/2)*S; s+=rr(x,y,sz*S,Math.max(sy*S,1.5),1,hex(p.color),true); }
+    s += dim(ox,oy+H,ox+W,oy+H,'24',34);
+    s += dim(ox+W,oy,ox+W,oy+H,'11',24);
+    s += dim(ox+W,oy+(POD.H/2-4.3)*S,ox+W,oy+(POD.H/2+4.3)*S,'8.6 inside',60);
+    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">END VIEW</text>`;
+    s += `</svg>`;
+    views.push({svg:s, cap:'End view. 8.6 mm internal height: battery 5 + motor 2.7 on the right half, XIAO 3.5 + SX1262 3 on the left, antenna and LED flex under the lid.'});
+  }
+  // STRAP / WRIST
+  {
+    const a=31, b=23.5, cx=120, cy=120, s4=3;
+    let s = `<svg viewBox="0 0 240 240" width="240">${defs}`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${30*s4}" ry="${22*s4}" fill="none" stroke="${mu}" stroke-width="1" stroke-dasharray="4 3"/>`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${a*s4}" ry="${b*s4}" fill="none" stroke="${hex(0x5a5870)}" stroke-width="${5*s4}"/>`;
+    s += rr(cx-22*s4, cy-(b+5.5)*s4-2, 44*s4, 11*s4, 5.5*s4, fg, false, 'var(--panel)');
+    s += `<text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="10" fill="${mu}">wrist 165 mm</text><text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="10" fill="${mu}">60 × 44 ellipse</text>`;
+    s += `<text x="12" y="20" font-size="11" fill="${fg}" font-weight="600">ON THE WRIST (scale 3 px/mm)</text>`;
+    s += `</svg>`;
+    views.push({svg:s, cap:'Strap is a 5 mm braided cord, 165 mm around, with an elastic core. The pod rides on top of the wrist like a watch case.'});
+  }
+  document.getElementById('drawingGrid').innerHTML = views.map(v=>`<div class="drawing">${v.svg}<div class="cap">${v.cap}</div></div>`).join('');
+  // life-size SVG
+  document.getElementById('lifesize').innerHTML = `<rect x="0.2" y="1.2" width="43.6" height="23.6" rx="9" fill="none" stroke="var(--fg)" stroke-width=".4"/><rect x="7" y="10.5" width="30" height="5" rx="1" fill="var(--accent)" opacity=".8"/><text x="22" y="22" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">44 × 24 mm</text>`;
+})();
+
+/* ============ 3D MODEL (three.js r128) ============ */
+(function(){
+  if(!window.THREE){ document.getElementById('partInfo').innerHTML='<b>3D viewer unavailable</b> (library blocked). The drawings below carry the same dimensions.'; return; }
+  const canvas = document.getElementById('three'), wrapEl = document.getElementById('viewer'), labelLayer = document.getElementById('labels');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 1, 2000);
+  const target = new THREE.Vector3(0,36,0), targetGoal = target.clone();
+  const cam = {theta:0.7, phi:1.0, radius:190}, camGoal = {theta:0.7, phi:1.0, radius:190};
+  function placeCam(){ camera.position.set(target.x+cam.radius*Math.sin(cam.phi)*Math.sin(cam.theta), target.y+cam.radius*Math.cos(cam.phi), target.z+cam.radius*Math.sin(cam.phi)*Math.cos(cam.theta)); camera.lookAt(target); }
+
+  // lights: warm key, cool fill, amber rim from the diffuser side
+  scene.add(new THREE.HemisphereLight(0xfff3e0, 0x1a1826, 0.5));
+  const key = new THREE.DirectionalLight(0xfff0d8, 1.0); key.position.set(70,150,90); key.castShadow=true; key.shadow.mapSize.set(2048,2048);
+  const sc = key.shadow.camera; sc.left=-80; sc.right=80; sc.top=80; sc.bottom=-80; sc.near=10; sc.far=400; key.shadow.bias=-0.0005; scene.add(key);
+  const fill = new THREE.DirectionalLight(0x9fb4ff, 0.35); fill.position.set(-120,60,-80); scene.add(fill);
+  const rim = new THREE.PointLight(0xf5b544, 0.0, 120, 2); rim.position.set(0,40,0); scene.add(rim);
+
+  // studio environment for metal reflections: dark room with a few soft light panels
+  (function(){ const es=new THREE.Scene(); es.background=new THREE.Color(0x0e0d16);
+    const panel=(w,h,c,i,pos,rot)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i), side:THREE.DoubleSide})); m.position.set(...pos); if(rot) m.rotation.set(...rot); es.add(m); };
+    panel(60,20,0xfff0dc,3.0,[0,40,0],[Math.PI/2,0,0]);            // top softbox
+    panel(30,30,0xffe2b8,1.6,[45,15,20],[0,-Math.PI/2.5,0]);       // warm key side
+    panel(30,30,0x9fb4ff,0.9,[-45,10,-10],[0,Math.PI/2.5,0]);      // cool fill
+    panel(80,10,0xf5b544,0.6,[0,-10,-40],[0,0,0]);                 // amber floor bounce
+    const pm=new THREE.PMREMGenerator(renderer); scene.environment=pm.fromScene(es,0.04).texture; pm.dispose(); })();
+  const POD_Y = 51; const podGroup = new THREE.Group(); podGroup.position.y = POD_Y; scene.add(podGroup);
+  const pickables = [], meshes = {}, labels = {};
+  const M = (opts)=>new THREE.MeshStandardMaterial(Object.assign({roughness:.55, metalness:.1}, opts));
+  const GOLD = M({color:0xd9b25a, metalness:.85, roughness:.3}), SILVER = M({color:0xcfd0d6, metalness:.9, roughness:.35}), BLACK = M({color:0x15151c, roughness:.5}), WHITE = M({color:0xe8e6ef, roughness:.6});
+  function roundedBox(w,h,d,r){
+    const sh = new THREE.Shape(); const x=-w/2,y=-d/2; r=Math.min(r,w/2,d/2);
+    sh.moveTo(0,y); sh.lineTo(x+w-r,y); sh.quadraticCurveTo(x+w,y,x+w,y+r); sh.lineTo(x+w,y+d-r); sh.quadraticCurveTo(x+w,y+d,x+w-r,y+d); sh.lineTo(x+r,y+d); sh.quadraticCurveTo(x,y+d,x,y+d-r); sh.lineTo(x,y+r); sh.quadraticCurveTo(x,y,x+r,y);
+    const g = new THREE.ExtrudeGeometry(sh,{depth:h-1.2,bevelEnabled:true,bevelThickness:.6,bevelSize:.6,bevelSegments:4,curveSegments:20});
+    g.rotateX(-Math.PI/2); g.translate(0,-(h-1.2)/2,0); return g;
+  }
+  function add(parent, geo, mat, pos, rot){ const m=new THREE.Mesh(geo,mat); if(pos) m.position.set(...pos); if(rot) m.rotation.set(...rot); m.castShadow=true; m.receiveShadow=true; parent.add(m); return m; }
+  function pads(parent, len, y, z, n){ for(let i=0;i<n;i++){ add(parent, new THREE.BoxGeometry(1.2,0.3,1.6), GOLD, [-len/2+2.2+i*2.54, y, z]); } }
+  function texCanvas(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d')); const t=new THREE.CanvasTexture(c); return t; }
+
+  // ---- build each part with real detail ----
+  for(const p of PARTS){
+    if(p.hidden||p.strap) continue;
+    const [sx,sy,sz] = p.size; const g = new THREE.Group(); g.position.set(...p.pos); g.userData.part=p; g.userData.base=p.pos[1];
+    let body;
+    if(p.shell){
+      body = add(g, roundedBox(sx,sy,sz,POD.R), new THREE.MeshPhysicalMaterial({color:p.color, roughness:.38, metalness:.3, clearcoat:.8, clearcoatRoughness:.25}), [0,0,0]);
+      if(p.id==='shellTop'){ // slot edge highlight + subtle brand mark
+        add(g, new THREE.BoxGeometry(31,0.3,6), M({color:0x2a2838}), [0,sy/2-0.1,0]);
+      } else { // cord channel hint on the underside
+      }
+    } else if(p.id==='xiao'){
+      body = add(g, new THREE.BoxGeometry(sx,1.2,sz), M({color:p.color, roughness:.5}), [0,-sy/2+0.6,0]);
+      add(g, new THREE.BoxGeometry(8.9,3.2,7.3), SILVER, [-sx/2+4.5,-sy/2+1.2+1.6,0]);           // USB-C
+      add(g, new THREE.BoxGeometry(10,1.8,14), BLACK, [3.5,-sy/2+1.2+0.9,0]);                    // nRF52840 module can
+      add(g, new THREE.BoxGeometry(4,0.1,8), WHITE, [3.5,-sy/2+1.2+1.85,0]);                     // label
+      add(g, new THREE.BoxGeometry(1.6,0.5,0.8), M({color:0xffa040, emissive:0xff8a00, emissiveIntensity:.6}), [-2,-sy/2+1.45,6]); // charge LED
+      add(g, new THREE.BoxGeometry(2.2,0.6,1.6), M({color:0x333}), [-3,-sy/2+1.5,-6]);            // reset button
+      pads(g, sx, -sy/2+0.6, sz/2-0.8, 7); pads(g, sx, -sy/2+0.6, -sz/2+0.8, 7);
+    } else if(p.id==='lora'){
+      body = add(g, new THREE.BoxGeometry(sx,1.2,sz), M({color:p.color, roughness:.5}), [0,-sy/2+0.6,0]);
+      add(g, new THREE.BoxGeometry(10,1.6,9), SILVER, [2,-sy/2+1.2+0.8,1]);                     // SX1262 shield can
+      add(g, new THREE.CylinderGeometry(1.3,1.3,1.2,16), GOLD, [-7,-sy/2+1.2+0.6,-5]);          // U.FL
+      add(g, new THREE.BoxGeometry(2,0.8,1.2), M({color:0x333}), [-7,-sy/2+1.6,5]);               // user button
+      pads(g, sx, -sy/2+0.6, sz/2-0.8, 7); pads(g, sx, -sy/2+0.6, -sz/2+0.8, 7);
+    } else if(p.id==='batt'){
+      body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({color:p.color, metalness:.55, roughness:.35}), [0,0,0]);
+      add(g, new THREE.BoxGeometry(3,sy+0.2,16), M({color:0xe0c060, roughness:.7}), [-sx/2+1.4,0,0]);  // kapton-wrapped protection board, faces the boards
+      add(g, new THREE.CylinderGeometry(.35,.35,2.5,8), M({color:0xd33}), [-sx/2-0.8,0.8,-5], [0,0,Math.PI/2]);
+      add(g, new THREE.CylinderGeometry(.35,.35,2.5,8), BLACK, [-sx/2-0.8,-0.8,-5], [0,0,Math.PI/2]);
+    } else if(p.id==='motor'){
+      body = add(g, new THREE.CylinderGeometry(sx/2,sx/2,sy,40), SILVER, [0,0,0]);
+      add(g, new THREE.CylinderGeometry(3.6,3.6,0.3,32), M({color:0xd98fa3, roughness:.6}), [0,sy/2+0.1,0]);
+      add(g, new THREE.CylinderGeometry(.3,.3,3,8), M({color:0xd33}), [-6,0.4,0], [0,0,Math.PI/2]);
+      add(g, new THREE.CylinderGeometry(.3,.3,3,8), BLACK, [-6,-0.4,0], [0,0,Math.PI/2]);
+    } else if(p.id==='btn1'||p.id==='btn2'){
+      body = add(g, new THREE.BoxGeometry(6,5,6), M({color:0x2b2a36, roughness:.6}), [0,0,0]);
+      add(g, new THREE.CylinderGeometry(1.6,1.6,1.5,20), M({color:0x111}), [0,0,3.6], [Math.PI/2,0,0]);   // plunger
+      const cap = add(g, new THREE.BoxGeometry(7,3,2.2), M({color:p.color, roughness:.45, clearcoat:.5}), [0,0,4.6]); cap.name='cap';
+      if(p.id==='btn2') add(g, new THREE.CylinderGeometry(1,1,0.3,16), M({color:0x5a2630}), [0,0,5.75], [Math.PI/2,0,0]); // dimple
+    } else if(p.id==='leds'){
+      body = add(g, new THREE.BoxGeometry(sx,0.8,sz), M({color:0xb59a6a, roughness:.8}), [0,0,0]);
+      g.userData.leds=[]; for(let i=0;i<4;i++){ const l=add(g, new THREE.BoxGeometry(2.8,0.9,3.2), M({color:0xfff2cc, emissive:0xf5b544, emissiveIntensity:.9}), [-9+i*6,0.85,0]); g.userData.leds.push(l); }
+    } else if(p.id==='diffuser'){
+      body = add(g, new THREE.BoxGeometry(sx,sy,sz), new THREE.MeshBasicMaterial({color:0xf5a530, toneMapped:false}), [0,0,0]); body.castShadow=false;
+    } else if(p.id==='ant'){
+      const tex = texCanvas(400,80,c=>{ c.fillStyle='#d8b25a'; c.fillRect(0,0,400,80); c.strokeStyle='#8a6b22'; c.lineWidth=6; c.beginPath(); for(let x=20;x<380;x+=24){ c.moveTo(x,14); c.lineTo(x,66); c.lineTo(x+12,66); c.lineTo(x+12,14); c.lineTo(x+24,14);} c.stroke(); c.fillStyle='#8a6b22'; c.fillRect(0,34,30,12); });
+      body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({map:tex, color:0xffffff, metalness:.5, roughness:.45}), [0,0,0]);
+      add(g, new THREE.CylinderGeometry(.3,.3,3,8), BLACK, [-sx/2+1,-0.5,2], [0,0,Math.PI/2]);          // pigtail to U.FL
+    } else if(p.id==='pogo'){
+      body = add(g, new THREE.CylinderGeometry(sx/2,sx/2,sy,32), M({color:0x2b2a36, roughness:.5}), [0,0,0]);
+      for(const dx of [-2.5,2.5]) add(g, new THREE.CylinderGeometry(.8,.8,1.6,12), GOLD, [dx,-sy/2-0.3,0]);
+      add(g, new THREE.TorusGeometry(4.2,0.4,8,32), SILVER, [0,-sy/2,0], [Math.PI/2,0,0]);          // magnet ring
+    } else {
+      body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({color:p.color}), [0,0,0]);
+    }
+    g.traverse(o=>{ if(o.isMesh){ o.userData.part=p; } });
+    podGroup.add(g); pickables.push(g); meshes[p.id]=g; g.userData.body=body;
+    const lab=document.createElement('div'); lab.className='lab'; lab.textContent=p.name.replace(/ for XIAO| strip| \(502020\)/g,''); lab.dataset.id=p.id; labelLayer.appendChild(lab); labels[p.id]=lab;
+  }
+  // strap: braided cord on an ellipse in the XY plane (wrist axis = Z)
+  const strapPart = PARTS.find(p=>p.strap);
+  class Ell extends THREE.Curve{ constructor(a,b){super();this.a=a;this.b=b;} getPoint(t){ const th=t*Math.PI*2; return new THREE.Vector3(this.a*Math.cos(th), 22.5+this.b*Math.sin(th), 0); } }
+  const braid = texCanvas(256,64,c=>{ c.fillStyle='#2c2a3a'; c.fillRect(0,0,256,64); c.strokeStyle='#403d55'; c.lineWidth=7; for(let i=-64;i<256;i+=24){ c.beginPath(); c.moveTo(i,0); c.lineTo(i+64,64); c.stroke(); } c.strokeStyle='#201e2c'; c.lineWidth=3; for(let i=-64;i<256;i+=24){ c.beginPath(); c.moveTo(i+64,0); c.lineTo(i,64); c.stroke(); } });
+  braid.wrapS=braid.wrapT=THREE.RepeatWrapping; braid.repeat.set(24,1);
+  const strap = new THREE.Mesh(new THREE.TubeGeometry(new Ell(31,23.5),160,2.5,16,true), M({map:braid, color:0xffffff, roughness:.95}));
+  strap.castShadow=true; strap.userData.part=strapPart; scene.add(strap); pickables.push(strap);
+  const clasp = add(scene, new THREE.CylinderGeometry(3.2,3.2,6,24), M({color:0x3b3950, metalness:.5, roughness:.4}), [0,-1,0]); clasp.rotation.z=Math.PI/2; clasp.userData.part=strapPart;
+  const labStrap=document.createElement('div'); labStrap.className='lab'; labStrap.textContent='Braided cord strap'; labStrap.dataset.id='strap'; labelLayer.appendChild(labStrap); labels.strap=labStrap;
+  // wrist / forearm
+  const prof=[]; const zA=-70, zB=48; for(let i=0;i<=48;i++){ const z=zA+(zB-zA)*i/48; let r=1+0.12*Math.max(0,(-z-10)/60); const endA=Math.min(1,(z-zA)/10), endB=Math.min(1,(zB-z)/8); r*=Math.sqrt(Math.max(0,1-Math.pow(1-Math.min(endA,endB),2))); prof.push(new THREE.Vector2(Math.max(r,0.001),z)); }
+  const wristGeo = new THREE.LatheGeometry(prof,64); wristGeo.rotateX(Math.PI/2); wristGeo.scale(30,22,1); wristGeo.computeVertexNormals();
+  const wrist = new THREE.Mesh(wristGeo, new THREE.MeshPhysicalMaterial({color:0xb7896a, roughness:.62, sheen:new THREE.Color(0x4a3428), clearcoat:.15, clearcoatRoughness:.6})); wrist.position.set(0,22.5,0); wrist.receiveShadow=true; wrist.castShadow=true; scene.add(wrist);
+  // quarter
+  const coin = new THREE.Mesh(new THREE.CylinderGeometry(12.13,12.13,1.75,64), M({color:0xd6d3ca, metalness:.85, roughness:.3}));
+  coin.position.set(44,0.9,22); coin.castShadow=true; coin.visible=false; scene.add(coin);
+  // ground: shadow catcher + grid + 10 mm ruler
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400,400), new THREE.ShadowMaterial({opacity:.35})); ground.rotation.x=-Math.PI/2; ground.position.y=0; ground.receiveShadow=true; scene.add(ground);
+  const grid = new THREE.GridHelper(200,20,0x6a6880,0x34324a); grid.position.y=0.05; grid.material.transparent=true; grid.material.opacity=.3; scene.add(grid);
+  const ruler = add(scene, new THREE.BoxGeometry(10,0.4,0.6), M({color:0xf5b544, emissive:0xf5b544, emissiveIntensity:.4}), [-50,0.3,40]);
+  const rulerTex = texCanvas(256,64,c=>{ c.fillStyle='#f5b544'; c.font='600 34px IBM Plex Mono, monospace'; c.fillText('10 mm',8,44); });
+  const rulerLab = new THREE.Sprite(new THREE.SpriteMaterial({map:rulerTex, transparent:true})); rulerLab.scale.set(16,4,1); rulerLab.position.set(-50,3.5,40); scene.add(rulerLab);
+
+  function resize(){ const w=wrapEl.clientWidth, h=wrapEl.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+  window.addEventListener('resize',resize); resize();
+
+  // ---- interaction ----
+  let dragging=false, lx=0, ly=0, spin=true, moved=0, showLabels=false, hovered=null, selected=null;
+  canvas.addEventListener('pointerdown',e=>{dragging=true;moved=0;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',e=>{ if(dragging){ const dx=e.clientX-lx, dy=e.clientY-ly; moved+=Math.abs(dx)+Math.abs(dy); camGoal.theta-=dx*0.008; camGoal.phi=Math.min(2.6,Math.max(0.2,camGoal.phi-dy*0.008)); lx=e.clientX; ly=e.clientY; } else hover(e); });
+  canvas.addEventListener('pointerup',e=>{ dragging=false; if(moved<4) pick(e); });
+  canvas.addEventListener('pointerleave',()=>{ setHover(null); });
+  canvas.addEventListener('wheel',e=>{ e.preventDefault(); camGoal.radius=Math.min(450,Math.max(45,camGoal.radius*(1+e.deltaY*0.001))); },{passive:false});
+  let lastDist=0; canvas.addEventListener('touchmove',e=>{ if(e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(lastDist) camGoal.radius=Math.min(450,Math.max(45,camGoal.radius*(lastDist/d))); lastDist=d; } },{passive:true});
+  canvas.addEventListener('touchend',()=>{lastDist=0;});
+  const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+  const info = document.getElementById('partInfo');
+  function hitPart(e){ const r=canvas.getBoundingClientRect(); ptr.x=((e.clientX-r.left)/r.width)*2-1; ptr.y=-((e.clientY-r.top)/r.height)*2+1; ray.setFromCamera(ptr,camera);
+    const vis=pickables.filter(m=>m.visible); const hits=ray.intersectObjects(vis,true); if(!hits.length) return null; let o=hits[0].object; while(o && !o.userData.part) o=o.parent; return o?{part:o.userData.part, obj:hits[0].object}:null; }
+  function setEmissive(id,on){ const g=meshes[id]||(id==='strap'?strap:null); if(!g) return; g.traverse(o=>{ if(o.isMesh && o.material && o.material.emissive && !o.userData.led){ if(on){ o.userData._em=o.userData._em||o.material.emissive.getHex(); o.userData._ei=o.userData._ei??o.material.emissiveIntensity; o.material.emissive.setHex(0xf5b544); o.material.emissiveIntensity=.35; } else if(o.userData._em!==undefined){ o.material.emissive.setHex(o.userData._em); o.material.emissiveIntensity=o.userData._ei; } } }); }
+  function setHover(id){ if(hovered===id) return; if(hovered&&hovered!==selected) setEmissive(hovered,false); hovered=id; if(hovered) setEmissive(hovered,true); canvas.style.cursor=hovered?'pointer':'grab'; listEl.querySelectorAll('li').forEach(li=>li.classList.toggle('hover',li.dataset.id===hovered)); }
+  let hoverT=0; function hover(e){ const now=performance.now(); if(now-hoverT<40) return; hoverT=now; const h=hitPart(e); setHover(h?h.part.id:null); }
+  function select(id){ if(selected) setEmissive(selected,false); selected=id; if(!id){ targetGoal.set(0,36,0); info.innerHTML='<b>Firefly pod</b> · 44 × 24 × 11 mm · ~'+Math.round(totalWeight)+' g with strap<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span>'; listEl.querySelectorAll('li').forEach(li=>li.classList.remove('sel')); return; }
+    setEmissive(id,true); const p=PARTS.find(q=>q.id===id);
+    info.innerHTML = `<b>${p.name}</b> <span class="chip">${p.role}</span><br><span class="mono">${p.dims} mm · ${p.weight.toFixed(1)} g · $${p.price.toFixed(2)}</span><br><span class="muted">${p.spec}</span><br><a href="${p.buy}" target="_blank" rel="noopener">${p.buyLabel}</a>${p.alt?` · <a href="${p.alt}" target="_blank" rel="noopener">${p.altLabel}</a>`:''}`;
+    listEl.querySelectorAll('li').forEach(li=>li.classList.toggle('sel',li.dataset.id===id));
+    const g=meshes[id]; if(g){ const v=new THREE.Vector3(); g.getWorldPosition(v); targetGoal.copy(v); } else targetGoal.set(0,30,0); }
+  function pick(e){ const h=hitPart(e); if(!h){ select(null); return; }
+    if(h.part.id==='btn1'||h.part.id==='btn2'){ pressButton(h.part.id); }
+    select(h.part.id); }
+  function pressButton(id){ const g=meshes[id]; const cap=g.getObjectByName('cap'); if(cap){ cap.position.z=3.4; setTimeout(()=>{cap.position.z=4.6;},160); }
+    try{ if(typeof SIM!=='undefined') SIM.press(id==='btn1'?1:2); }catch(err){} }
+  // part list
+  const listEl = document.getElementById('partList');
+  listEl.innerHTML = PARTS.filter(p=>!p.hidden).map(p=>`<li data-id="${p.id}"><i style="background:${hex(p.color)}"></i><span>${p.name}</span><em>${p.weight.toFixed(1)} g</em></li>`).join('');
+  listEl.addEventListener('click',e=>{ const li=e.target.closest('li'); if(li) select(li.dataset.id===selected?null:li.dataset.id); });
+  listEl.addEventListener('pointerover',e=>{ const li=e.target.closest('li'); if(li) setHover(li.dataset.id); });
+  listEl.addEventListener('pointerleave',()=>setHover(null));
+  // controls
+  let explode=0, explodeTarget=0;
+  const tog = (id,fn)=>{ const b=document.getElementById(id); b.addEventListener('click',()=>{ const on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',String(on)); fn(on); }); return b; };
+  const bExplode = tog('btnExplode',on=>{ explodeTarget=on?1:0; slider.value=on?100:0; });
+  const slider = document.getElementById('explodeRange'); slider.addEventListener('input',()=>{ explodeTarget=slider.value/100; bExplode.setAttribute('aria-pressed',String(explodeTarget>0.02)); });
+  tog('btnWrist',on=>{ wrist.visible=on; });
+  tog('btnCoin',on=>{ coin.visible=on; });
+  tog('btnShell',on=>{ for(const id of ['shellTop','shellBot']){ meshes[id].traverse(o=>{ if(o.isMesh){ o.material.transparent=on; o.material.opacity=on?.15:1; o.material.depthWrite=!on; o.material.needsUpdate=true; o.castShadow=!on; } }); } });
+  tog('btnSpin',on=>{ spin=on; });
+  tog('btnLabels',on=>{ showLabels=on; });
+  tog('btnParts',on=>{ document.getElementById('partList').hidden=!on; });
+  const FINISH={graphite:[0x3b3950,.3,.38], champagne:[0xc9a46a,.85,.28], rose:[0xc98a7c,.8,.3], silver:[0xc4c6cf,.9,.25]};
+  function setFinish(k){ const f=FINISH[k]; for(const id of ['shellTop','shellBot']){ const b=meshes[id].userData.body; b.material.color.setHex(f[0]); b.material.metalness=f[1]; b.material.roughness=f[2]; } }
+  document.getElementById('finish').addEventListener('change',e=>setFinish(e.target.value));
+  const VIEWS={iso:[0.7,1.0,190], top:[0,0.05,170], front:[0,1.45,175], side:[Math.PI/2,1.4,180], back:[Math.PI,1.3,185]};
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ const v=VIEWS[b.dataset.view]; camGoal.theta=v[0]; camGoal.phi=v[1]; camGoal.radius=v[2]; }));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if(reduce){ spin=false; document.getElementById('btnSpin').setAttribute('aria-pressed','false'); }
+
+  // labels projection
+  const tmp = new THREE.Vector3();
+  function updateLabels(){ const r=canvas.getBoundingClientRect(); const w=r.width,h=r.height; const placed=[];
+    for(const id in labels){ const lab=labels[id]; const show = showLabels || hovered===id || selected===id; const g=meshes[id];
+      if(!show || (g&&!g.visible) || (id==='strap'&&!strap.visible)){ lab.style.display='none'; continue; }
+      if(g){ g.getWorldPosition(tmp); tmp.y += (g.userData.part.size[1]||4)/2 + 1.5; } else { tmp.set(-31,22.5,0); }
+      tmp.project(camera); if(tmp.z>1){ lab.style.display='none'; continue; }
+      lab.style.display='block'; placed.push({lab, x:(tmp.x+1)/2*w, y:(1-tmp.y)/2*h, on:hovered===id||selected===id}); }
+    placed.sort((a,b)=>a.y-b.y); const boxes=[];
+    for(const pl of placed){ const lw=pl.lab.offsetWidth||120; let y=pl.y; for(let k=0;k<12;k++){ const hit=boxes.find(b=>Math.abs(b.x-pl.x)<(b.w+lw)/2+4 && Math.abs(b.y-y)<20); if(!hit) break; y=hit.y+21; } boxes.push({x:pl.x,y,w:lw}); pl.lab.style.left=pl.x+'px'; pl.lab.style.top=y+'px'; pl.lab.classList.toggle('on',pl.on); } }
+
+  // LED / glow state mirrors the simulation
+  const ledGroup = meshes.leds, diff = meshes.diffuser;
+  function syncGlow(t){ let n=4, cls='on', pulse=0.55+0.1*Math.sin(t*3);
+    try{ if(typeof SIM!=='undefined'){ if(SIM.state.alert==='sos'){ n=4; cls='sos'; pulse=0.6+0.6*Math.abs(Math.sin(t*8)); } else if(SIM.state.finding){ n=SIM.state.leds; pulse=0.5+0.5*Math.abs(Math.sin(t*4)); } else { n=4; pulse=0.45+0.12*Math.sin(t*1.2); } } }catch(err){}
+    const col = cls==='sos'?0xef5b6b:0xf5b544;
+    ledGroup.userData.leds.forEach((l,i)=>{ const on=i<n; l.material.emissive.setHex(col); l.material.emissiveIntensity=on?pulse*1.6:0.05; l.material.color.setHex(on?(cls==='sos'?0xff7080:0xffb43c):0x6a6676); });
+    const k = n? Math.min(1,0.35+0.75*pulse) : 0.18; diff.userData.body.material.color.setHex(cls==='sos'?0xff4a60:0xffa428).multiplyScalar(k);
+    rim.color.setHex(col); rim.intensity = n? pulse*0.9 : 0; }
+
+  let last=performance.now(), t0=last;
+  function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; const t=(now-t0)/1000; if(spin&&!dragging) camGoal.theta+=dt*0.22;
+    cam.theta+=(camGoal.theta-cam.theta)*Math.min(1,dt*6); cam.phi+=(camGoal.phi-cam.phi)*Math.min(1,dt*6); cam.radius+=(camGoal.radius-cam.radius)*Math.min(1,dt*6); target.lerp(targetGoal, Math.min(1,dt*5));
+    explode+=(explodeTarget-explode)*Math.min(1,dt*5);
+    for(const g of pickables){ if(g.userData.part && g.userData.part.ex!==undefined && g.userData.base!==undefined) g.position.y = g.userData.base + g.userData.part.ex*explode*1.7; }
+    strap.visible = explode<.5; clasp.visible=strap.visible; wrist.visible = document.getElementById('btnWrist').getAttribute('aria-pressed')==='true' && explode<.5;
+    rim.position.set(0,POD_Y+6+30*explode,0); syncGlow(t); placeCam(); renderer.render(scene,camera); updateLabels(); requestAnimationFrame(frame); }
+  requestAnimationFrame(frame); select(null);
+
+  // small API for scripted renders
+  window.FF3D = { probe:()=>{ const out=[]; const bb=new THREE.Box3(); podGroup.traverse(o=>{ if(!o.isMesh) return; bb.setFromObject(o); const id=(o.userData.part||{}).id; if(id&&id.startsWith('shell')) return; if(bb.max.x>21.2||bb.min.x<-21.2||bb.max.z>12.6||bb.min.z<-12.1||bb.max.y>POD_Y+5.6||bb.min.y<POD_Y-5.6) out.push([id,o.geometry.type,[bb.min.x,bb.min.y-POD_Y,bb.min.z,bb.max.x,bb.max.y-POD_Y,bb.max.z].map(v=>+v.toFixed(1))]); }); return out; }, finish:setFinish, view:(th,ph,r)=>{ camGoal.theta=cam.theta=th; camGoal.phi=cam.phi=ph; camGoal.radius=cam.radius=r; }, target:(x,y,z)=>{ target.set(x,y,z); targetGoal.set(x,y,z); }, explode:v=>{ explode=explodeTarget=v; slider.value=v*100; }, spin:v=>{ spin=v; }, wrist:v=>{ document.getElementById('btnWrist').setAttribute('aria-pressed',String(v)); wrist.visible=v; }, coin:v=>{ coin.visible=v; }, labels:v=>{ showLabels=v; }, grid:v=>{ grid.visible=v; ruler.visible=v; rulerLab.visible=v; }, size:(w,h)=>{ wrapEl.style.height=h+'px'; wrapEl.style.width=w+'px'; resize(); }, exposure:v=>{ renderer.toneMappingExposure=v; } };
+})();
+
+/* ============ SIMULATION ============ */
+const SIM = (function(){
+  const cv = document.getElementById('simCanvas'), ctx = cv.getContext('2d');
+  const PX = 6; // px per metre; canvas 760x480 → 126 × 80 m
+  const venue = {x:10,y:12,w:40,h:25}; // metres
+  const friends = [
+    {id:'you', name:'You', band:true, phone:0, pos:{x:30,y:24}, resp:false, bandBatt:62},
+    {id:'maya', name:'Maya', band:true, phone:78, pos:{x:18,y:20}, resp:true, bandBatt:88, lastCheck:'11:42 PM'},
+    {id:'jordan', name:'Jordan', band:true, phone:12, pos:{x:44,y:33}, resp:false, bandBatt:71, lastCheck:'11:50 PM'},
+    {id:'sam', name:'Sam', band:true, phone:0, pos:{x:98,y:60}, resp:false, bandBatt:45, lastCheck:'11:05 PM', note:'pizza across the street'},
+  ];
+  const you = friends[0];
+  const BLE_R=25, LORA_R=300;
+  const state = {finding:false, findIdx:1, alert:null, pulseT:0, leds:0, timeoutId:null};
+  const logEl = document.getElementById('simLog'), statusEl=document.getElementById('simStatus'), pod=document.getElementById('pod'), ledEls=[...pod.querySelectorAll('.leds i')];
+  const listeners=[]; function emit(ev){ listeners.forEach(f=>f(ev)); }
+  function now(){ const d=new Date(); return d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }
+  function log(msg,kind){ const d=document.createElement('div'); d.textContent=`[${now()}] ${msg}`; logEl.prepend(d); emit({msg,kind,time:now()}); }
+  function dist(a,b){ return Math.hypot(a.pos.x-b.pos.x,a.pos.y-b.pos.y); }
+  function rssiBand(d){ return d<5?4:d<12?3:d<BLE_R?2:d<LORA_R?1:0; }
+  function setLeds(n,cls){ ledEls.forEach((e,i)=>{ e.className = i<n?(cls||'on'):''; }); }
+  function buzz(ms){ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; pod.classList.add('buzz'); setTimeout(()=>pod.classList.remove('buzz'),ms); }
+  function status(t){ statusEl.textContent=t; }
+
+  // drawing
+  function draw(){
+    const W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+    const dark = !(document.documentElement.dataset.theme==='light' || (matchMedia('(prefers-color-scheme: light)').matches && document.documentElement.dataset.theme!=='dark'));
+    ctx.fillStyle = dark?'#15141f':'#efebe2'; ctx.fillRect(0,0,W,H);
+    // street
+    ctx.fillStyle = dark?'#1c1b28':'#e4dfd3'; ctx.fillRect(0,(venue.y+venue.h+6)*PX,W,10*PX);
+    ctx.fillStyle = dark?'#9a95ad':'#5f5a70'; ctx.font='11px IBM Plex Mono, monospace'; ctx.fillText('STREET',8,(venue.y+venue.h+6)*PX+16);
+    // venue
+    ctx.fillStyle = dark?'#201f2e':'#fff'; ctx.strokeStyle = dark?'#3a384c':'#cfc8b8'; ctx.lineWidth=2;
+    ctx.fillRect(venue.x*PX,venue.y*PX,venue.w*PX,venue.h*PX); ctx.strokeRect(venue.x*PX,venue.y*PX,venue.w*PX,venue.h*PX);
+    ctx.fillStyle = dark?'#9a95ad':'#5f5a70'; ctx.fillText('CLUB · 40 × 25 m · no cell signal in the basement',venue.x*PX+8,venue.y*PX+16); ctx.fillText('entrance',venue.x*PX+4,(venue.y+venue.h)*PX+12);
+    // bar & stage
+    ctx.fillStyle = dark?'#2a2838':'#e9e3d6'; ctx.fillRect((venue.x+1)*PX,(venue.y+venue.h-5)*PX,16*PX,3*PX); ctx.fillText('bar',(venue.x+1)*PX+4,(venue.y+venue.h-5)*PX+14);
+    ctx.fillRect((venue.x+venue.w-10)*PX,(venue.y+1)*PX,9*PX,5*PX); ctx.fillText('DJ',(venue.x+venue.w-10)*PX+4,(venue.y+1)*PX+14);
+    ctx.fillRect((venue.x+venue.w-6)*PX,(venue.y+venue.h-6)*PX,5*PX,5*PX); ctx.fillText('WC',(venue.x+venue.w-6)*PX+3,(venue.y+venue.h-6)*PX+14);
+    // pizza
+    ctx.fillStyle = dark?'#201f2e':'#fff'; ctx.fillRect(92*PX,55*PX,14*PX,10*PX); ctx.strokeRect(92*PX,55*PX,14*PX,10*PX); ctx.fillStyle=dark?'#9a95ad':'#5f5a70'; ctx.fillText('pizza',93*PX,55*PX+14);
+    // rings from you
+    ctx.setLineDash([4,4]); ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(245,181,68,.45)'; ctx.beginPath(); ctx.arc(you.pos.x*PX,you.pos.y*PX,BLE_R*PX,0,Math.PI*2); ctx.stroke();
+    ctx.strokeStyle='rgba(111,168,255,.35)'; ctx.beginPath(); ctx.arc(you.pos.x*PX,you.pos.y*PX,LORA_R*PX,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    // links
+    for(const f of friends){ if(f===you) continue; const d=dist(you,f); if(d>LORA_R) continue; ctx.strokeStyle = d<BLE_R?'rgba(245,181,68,.5)':'rgba(111,168,255,.4)'; ctx.lineWidth=d<BLE_R?2:1; ctx.beginPath(); ctx.moveTo(you.pos.x*PX,you.pos.y*PX); ctx.lineTo(f.pos.x*PX,f.pos.y*PX); ctx.stroke();
+      ctx.fillStyle=dark?'#9a95ad':'#5f5a70'; ctx.fillText(Math.round(d)+' m',(you.pos.x+f.pos.x)/2*PX+4,(you.pos.y+f.pos.y)/2*PX-4); }
+    // friends
+    for(const f of friends){ const x=f.pos.x*PX,y=f.pos.y*PX; const isTarget=state.finding&&friends[state.findIdx]===f;
+      if(isTarget){ ctx.strokeStyle='#f5b544'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,14+4*Math.sin(state.pulseT*6),0,Math.PI*2); ctx.stroke(); }
+      if(f===you && state.alert){ ctx.fillStyle=state.alert==='sos'?'rgba(239,91,107,.25)':'rgba(240,140,74,.25)'; ctx.beginPath(); ctx.arc(x,y,22,0,Math.PI*2); ctx.fill(); }
+      ctx.fillStyle = f===you?'#f5b544':f.resp?'#5ed39a':(dark?'#c9c4dc':'#3a3650'); ctx.beginPath(); ctx.arc(x,y,f===you?9:7,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = dark?'#ece9f3':'#1b1926'; ctx.font='600 11px IBM Plex Sans, sans-serif'; ctx.fillText(f.name+(f.resp?' · app':'')+(f.phone===0?' · phone dead':''),x+12,y+4); }
+  }
+  // dragging you
+  let drag=null; function toM(e){ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width*cv.width/PX, y:(e.clientY-r.top)/r.height*cv.height/PX}; }
+  cv.addEventListener('pointerdown',e=>{ const m=toM(e); let best=null,bd=4; for(const f of friends){ const dd=Math.hypot(m.x-f.pos.x,m.y-f.pos.y); if(dd<bd){bd=dd;best=f;} } if(best){ drag=best; cv.setPointerCapture(e.pointerId);} });
+  cv.addEventListener('pointermove',e=>{ if(!drag) return; const m=toM(e); drag.pos.x=Math.max(1,Math.min(125,m.x)); drag.pos.y=Math.max(1,Math.min(79,m.y)); });
+  cv.addEventListener('pointerup',()=>{drag=null;});
+
+  // button gestures
+  function gestures(el,handlers,longMs){ let t0=0,timer=null,clicks=0,clickTimer=null,longFired=false;
+    el.addEventListener('pointerdown',e=>{ e.preventDefault(); t0=Date.now(); longFired=false; timer=setTimeout(()=>{longFired=true; handlers.long();},longMs); });
+    const up=()=>{ if(!t0) return; clearTimeout(timer); t0=0; if(longFired) return; clicks++; clearTimeout(clickTimer); clickTimer=setTimeout(()=>{ if(clicks>=2) handlers.double(); else handlers.single(); clicks=0; },320); };
+    el.addEventListener('pointerup',up); el.addEventListener('pointerleave',()=>{ if(t0){ clearTimeout(timer); t0=0; } });
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handlers.single(); } });
+  }
+  function nearbyFriends(){ return friends.filter(f=>f!==you && dist(you,f)<LORA_R); }
+  function startFinding(){ const list=nearbyFriends(); if(!list.length){ status('No bands in range. Slow red breathing LED: the group is out of LoRa range.'); setLeds(1,'sos'); return; }
+    if(state.finding){ // cycle
+      let i=friends.indexOf(friends[state.findIdx]); do{ i=(i+1)%friends.length; }while(friends[i]===you || dist(you,friends[i])>=LORA_R); state.findIdx=i; }
+    else { state.finding=true; let best=null,bd=1e9; for(const f of list){ const d=dist(you,f); if(d<bd){bd=d;best=f;} } state.findIdx=friends.indexOf(best); }
+    clearTimeout(state.timeoutId); state.timeoutId=setTimeout(()=>{ state.finding=false; setLeds(0); status('Finding mode timed out after 60 s to save battery.'); },60000);
+    log(`Finding mode → ${friends[state.findIdx].name}`,'find'); }
+  gestures(document.getElementById('pb1'),{
+    single: startFinding,
+    double: ()=>{ buzz(300); log('Sent "Come find me" to the group (LoRa broadcast)','find'); status('"Come find me" sent. Friends\' bands buzz twice; Maya\'s app shows your distance ring.'); setLeds(4); setTimeout(()=>setLeds(state.finding?state.leds:0),800); },
+    long: ()=>{ buzz(150); log('Check-in: "I\'m okay"','ok'); status('Check-in sent. Quiet confirmation buzz; the app marks you okay at this time.'); setLeds(2); setTimeout(()=>setLeds(state.finding?state.leds:0),600); }
+  },900);
+  gestures(document.getElementById('pb2'),{
+    single: ()=>{ state.alert='help'; buzz(200); log('Discreet "I need help" sent to designated friends','help'); status('Help alert sent. No light, one short buzz on your wrist; Maya and Jordan get a priority notification with your distance. Double-press to cancel.'); setLeds(0); },
+    double: ()=>{ if(state.alert){ log(`Cancelled ${state.alert==='sos'?'SOS':'help alert'}`,'ok'); state.alert=null; status('Alert cancelled. Everyone\'s bands get a single short buzz so they know.'); setLeds(0); } else status('Nothing to cancel.'); },
+    long: ()=>{ state.alert='sos'; buzz(1200); log('URGENT SOS broadcast to all bands + app','sos'); status('SOS. Your band flashes red, all bands in LoRa range buzz continuously, the app goes full-screen with a one-tap call and a compass toward your signal.'); setLeds(4,'sos'); }
+  },3000);
+
+  // friend cards
+  const cards = document.getElementById('friendCards');
+  function renderCards(){ cards.innerHTML = friends.map(f=>{ const d=f===you?0:dist(you,f); const link=f===you?'':d<BLE_R?'BLE':d<LORA_R?'LoRa':'out of range'; return `<div class="fr"><b>${f.name}${f.resp?' <span class="chip">app</span>':''}</b><span class="d">${f===you?'band only, drag me':`${Math.round(d)} m · ${link}`}</span><br><span class="d">phone ${f.phone}% · band ${f.bandBatt}%</span></div>`; }).join(''); }
+
+  let last=performance.now(), cardT=0, pulseAcc=0;
+  function loop(t){ const dt=(t-last)/1000; last=t; state.pulseT+=dt; cardT+=dt;
+    if(state.finding){ const f=friends[state.findIdx]; const d=dist(you,f); const b=rssiBand(d); state.leds=b; setLeds(b, null);
+      const period = d<5?.25:d<12?.5:d<BLE_R?1:2.5; pulseAcc+=dt; if(pulseAcc>period){ pulseAcc=0; buzz(d<BLE_R?90:60); }
+      if(cardT>0.5) status(`Finding ${f.name}: ${Math.round(d)} m · ${d<5?'right here':d<12?'warm, keep going':d<BLE_R?'in BLE range, sweep slowly':'LoRa only; head toward the signal'} · ${b} LED${b===1?'':'s'}`); }
+    if(cardT>0.5){ cardT=0; renderCards(); }
+    draw(); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop); renderCards();
+  function press(n){ if(n===1) startFinding(); else { state.alert='help'; buzz(200); log('Discreet "I need help" sent to designated friends','help'); status('Help alert sent from the 3D model. Double-press SAFE on the band below to cancel.'); setLeds(0); } }
+  return {friends, you, dist, log, press, onEvent:f=>listeners.push(f), state, BLE_R, LORA_R};
+})();
+
+/* ============ APP MOCKUP ============ */
+(function(){
+  const screen = document.getElementById('appScreen'); let tab='group', navTarget=null;
+  const me = SIM.friends.find(f=>f.resp);
+  const alerts = [ {kind:'ok',t:'11:50 PM',msg:'Jordan checked in: okay'}, {kind:'ok',t:'11:42 PM',msg:'Maya checked in: okay'}, {kind:'find',t:'11:05 PM',msg:'Sam: left the venue (LoRa only, ~90 m)'} ];
+  SIM.onEvent(ev=>{ alerts.unshift({kind:ev.kind||'find',t:ev.time,msg:/^Maya/.test(ev.msg)?ev.msg:'You: '+ev.msg}); if(alerts.length>12) alerts.pop(); if(ev.kind==='sos'||ev.kind==='help'){ tab='alerts'; } render(); setTabs(); });
+  const LANDMARKS=[{n:'the bar',x:19,y:34.5},{n:'the DJ booth',x:44.5,y:15.5},{n:'the restrooms',x:46.5,y:34.5},{n:'the dance floor',x:30,y:24},{n:'the entrance',x:12,y:36},{n:'the pizza place across the street',x:99,y:60}];
+  const inVenue = f => f.pos.x>=10&&f.pos.x<=50&&f.pos.y>=12&&f.pos.y<=37;
+  function d(f){ return Math.hypot(f.pos.x-me.pos.x,f.pos.y-me.pos.y); }
+  function link(f){ const x=d(f); return x<SIM.BLE_R?'BLE':x<SIM.LORA_R?'LoRa':'out of range'; }
+  function pill(f){ if(SIM.state.alert&&f===SIM.you) return `<span class="pill bad">${SIM.state.alert.toUpperCase()}</span>`; if(d(f)>SIM.LORA_R&&f!==me) return '<span class="pill bad">out of range</span>'; if(f.phone===0) return '<span class="pill warn">phone dead</span>'; return '<span class="pill ok">okay</span>'; }
+  function compass(dx,dy){ const a=(Math.atan2(dx,-dy)*180/Math.PI+360)%360; return ['N','NE','E','SE','S','SW','W','NW'][Math.round(a/45)%8]; }
+  function nearestLandmark(f){ let best=null,bd=1e9; for(const l of LANDMARKS){ const x=Math.hypot(l.x-f.pos.x,l.y-f.pos.y); if(x<bd){bd=x;best=l;} } return best; }
+  function guidance(f){ const dist=d(f), dx=f.pos.x-me.pos.x, dy=f.pos.y-me.pos.y, dir=compass(dx,dy), lm=nearestLandmark(f);
+    const steps=[];
+    if(dist<3) steps.push(`${f.name} is right here. Look around you; their band is flashing.`);
+    else if(!inVenue(f)&&inVenue(me)) steps.push(`${f.name} has left the venue. Head to the entrance, then go ${dir} toward ${lm.n}.`);
+    else if(inVenue(f)&&!inVenue(me)) steps.push(`${f.name} is still inside, near ${lm.n}. Go back in through the entrance.`);
+    else steps.push(`Walk ${dir} about ${Math.round(dist)} m. ${f.name} is near ${lm.n}.`);
+    if(dist<SIM.BLE_R) steps.push('You are in Bluetooth range. Your band pulses faster as you get closer; sweep slowly in a crowd.');
+    else if(dist<SIM.LORA_R) steps.push('Too far for Bluetooth. The arrow uses your phone\'s GPS and the LoRa link; it sharpens once you are within 25 m.');
+    else steps.push('Out of radio range. Their last known spot is shown; try the cloud relay if it is on.');
+    steps.push('Tap "Ping their band" so they stop and wait for you.');
+    return steps; }
+  function drawMap(c,W,H,opts){ // the same 126 × 80 m world as the simulation, styled as a street map
+    const sc=Math.min(W/126,H/80), ox=(W-126*sc)/2, oy=(H-80*sc)/2; const X=x=>ox+x*sc, Y=y=>oy+y*sc;
+    c.fillStyle='#15141f'; c.fillRect(0,0,W,H);
+    // blocks and streets
+    c.fillStyle='#1c1b28'; c.fillRect(X(0),Y(43),W,8*sc); c.fillRect(X(60),Y(0),7*sc,H); c.fillRect(X(0),Y(72),W,6*sc);
+    c.strokeStyle='#2a2838'; c.setLineDash([4,3]); c.lineWidth=1; c.beginPath(); c.moveTo(X(0),Y(47)); c.lineTo(X(126),Y(47)); c.moveTo(X(63.5),Y(0)); c.lineTo(X(63.5),Y(80)); c.stroke(); c.setLineDash([]);
+    c.fillStyle='#232234'; c.fillRect(X(10),Y(12),40*sc,25*sc); c.fillRect(X(92),Y(55),14*sc,10*sc); c.fillRect(X(70),Y(10),22*sc,20*sc); c.fillRect(X(10),Y(52),30*sc,14*sc);
+    c.fillStyle='#7d7891'; c.font=`${Math.max(8,9*sc/2.2)}px IBM Plex Mono, monospace`;
+    c.fillText('CLUB',X(12),Y(17)); c.fillText('pizza',X(93),Y(60)); c.fillText('deli',X(72),Y(15)); c.fillText('W 3rd St',X(2),Y(49.5)); c.fillText('bodega',X(12),Y(57));
+    c.fillStyle='#5e5a72'; c.fillText('bar',X(12),Y(36)); c.fillText('DJ',X(41),Y(15)); c.fillText('WC',X(45),Y(36)); c.fillText('entrance',X(11),Y(40.5));
+    // north arrow
+    c.fillStyle='#9a95ad'; c.beginPath(); c.moveTo(W-14,10); c.lineTo(W-10,20); c.lineTo(W-14,17); c.lineTo(W-18,20); c.closePath(); c.fill(); c.fillText('N',W-17,30);
+    // range from me
+    c.strokeStyle='rgba(94,211,154,.35)'; c.setLineDash([3,3]); c.beginPath(); c.arc(X(me.pos.x),Y(me.pos.y),SIM.BLE_R*sc,0,Math.PI*2); c.stroke(); c.setLineDash([]);
+    // friends
+    for(const f of SIM.friends){ const x=X(f.pos.x),y=Y(f.pos.y); const dist=d(f);
+      if(f!==me){ c.strokeStyle='rgba(154,149,173,.25)'; c.beginPath(); c.moveTo(X(me.pos.x),Y(me.pos.y)); c.lineTo(x,y); c.stroke(); }
+      if(opts&&opts.target===f){ c.strokeStyle='#f5b544'; c.lineWidth=2; c.beginPath(); c.arc(x,y,11,0,Math.PI*2); c.stroke(); c.lineWidth=1; }
+      c.fillStyle = f===me?'#5ed39a':(f===SIM.you&&SIM.state.alert)?'#ef5b6b':f===SIM.you?'#f5b544':'#c9c4dc'; c.beginPath(); c.arc(x,y,f===me?6:5,0,Math.PI*2); c.fill();
+      c.fillStyle='#ece9f3'; c.font='600 10px IBM Plex Sans, sans-serif'; c.fillText(f===me?'Me':f.name,x+8,y-2); c.fillStyle='#9a95ad'; c.font='9px IBM Plex Mono, monospace'; c.fillText(f===me?'GPS':`~${Math.round(dist)} m · ${link(f)}`,x+8,y+9); }
+    return {X,Y,sc,ox,oy};
+  }
+  let mapGeom=null;
+  function render(){
+    if(tab==='group'){
+      const rows=[...SIM.friends].sort((a,b)=>(a===SIM.you&&SIM.state.alert?-1:0)-(b===SIM.you&&SIM.state.alert?-1:0));
+      screen.innerHTML = `<h4>Saturday night · 4 bands</h4>` + rows.map(f=>`<div class="prow"><div class="av">${f.name[0]}</div><div style="min-width:0"><div class="nm">${f.name}${f===me?' (you)':''}</div><div class="sub">${f===me?'anchor · GPS on':Math.round(d(f))+' m · '+link(f)} · band ${f.bandBatt}% · phone ${f.phone}%</div></div>${pill(f)}${f!==me?`<button class="navbtn" data-nav="${f.id}">Find ›</button>`:''}</div>`).join('') + `<div class="alert ok" style="margin-top:6px">Session ends 6:00 AM · tap to extend</div>`;
+    } else if(tab==='map'){
+      screen.innerHTML = `<h4>Everyone, right now</h4><div class="minimap" style="height:210px"><canvas id="mini" width="280" height="210"></canvas></div><div class="sub" style="font-size:.7rem;color:#9a95ad">Your phone is the only GPS, so friends are placed by band signal relative to you. Tap a friend to navigate to them.</div>`;
+      const cv=document.getElementById('mini'); mapGeom=drawMap(cv.getContext('2d'),280,210,{});
+      cv.addEventListener('click',e=>{ const r=cv.getBoundingClientRect(); const px=(e.clientX-r.left)/r.width*280, py=(e.clientY-r.top)/r.height*210; let best=null,bd=14; for(const f of SIM.friends){ if(f===me) continue; const dd=Math.hypot(mapGeom.X(f.pos.x)-px,mapGeom.Y(f.pos.y)-py); if(dd<bd){bd=dd;best=f;} } if(best) openNav(best); });
+    } else if(tab==='nav'){
+      const f=navTarget; const dist=d(f), dx=f.pos.x-me.pos.x, dy=f.pos.y-me.pos.y; const ang=Math.atan2(dx,-dy)*180/Math.PI; const bars=dist<5?4:dist<12?3:dist<SIM.BLE_R?2:dist<SIM.LORA_R?1:0;
+      screen.innerHTML = `<div style="display:flex;align-items:center;gap:8px"><button class="navbtn" id="navBack">‹ Back</button><h4 style="margin:0">Find ${f.name}</h4></div>
+        <div class="navcard"><svg viewBox="0 0 100 100" width="96" height="96" style="transform:rotate(${ang}deg);transition:transform .3s"><circle cx="50" cy="50" r="46" fill="none" stroke="#2a2838" stroke-width="2"/><path d="M50 10 L68 60 L50 50 L32 60 Z" fill="#f5b544"/></svg>
+          <div><div class="navdist">${dist<3?'here':Math.round(dist)+' m'}</div><div class="sub" style="font-family:var(--mono);font-size:.7rem;color:#9a95ad">${compass(dx,dy)} · ${link(f)} · ${'▮'.repeat(bars)}${'▯'.repeat(4-bars)}</div></div></div>
+        <div class="minimap" style="height:120px"><canvas id="mini" width="280" height="120"></canvas></div>
+        <ol class="navsteps">${guidance(f).map(s=>`<li>${s}</li>`).join('')}</ol>
+        <button class="navbtn wide" id="pingBtn">Ping their band</button>`;
+      drawMap(document.getElementById('mini').getContext('2d'),280,120,{target:f});
+    } else if(tab==='alerts'){
+      screen.innerHTML = `<h4>Alerts</h4>` + alerts.map(a=>`<div class="alert ${a.kind}"><div class="t">${a.t}</div>${a.msg}${a.kind==='sos'||a.kind==='help'?`<div style="margin-top:6px;display:flex;gap:6px"><button class="navbtn" data-nav="you">Walk me there ›</button><span class="pill bad" style="padding:5px 9px">Call</span></div>`:''}</div>`).join('');
+    } else {
+      screen.innerHTML = `<h4>Privacy</h4>
+        <div class="setting"><div>Share my GPS with the group<small>Only during this session, deleted at 6:00 AM</small></div><div class="tog"></div></div>
+        <div class="setting"><div>Keep location history<small>Off: the trail is wiped when the session ends</small></div><div class="tog off"></div></div>
+        <div class="setting"><div>Cloud relay for alerts<small>Off: nothing leaves the phones and bands</small></div><div class="tog off"></div></div>
+        <div class="setting"><div>Designated help contacts<small>Maya, Jordan · receive "I need help"</small></div><div class="tog"></div></div>
+        <div class="setting"><div>Leave session<small>Hold both band buttons 5 s, or tap here</small></div><span class="pill warn" style="font-family:var(--mono);font-size:.64rem">Leave</span></div>`;
+    }
+  }
+  function openNav(f){ navTarget=f; tab='nav'; render(); setTabs(); }
+  screen.addEventListener('click',e=>{ const b=e.target.closest('[data-nav]'); if(b){ openNav(SIM.friends.find(f=>f.id===b.dataset.nav)); return; }
+    if(e.target.id==='navBack'){ tab='group'; render(); setTabs(); }
+    if(e.target.id==='pingBtn'){ SIM.log(`Maya's app pinged ${navTarget.name}'s band: 3 buzzes, LEDs on for 10 s`,'find'); e.target.textContent='Pinged ✓'; } });
+  function setTabs(){ document.querySelectorAll('.phone .tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===tab || (tab==='nav'&&b.dataset.tab==='map')))); }
+  document.querySelectorAll('.phone .tabs button').forEach(b=>b.addEventListener('click',()=>{ tab=b.dataset.tab; render(); setTabs(); }));
+  render(); setInterval(()=>{ if(tab==='group'||tab==='map'||tab==='nav') render(); },700);
+})();
+
+/* ============ WAITLIST (db capability) ============ */
+(async function(){
+  const form=document.getElementById('wlForm'), notice=document.getElementById('wlNotice'), countEl=document.getElementById('wlCount'), noteEl=document.getElementById('wlCountNote'), submit=document.getElementById('wlSubmit');
+  function say(t,cls){ notice.hidden=false; notice.className='notice '+(cls||''); notice.textContent=t; }
+  let db=null,user=null,uid=null;
+  try{ [db,user] = await Promise.all([window.claude?.use?.('db'), window.claude?.use?.('user')]); uid = user ? await user.id() : null; }catch(e){ db=null; }
+  const statsRef = db ? db.doc('stats/public') : null;
+  if(!db){ countEl.textContent='—'; noteEl.textContent='Signups are saved when this page is opened by a signed-in member of the project. Open the shared link in Claude to join.'; return; }
+  statsRef.onSnapshot(s=>{ const n=s.exists?(s.data().count||0):0; countEl.textContent=n; noteEl.textContent = n===0?'Be the first to sign up.':n===1?'person wants a band so far.':'people want a band so far.'; }, ()=>{ noteEl.textContent='Count unavailable right now.'; });
+  // owner view
+  try{ if(user && await user.isOwner()){ const admin=document.getElementById('wlAdmin'), tbl=document.getElementById('wlTable'); admin.hidden=false;
+    db.collection('signups').orderBy('ts','desc').limit(200).onSnapshot(q=>{ tbl.innerHTML = '<tr><th>Name</th><th>Email</th><th>Goes out</th><th>Cares about</th><th>When</th></tr>' + q.docs.map(d=>{const r=d.data(); return `<tr><td>${esc(r.name)}</td><td>${esc(r.email)}</td><td>${esc(r.freq)}</td><td>${esc(r.why)}${r.note?'<br><span class="muted">'+esc(r.note)+'</span>':''}</td><td class="mono">${new Date(r.ts).toLocaleDateString()}</td></tr>`;}).join('') || '<tr><td class="muted">No signups yet.</td></tr>'; }, ()=>{}); } }catch(e){}
+  function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+  form.addEventListener('submit', async e=>{ e.preventDefault(); if(!uid){ say('Sign in to join the waitlist from this page.','err'); return; }
+    submit.disabled=true; const rec={name:form.wlName.value.trim(), email:form.wlEmail.value.trim(), freq:form.wlFreq.value, why:form.wlWhy.value, note:form.wlNote.value.trim(), ts:Date.now()};
+    try{ await db.doc('signups/'+uid).set(rec);
+      try{ const s=await statsRef.get(); const n=(s.exists?(s.data().count||0):0); if(!(s.exists && s.data().members && s.data().members[uid])){ const members=Object.assign({}, s.exists?(s.data().members||{}):{}); members[uid]=1; await statsRef.set({count:n+1, members}); } }catch(e2){}
+      say('You are on the list. We will email you when the first batch is ready.','ok'); form.reset(); }
+    catch(err){ say(err&&err.code==='invalid_argument' ? 'This link is view-only for your account, so the signup could not be saved. Tell Wendy directly and she will add you.' : 'Could not save right now. Try again in a moment.','err'); }
+    finally{ submit.disabled=false; } });
+})();
+</script>
+
+</body></html>
