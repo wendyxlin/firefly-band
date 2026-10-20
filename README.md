@@ -11,6 +11,9 @@ Firefly is a two-button, jewelry-weight band (44 × 24 × 11 mm pod, ~27 g with 
 | ![On the wrist](media/renders/firefly-on-wrist.png) | ![Inside the pod](media/renders/firefly-inside.png) |
 | ![Exploded view](media/renders/firefly-exploded.png) | ![Next to a quarter](media/renders/firefly-scale-quarter.png) |
 
+## Promo video
+[media/firefly-promo.mp4](media/firefly-promo.mp4): 53 seconds, 1080p. It's rendered from code in `media/promo-source/`.
+
 ## How it works
 - **Button 1 · Find:** press once to find friends (the band pulses faster as you get closer), twice for "Come find me", hold for "I'm okay".
 - **Button 2 · Safety:** press once for a discreet "I need help", twice to cancel, hold 3 s for SOS.

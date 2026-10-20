@@ -1,0 +1,187 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Outfit;font-weight:600;src:url(fonts/outfit-latin-600-normal.woff2)}
+@font-face{font-family:Outfit;font-weight:700;src:url(fonts/outfit-latin-700-normal.woff2)}
+@font-face{font-family:Plex;font-weight:400;src:url(fonts/ibm-plex-sans-latin-400-normal.woff2)}
+@font-face{font-family:Plex;font-weight:500;src:url(fonts/ibm-plex-sans-latin-500-normal.woff2)}
+@font-face{font-family:Plex;font-weight:600;src:url(fonts/ibm-plex-sans-latin-600-normal.woff2)}
+@font-face{font-family:Mono;font-weight:500;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2)}
+html,body{margin:0;background:#0e0d16}
+canvas{display:block}
+</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+const W=1920,H=1080, c=document.getElementById('c').getContext('2d');
+const BG='#0e0d16', FG='#efecf6', MUTED='#9a95ad', AMBER='#f5b544', RED='#ef5b6b', GREEN='#5ed39a', BLUE='#6fa8ff', VIOLET='#c9a0ff';
+const DUR=53;
+// ---------- assets ----------
+const IM={}; function load(name,src){ return new Promise(r=>{ const i=new Image(); i.onload=()=>{IM[name]=i;r();}; i.onerror=()=>r(); i.src=src; }); }
+const pad=(n)=>String(n).padStart(3,'0');
+async function loadAll(){ const ps=[];
+  for(let i=0;i<96;i++) ps.push(load('turn'+i,`frames3d/turn_${pad(i)}.png`));
+  for(let i=0;i<48;i++) ps.push(load('expl'+i,`frames3d/expl_${pad(i)}.png`));
+  for(let i=0;i<24;i++) ps.push(load('sos'+i,`frames3d/sos_${pad(i)}.png`));
+  for(let i=0;i<32;i++) ps.push(load('find'+i,`frames3d/find_${pad(i)}.png`));
+  ps.push(load('hero','../renders/firefly-product-champagne.png'));
+  ps.push(document.fonts.load('700 40px Outfit'),document.fonts.load('600 40px Outfit'),document.fonts.load('400 20px Plex'),document.fonts.load('500 20px Plex'),document.fonts.load('600 20px Plex'),document.fonts.load('500 20px Mono'));
+  await Promise.all(ps); }
+// ---------- helpers ----------
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const eout=x=>1-Math.pow(1-clamp(x),3);
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+function fadeIO(t,a,b,f=0.5){ return Math.min(seg(t,a,a+f), 1-seg(t,b-f,b)); }
+function rand(i){ const x=Math.sin(i*127.1+311.7)*43758.5453; return x-Math.floor(x); }
+function text(str,x,y,{size=64,weight=700,font='Outfit',color=FG,align='left',alpha=1,spacing=0,base='alphabetic'}={}){ c.save(); c.globalAlpha*=alpha; c.fillStyle=color; c.font=`${weight} ${size}px ${font}`; c.textAlign=align; c.textBaseline=base; if(spacing){ c.letterSpacing=spacing+'px'; } c.fillText(str,x,y); c.restore(); }
+function wrap(str,x,y,maxW,lh,opts){ c.save(); c.font=`${opts.weight||400} ${opts.size||36}px ${opts.font||'Plex'}`; const words=str.split(' '); let line='', yy=y; for(const w of words){ const test=line?line+' '+w:w; if(c.measureText(test).width>maxW && line){ text(line,x,yy,opts); line=w; yy+=lh; } else line=test; } if(line) text(line,x,yy,opts); c.restore(); return yy; }
+function rise(t,a,dur=0.7){ return {alpha:eout(seg(t,a,a+dur)), dy:(1-eout(seg(t,a,a+dur)))*30}; }
+function eyebrow(str,x,y,alpha){ text(str.toUpperCase(),x,y,{size:24,weight:500,font:'Mono',color:AMBER,alpha,spacing:4}); }
+function glow(x,y,r,color,a){ const g=c.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,color); g.addColorStop(1,'rgba(0,0,0,0)'); c.save(); c.globalAlpha*=a; c.fillStyle=g; c.fillRect(x-r,y-r,2*r,2*r); c.restore(); }
+function img(name,x,y,w,h,alpha=1){ const i=IM[name]; if(!i) return; c.save(); c.globalAlpha*=alpha; c.drawImage(i,x,y,w,h); c.restore(); }
+function rr(x,y,w,h,r){ c.beginPath(); c.roundRect(x,y,w,h,r); }
+function vignette(){ const g=c.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.95); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,0.55)'); c.fillStyle=g; c.fillRect(0,0,W,H); }
+function progressBar(t){ c.fillStyle='rgba(255,255,255,0.08)'; c.fillRect(0,H-4,W,4); c.fillStyle=AMBER; c.fillRect(0,H-4,W*t/DUR,4); }
+
+// ---------- scenes ----------
+function s1(t){ // 0–4.5 phone dies
+  const a=fadeIO(t,0,4.5,0.4);
+  c.globalAlpha=a;
+  const r=rise(t,0.2); text('1:47 AM',W/2,420+r.dy,{size:150,align:'center',alpha:r.alpha});
+  // battery
+  const pct=Math.max(0,Math.round(12-12*seg(t,1.0,3.2))); const bx=W/2-110, by=520;
+  c.save(); c.globalAlpha*=eout(seg(t,0.8,1.3)); c.strokeStyle=FG; c.lineWidth=6; rr(bx,by,200,90,16); c.stroke(); c.fillStyle=FG; rr(bx+204,by+28,14,34,4); c.fill();
+  c.fillStyle=pct<=5?RED:FG; rr(bx+12,by+12,176*pct/100+0.01,66,8); c.fill(); c.restore();
+  text(pct+'%',W/2,700,{size:56,weight:600,align:'center',color:pct<=5?RED:FG,alpha:eout(seg(t,0.8,1.3))});
+  const r2=rise(t,3.0); text('Your phone just died.',W/2,800+r2.dy,{size:52,weight:500,font:'Plex',align:'center',color:MUTED,alpha:r2.alpha});
+  c.globalAlpha=1;
+}
+function crowd(t,sep,alpha){ // dots drifting
+  c.save(); c.globalAlpha=alpha;
+  for(let i=0;i<220;i++){ const x=(rand(i)*W*1.1 - 60 + Math.sin(t*0.6+i)*14); const y=(rand(i+500)*H*0.9+60+Math.cos(t*0.5+i*1.3)*10); c.fillStyle=`rgba(154,149,173,${0.15+0.25*rand(i+9)})`; c.beginPath(); c.arc(x,y,6+rand(i+3)*5,0,Math.PI*2); c.fill(); }
+  // you + friends
+  const you={x:W*0.5,y:H*0.55}; const fr=[[VIOLET,-1,-0.6],[BLUE,1.1,-0.2],[GREEN,-0.4,1]];
+  fr.forEach(([col,dx,dy],k)=>{ const x=you.x+dx*(60+sep*520), y=you.y+dy*(40+sep*300); glow(x,y,70,col,0.35); c.fillStyle=col; c.beginPath(); c.arc(x,y,13,0,Math.PI*2); c.fill(); });
+  glow(you.x,you.y,90,AMBER,0.5); c.fillStyle=AMBER; c.beginPath(); c.arc(you.x,you.y,16,0,Math.PI*2); c.fill();
+  text('you',you.x+26,you.y+8,{size:28,weight:500,font:'Mono',color:AMBER});
+  c.restore(); }
+function s2(t){ // 4.5–9 lost in the crowd
+  const a=fadeIO(t,4.5,9.2,0.5); const sep=ease(seg(t,4.7,7.2));
+  crowd(t,sep,a);
+  c.save(); c.globalAlpha=a; c.fillStyle='rgba(14,13,22,0.55)'; c.fillRect(0,0,W,210); c.restore();
+  const r=rise(t,5.0); text('Your friends are somewhere in here.',W/2,130+r.dy,{size:68,align:'center',alpha:r.alpha*a});
+  const r2=rise(t,7.0); text('No battery.  No signal.  No idea where.',W/2,H-90+r2.dy,{size:44,weight:500,font:'Plex',align:'center',color:MUTED,alpha:r2.alpha*a});
+}
+function s3(t){ // 9–15 reveal
+  const a=fadeIO(t,9,15.2,0.6); const p=seg(t,9,15.2);
+  const k=Math.floor(p*95.99); const zoom=1+0.06*p;
+  c.save(); c.globalAlpha=a; c.translate(W/2,H/2); c.scale(zoom,zoom); c.translate(-W/2,-H/2); img('turn'+k,0,0,W,H); c.restore();
+  // flash
+  const fl=t>=9?1-seg(t,9,9.6):0; if(fl>0){ c.save(); c.globalAlpha=fl*0.6; c.fillStyle=AMBER; c.fillRect(0,0,W,H); c.restore(); }
+  const r=rise(t,9.6,0.9); eyebrow('Introducing',140,190+r.dy,r.alpha*a);
+  text('Firefly',140,320+r.dy,{size:150,alpha:r.alpha*a});
+  const r2=rise(t,10.6); wrap('The bracelet that finds your friends when your phone can\'t.',140,410+r2.dy,620,58,{size:44,weight:500,font:'Plex',color:FG,alpha:r2.alpha*a});
+  const r3=rise(t,12.0); text('27 g  ·  looks like jewelry  ·  two buttons',140,H-120+r3.dy,{size:30,weight:500,font:'Mono',color:MUTED,alpha:r3.alpha*a});
+}
+function featureLayout(t,a,frameName,count,t0,t1,eye,title,body,extra){
+  const p=seg(t,t0,t1); const k=Math.min(count-1,Math.floor(p*count));
+  c.save(); c.globalAlpha=a; img(frameName+k,-260,0,W,H); c.restore();
+  const g=c.createLinearGradient(W*0.48,0,W*0.62,0); g.addColorStop(0,'rgba(14,13,22,0)'); g.addColorStop(1,'rgba(14,13,22,0.92)'); c.save(); c.globalAlpha=a; c.fillStyle=g; c.fillRect(W*0.48,0,W*0.52,H); c.fillStyle='rgba(14,13,22,0.92)'; c.fillRect(W*0.62,0,W*0.38,H); c.restore();
+  const x=W*0.6; const r=rise(t,t0+0.3); eyebrow(eye,x,300+r.dy,r.alpha*a);
+  text(title,x,400+r.dy,{size:84,alpha:r.alpha*a});
+  const r2=rise(t,t0+0.9); wrap(body,x,480+r2.dy,640,56,{size:40,weight:400,font:'Plex',color:MUTED,alpha:r2.alpha*a});
+  if(extra) extra(x);
+}
+function s4(t){ // 15–21 find
+  const a=fadeIO(t,15,21.2,0.5); if(a<=0) return;
+  featureLayout(t,a,'find',32,15,21.2,'Button 1 · Find','Hot or cold.','Press once and your band pulses faster as you get closer. Four lights means they\'re right next to you.',x=>{
+    const r=rise(t,17.5); const n=1+Math.floor(seg(t,17.6,20.4)*3.99); for(let i=0;i<4;i++){ c.save(); c.globalAlpha=a*r.alpha; c.fillStyle=i<n?AMBER:'#2b2a38'; c.beginPath(); c.arc(x+20+i*56,780+r.dy,18,0,Math.PI*2); c.fill(); if(i<n) glow(x+20+i*56,780+r.dy,50,AMBER,0.35*a); c.restore(); }
+    text(['~40 m','~20 m','~8 m','right here'][n-1],x+250,792+r.dy,{size:34,weight:500,font:'Mono',color:FG,alpha:a*r.alpha});
+    text('2×  "Come find me"     hold  "I\'m okay"',x,880+r.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r.alpha});
+  });
+}
+function s5(t){ // 21–26 safety
+  const a=fadeIO(t,21,26.2,0.5); if(a<=0) return;
+  featureLayout(t,a,'sos',24,21,26.2,'Button 2 · Safety','Help, quietly.','Tap for a discreet "I need help" to the friends you choose. Hold 3 seconds for an SOS to every band nearby.',x=>{
+    const r=rise(t,23.0); const hold=seg(t,23.4,25.4); c.save(); c.globalAlpha=a*r.alpha; c.strokeStyle='#2b2a38'; c.lineWidth=10; c.beginPath(); c.arc(x+60,800+r.dy,46,0,Math.PI*2); c.stroke(); c.strokeStyle=hold>=1?RED:AMBER; c.beginPath(); c.arc(x+60,800+r.dy,46,-Math.PI/2,-Math.PI/2+hold*Math.PI*2); c.stroke(); c.restore();
+    text(hold>=1?'SOS sent':(hold*3).toFixed(1)+' s',x+140,812+r.dy,{size:40,weight:600,color:hold>=1?RED:FG,alpha:a*r.alpha});
+    text('2×  cancel an accident',x,910+r.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r.alpha});
+  });
+}
+function s6(t){ // 26–32 mesh
+  const a=fadeIO(t,26,32.2,0.5); if(a<=0) return; c.save(); c.globalAlpha=a;
+  // venue walls
+  c.strokeStyle='#2b2a38'; c.lineWidth=6; rr(160,260,900,560,18); c.stroke(); rr(1180,420,520,360,18); c.stroke();
+  c.fillStyle='#17161f'; c.fillRect(1060,560,120,80);
+  text('CLUB · basement, no signal',190,310,{size:26,weight:500,font:'Mono',color:MUTED}); text('PIZZA PLACE',1210,470,{size:26,weight:500,font:'Mono',color:MUTED});
+  const nodes=[{x:380,y:470,col:AMBER,n:'You'},{x:820,y:640,col:VIOLET,n:'Priya'},{x:560,y:720,col:GREEN,n:'Jordan'},{x:1460,y:640,col:BLUE,n:'Sam'}];
+  const links=[[0,1],[0,2],[1,3],[2,1],[0,3]];
+  links.forEach(([i,j],k)=>{ const A=nodes[i],B=nodes[j]; const on=seg(t,26.6+k*0.35,27.2+k*0.35); c.strokeStyle=`rgba(245,181,68,${0.5*on})`; c.lineWidth=3; c.setLineDash([10,10]); c.lineDashOffset=-t*40; c.beginPath(); c.moveTo(A.x,A.y); c.lineTo(A.x+(B.x-A.x)*on,A.y+(B.y-A.y)*on); c.stroke(); c.setLineDash([]);
+    // packet
+    const pp=((t*0.8+k*0.37)%1); if(on>=1){ const x=A.x+(B.x-A.x)*pp, y=A.y+(B.y-A.y)*pp; glow(x,y,26,AMBER,0.8); } });
+  nodes.forEach((N,k)=>{ const ap=eout(seg(t,26.3+k*0.2,26.8+k*0.2)); const rip=(t*0.9+k*0.25)%1; c.strokeStyle=N.col; c.globalAlpha=a*(1-rip)*0.6*ap; c.lineWidth=3; c.beginPath(); c.arc(N.x,N.y,20+rip*120,0,Math.PI*2); c.stroke(); c.globalAlpha=a*ap; glow(N.x,N.y,70,N.col,0.4); c.fillStyle=N.col; rr(N.x-34,N.y-14,68,28,14); c.fill(); text(N.n,N.x,N.y+56,{size:30,weight:600,font:'Plex',align:'center'}); });
+  c.globalAlpha=a;
+  const r=rise(t,26.4); text('No phone. No signal. Still connected.',W/2,150+r.dy,{size:72,align:'center',alpha:r.alpha});
+  const r2=rise(t,28.0); text('Bands talk to each other over LoRa radio: 300 m+ through walls and crowds.',W/2,H-110+r2.dy,{size:38,weight:500,font:'Plex',align:'center',color:MUTED,alpha:r2.alpha});
+  c.restore(); }
+function phone(x,y,s,t,a){ // draws the Find screen
+  c.save(); c.globalAlpha=a; c.translate(x,y); c.scale(s,s);
+  c.fillStyle='#000'; rr(-10,-10,440,900,64); c.fill(); c.fillStyle='#0e0d16'; rr(0,0,420,880,56); c.fill(); c.fillStyle='#000'; rr(150,14,120,34,17); c.fill();
+  text('9:41',40,44,{size:22,weight:600,font:'Plex'});
+  text('‹  Find Jordan',28,110,{size:32,weight:700});
+  c.fillStyle='#17161f'; rr(20,140,380,200,26); c.fill();
+  const dist=Math.max(3,Math.round(64-61*ease(seg(t,33.2,38.2)))); const ang=(1-ease(seg(t,32.6,34.2)))*-120 + 35 + Math.sin(t*2)*4;
+  c.save(); c.translate(110,240); c.strokeStyle='#2b2a38'; c.lineWidth=3; c.beginPath(); c.arc(0,0,66,0,Math.PI*2); c.stroke(); c.rotate(ang*Math.PI/180); c.fillStyle=AMBER; c.beginPath(); c.moveTo(0,-50); c.lineTo(28,34); c.lineTo(0,18); c.lineTo(-28,34); c.closePath(); c.fill(); c.restore();
+  text(dist<=3?'Here':dist+' m',200,250,{size:64,weight:700}); text(dist<25?'SE · Bluetooth':'SE · LoRa',202,292,{size:20,weight:500,font:'Mono',color:MUTED});
+  // map
+  c.fillStyle='#121119'; rr(20,360,380,260,22); c.fill(); c.save(); rr(20,360,380,260,22); c.clip();
+  c.fillStyle='#1b1a26'; c.fillRect(20,520,380,40); c.fillRect(270,360,34,260); c.fillStyle='#262434'; c.fillRect(40,380,210,130);
+  const yx=90, yy=430, jx=210+ (1-ease(seg(t,33.2,38.2)))*120, jy=470+(1-ease(seg(t,33.2,38.2)))*110;
+  c.strokeStyle=AMBER; c.lineWidth=4; c.setLineDash([2,10]); c.lineCap='round'; c.beginPath(); c.moveTo(yx,yy); c.lineTo(jx,jy); c.stroke(); c.setLineDash([]);
+  c.fillStyle=GREEN; c.beginPath(); c.arc(yx,yy,10,0,Math.PI*2); c.fill(); glow(jx,jy,40,AMBER,0.5); c.fillStyle=AMBER; c.beginPath(); c.arc(jx,jy,10,0,Math.PI*2); c.fill();
+  text('You',yx+16,yy+6,{size:18,weight:600,font:'Plex'}); text('Jordan',jx+16,jy+6,{size:18,weight:600,font:'Plex'}); c.restore();
+  const steps=['Head SE toward the restrooms.',dist<25?'In Bluetooth range: follow the pulse.':'Arrow sharpens within 25 m.','Ping their band so they wait.'];
+  steps.forEach((s,i)=>{ c.fillStyle='#17161f'; rr(20,640+i*66,380,56,16); c.fill(); text(String(i+1),48,676+i*66,{size:20,weight:700,color:AMBER,align:'center'}); text(s,72,676+i*66,{size:19,weight:500,font:'Plex'}); });
+  c.fillStyle=AMBER; rr(20,836-14,380,0.01,1); c.fill();
+  c.restore(); }
+function s7(t){ // 32–39 app
+  const a=fadeIO(t,32,39.2,0.5); if(a<=0) return;
+  const r=rise(t,32.2); phone(W*0.62,90+(1-eout(seg(t,32,32.9)))*80,1.02,t,a);
+  eyebrow('The app',160,360+r.dy,r.alpha*a);
+  text('One phone',160,470+r.dy,{size:96,alpha:r.alpha*a}); text('guides everyone.',160,580+r.dy,{size:96,alpha:r.alpha*a});
+  const r2=rise(t,33.4); wrap('The friend with battery sees the whole group on a map, gets every alert, and follows a compass straight to anyone.',160,680+r2.dy,760,56,{size:38,weight:400,font:'Plex',color:MUTED,alpha:r2.alpha*a});
+}
+function s8(t){ // 39–44 exploded
+  const a=fadeIO(t,39,44.2,0.5); if(a<=0) return; const p=seg(t,39,43.4); const k=Math.min(47,Math.floor(p*48));
+  c.save(); c.globalAlpha=a; img('expl'+k,220,0,W,H); c.restore();
+  const g=c.createLinearGradient(0,0,W*0.45,0); g.addColorStop(0,'rgba(14,13,22,0.95)'); g.addColorStop(1,'rgba(14,13,22,0)'); c.save(); c.globalAlpha=a; c.fillStyle=g; c.fillRect(0,0,W*0.45,H); c.restore();
+  const r=rise(t,39.3); eyebrow('Inside',140,330+r.dy,r.alpha*a); text('Under 30 grams.',140,440+r.dy,{size:88,alpha:r.alpha*a});
+  const specs=['Bluetooth 5 + LoRa 915 MHz','150 mAh · 30+ hour battery','Splash-proof · magnetic charging','Off-the-shelf parts · ~$55 to build'];
+  specs.forEach((s,i)=>{ const rr_=rise(t,40.0+i*0.35); text(s,140,540+i*64+rr_.dy,{size:36,weight:500,font:'Plex',color:i%2?MUTED:FG,alpha:rr_.alpha*a}); });
+}
+function s9(t){ // 44–48 privacy
+  const a=fadeIO(t,44,48.2,0.5); if(a<=0) return;
+  const r=rise(t,44.2); text('Private by design.',W/2,300+r.dy,{size:96,align:'center',alpha:r.alpha*a});
+  const lines=[['No GPS on the band.','It only knows a friend is near.'],['A group key that expires at sunrise.','Strangers\' bands hear nothing.'],['Nothing stored on a server.','Tonight stays tonight.']];
+  lines.forEach(([h,sub],i)=>{ const rr_=rise(t,45.0+i*0.5); const y=470+i*150+rr_.dy; c.save(); c.globalAlpha=a*rr_.alpha; c.strokeStyle=AMBER; c.lineWidth=5; c.beginPath(); c.moveTo(560,y-12); c.lineTo(578,y+6); c.lineTo(612,y-30); c.stroke(); c.restore();
+    text(h,650,y,{size:46,weight:600,font:'Plex',alpha:a*rr_.alpha}); text(sub,650,y+48,{size:32,weight:400,font:'Plex',color:MUTED,alpha:a*rr_.alpha}); });
+}
+function s10(t){ // 48–53 CTA
+  const a=Math.min(seg(t,48,48.6),1-seg(t,52.4,53)); if(a<=0) return; const p=seg(t,48,53);
+  const i=IM.hero; if(i){ const z=1.05+0.08*p; c.save(); c.globalAlpha=a*0.9; c.translate(W*0.66,H/2); c.scale(z,z); c.drawImage(i,-W/2,-H/2,W,H); c.restore(); }
+  const g=c.createLinearGradient(0,0,W*0.6,0); g.addColorStop(0,'rgba(14,13,22,0.98)'); g.addColorStop(1,'rgba(14,13,22,0)'); c.save(); c.globalAlpha=a; c.fillStyle=g; c.fillRect(0,0,W*0.6,H); c.restore();
+  const r=rise(t,48.3,0.9); glow(260,360,220,AMBER,0.18*a*r.alpha);
+  text('Firefly',140,420+r.dy,{size:170,alpha:a*r.alpha});
+  const r2=rise(t,49.0); text('Never lose your people.',146,510+r2.dy,{size:52,weight:500,font:'Plex',alpha:a*r2.alpha});
+  const r3=rise(t,49.8); c.save(); c.globalAlpha=a*r3.alpha; c.fillStyle=AMBER; rr(146,600+r3.dy,420,96,20); c.fill(); c.restore(); text('Join the waitlist',356,662+r3.dy,{size:40,weight:700,color:'#1a1200',align:'center',alpha:a*r3.alpha});
+  const r4=rise(t,50.6); text('27 g  ·  44 mm  ·  30+ h battery  ·  works with your phone dead',146,800+r4.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r4.alpha});
+}
+function renderAt(t){
+  c.globalAlpha=1; c.fillStyle=BG; c.fillRect(0,0,W,H);
+  s1(t); s2(t); s3(t); s4(t); s5(t); s6(t); s7(t); s8(t); s9(t); s10(t);
+  vignette(); progressBar(t);
+}
+window.ready = loadAll().then(()=>{ renderAt(0); return true; });
+window.renderAt = renderAt; window.DUR=DUR;
+</script>
+</body></html>

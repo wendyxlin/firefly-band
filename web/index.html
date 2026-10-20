@@ -187,6 +187,7 @@ ol.steps li b{color:var(--fg);font-family:var(--display)}
 ol.steps li::before{content:counter(step);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font:600 .8rem var(--display);display:grid;place-items:center}
 pre.code{font-family:var(--mono);font-size:.72rem;line-height:1.45;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;margin:0;color:var(--fg)}
 code{font-family:var(--mono);font-size:.85em;background:var(--bg2);padding:1px 5px;border-radius:5px}
+.promo{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:16px;border:1px solid var(--line);background:#000}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .gallery figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .gallery img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
@@ -208,7 +209,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
 
 <nav class="top"><div class="wrap">
   <a class="brand" href="#top">Firefly</a>
-  <a href="#problem">Problem</a><a href="#model">3D model</a><a href="#drawings">Drawings</a><a href="#parts">Parts &amp; cost</a><a href="#build">Build guide</a><a href="#sim">Simulation</a><a href="#connect">How it connects</a><a href="#app">App</a><a href="#privacy">Privacy</a><a href="#waitlist">Waitlist</a>
+  <a href="#promo">Video</a><a href="#problem">Problem</a><a href="#model">3D model</a><a href="#drawings">Drawings</a><a href="#parts">Parts &amp; cost</a><a href="#build">Build guide</a><a href="#sim">Simulation</a><a href="#connect">How it connects</a><a href="#app">App</a><a href="#privacy">Privacy</a><a href="#waitlist">Waitlist</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap grid">
@@ -224,6 +225,11 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
   </div>
   <img class="band-illus" src="renders/firefly-product-champagne.jpg" alt="Firefly band render, champagne finish" style="border-radius:18px;object-fit:cover;aspect-ratio:16/11">
 </div></header>
+
+<section id="promo"><div class="wrap">
+  <div class="head"><div class="eyebrow">Promo · 53 seconds</div><h2>Firefly in under a minute</h2></div>
+  <video class="promo" controls playsinline preload="metadata" poster="renders/firefly-product-champagne.jpg" src="../media/firefly-promo.mp4"></video>
+</div></section>
 
 <section id="problem"><div class="wrap">
   <div class="head"><div class="eyebrow">Why</div><h2>What goes wrong on a night out</h2></div>
@@ -941,7 +947,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
     rim.color.setHex(col); rim.intensity = n? pulse*0.9 : 0; }
 
   let last=performance.now(), t0=last;
-  function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; const t=(now-t0)/1000; if(spin&&!dragging) camGoal.theta+=dt*0.22;
+  function frame(now){ if(window.__ffPaused){ requestAnimationFrame(frame); return; } const dt=Math.min(.05,(now-last)/1000); last=now; const t=(now-t0)/1000; if(spin&&!dragging) camGoal.theta+=dt*0.22;
     cam.theta+=(camGoal.theta-cam.theta)*Math.min(1,dt*6); cam.phi+=(camGoal.phi-cam.phi)*Math.min(1,dt*6); cam.radius+=(camGoal.radius-cam.radius)*Math.min(1,dt*6); target.lerp(targetGoal, Math.min(1,dt*5));
     explode+=(explodeTarget-explode)*Math.min(1,dt*5);
     for(const g of pickables){ if(g.userData.part && g.userData.part.ex!==undefined && g.userData.base!==undefined) g.position.y = g.userData.base + g.userData.part.ex*explode*1.7; }
@@ -950,7 +956,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   requestAnimationFrame(frame); select(null);
 
   // small API for scripted renders
-  window.FF3D = { probe:()=>{ const out=[]; const bb=new THREE.Box3(); podGroup.traverse(o=>{ if(!o.isMesh) return; bb.setFromObject(o); const id=(o.userData.part||{}).id; if(id&&id.startsWith('shell')) return; if(bb.max.x>21.2||bb.min.x<-21.2||bb.max.z>12.6||bb.min.z<-12.1||bb.max.y>POD_Y+5.6||bb.min.y<POD_Y-5.6) out.push([id,o.geometry.type,[bb.min.x,bb.min.y-POD_Y,bb.min.z,bb.max.x,bb.max.y-POD_Y,bb.max.z].map(v=>+v.toFixed(1))]); }); return out; }, finish:setFinish, view:(th,ph,r)=>{ camGoal.theta=cam.theta=th; camGoal.phi=cam.phi=ph; camGoal.radius=cam.radius=r; }, target:(x,y,z)=>{ target.set(x,y,z); targetGoal.set(x,y,z); }, explode:v=>{ explode=explodeTarget=v; slider.value=v*100; }, spin:v=>{ spin=v; }, wrist:v=>{ document.getElementById('btnWrist').setAttribute('aria-pressed',String(v)); wrist.visible=v; }, coin:v=>{ coin.visible=v; }, labels:v=>{ showLabels=v; }, grid:v=>{ grid.visible=v; ruler.visible=v; rulerLab.visible=v; }, size:(w,h)=>{ wrapEl.style.height=h+'px'; wrapEl.style.width=w+'px'; resize(); }, exposure:v=>{ renderer.toneMappingExposure=v; } };
+  window.FF3D = { renderFrame:(t,w,h)=>{ window.__ffPaused=true; if(w){ renderer.setPixelRatio(1); renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); } target.copy(targetGoal); for(const g of pickables){ if(g.userData.part && g.userData.part.ex!==undefined && g.userData.base!==undefined) g.position.y = g.userData.base + g.userData.part.ex*explode*1.7; } strap.visible = explode<.5; clasp.visible=strap.visible; rim.position.set(0,POD_Y+6+30*explode,0); syncGlow(t); placeCam(); renderer.render(scene,camera); updateLabels(); return canvas.toDataURL('image/png'); }, probe:()=>{ const out=[]; const bb=new THREE.Box3(); podGroup.traverse(o=>{ if(!o.isMesh) return; bb.setFromObject(o); const id=(o.userData.part||{}).id; if(id&&id.startsWith('shell')) return; if(bb.max.x>21.2||bb.min.x<-21.2||bb.max.z>12.6||bb.min.z<-12.1||bb.max.y>POD_Y+5.6||bb.min.y<POD_Y-5.6) out.push([id,o.geometry.type,[bb.min.x,bb.min.y-POD_Y,bb.min.z,bb.max.x,bb.max.y-POD_Y,bb.max.z].map(v=>+v.toFixed(1))]); }); return out; }, finish:setFinish, view:(th,ph,r)=>{ camGoal.theta=cam.theta=th; camGoal.phi=cam.phi=ph; camGoal.radius=cam.radius=r; }, target:(x,y,z)=>{ target.set(x,y,z); targetGoal.set(x,y,z); }, explode:v=>{ explode=explodeTarget=v; slider.value=v*100; }, spin:v=>{ spin=v; }, wrist:v=>{ document.getElementById('btnWrist').setAttribute('aria-pressed',String(v)); wrist.visible=v; }, coin:v=>{ coin.visible=v; }, labels:v=>{ showLabels=v; }, grid:v=>{ grid.visible=v; ruler.visible=v; rulerLab.visible=v; }, size:(w,h)=>{ wrapEl.style.height=h+'px'; wrapEl.style.width=w+'px'; resize(); }, exposure:v=>{ renderer.toneMappingExposure=v; } };
 })();
 
 /* ============ SIMULATION ============ */
