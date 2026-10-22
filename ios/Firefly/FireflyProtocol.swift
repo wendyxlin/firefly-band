@@ -14,7 +14,7 @@ enum FireflyProtocol {
     static let rosterUUID  = CBUUID(string: "F1F1A003-7C3B-4E2A-9A1D-5B0E46F1F1F1")
 
     enum MessageType: UInt8 {
-        case checkIn = 1, comeFindMe = 2, help = 3, sos = 4, cancel = 5, ping = 6, leave = 7, askCheckIn = 8
+        case checkIn = 1, comeFindMe = 2, help = 3, sos = 4, cancel = 5, ping = 6, leave = 7, askCheckIn = 8, join = 9, home = 10
     }
 }
 

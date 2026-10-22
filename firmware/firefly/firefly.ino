@@ -6,7 +6,9 @@
   Status        : prototype code written against the wiring in hardware/wiring.md. Not yet run on hardware.
 
   What it does
-   - Button 1 (Find):   1x finding mode (BLE RSSI → vibration pulse + LED count), 2x "come find me", hold "I'm okay"
+   - Button 1 (Find):   1x finding mode (BLE RSSI → vibration pulse + LED count), 2x "come find me", 3x "I'm home", hold "I'm okay"
+   - I'm home:          tells the group over LoRa, and is held for the wearer's own phone, which texts their chosen contacts
+                        as soon as it reconnects over Bluetooth (e.g. once it's charging at home)
    - Button 2 (Safety): 1x discreet help, 2x cancel, hold 3 s SOS
    - Both buttons 5 s:  leave the group.  Button 1 held 5 s at boot window: pairing / join group
    - LoRa (915 MHz):    band ↔ band messages, 12-byte packets with a truncated keyed hash
@@ -34,7 +36,7 @@ const uint8_t LORA_SF = 9, LORA_CR = 7, LORA_SYNC = 0x12;
 const int8_t  LORA_DBM = 20;
 
 // ---------- Protocol ----------
-enum MsgType : uint8_t { CHECKIN = 1, COME_FIND = 2, HELP = 3, SOS = 4, CANCEL = 5, PING = 6, LEAVE = 7, ASK_CHECKIN = 8, JOIN = 9 };
+enum MsgType : uint8_t { CHECKIN = 1, COME_FIND = 2, HELP = 3, SOS = 4, CANCEL = 5, PING = 6, LEAVE = 7, ASK_CHECKIN = 8, JOIN = 9, HOME = 10 };
 struct __attribute__((packed)) Packet {
   uint8_t  magic;   // 0xF1
   uint8_t  type;
@@ -64,6 +66,7 @@ volatile bool loraFlag = false;
 bool     finding = false;  uint32_t findingUntil = 0;
 int8_t   bestRssi = -127;  uint32_t bestRssiAt = 0;
 uint32_t sosUntil = 0;
+bool     pendingHome = false;   // my own "I'm home" waiting for my phone to reconnect
 struct Seen { uint8_t id; int8_t rssi; uint8_t batt; uint32_t at; } seen[12];
 struct Recent { uint8_t from; uint16_t seq; } recent[16]; uint8_t recentIdx = 0;
 
@@ -178,7 +181,7 @@ void publishRoster() {
 // ---------- Buttons: single / double / long ----------
 int readButtons() { int v = analogRead(PIN_BUTTONS); return v > 3600 ? 0 : v > 2200 ? 2 : v > 950 ? 1 : 3; }
 
-enum Gesture { NONE, B1_SINGLE, B1_DOUBLE, B1_LONG, B2_SINGLE, B2_DOUBLE, B2_LONG, BOTH_LONG };
+enum Gesture { NONE, B1_SINGLE, B1_DOUBLE, B1_TRIPLE, B1_LONG, B2_SINGLE, B2_DOUBLE, B2_LONG, BOTH_LONG };
 Gesture pollGesture() {
   static int last = 0, clicks = 0, lastBtn = 0; static uint32_t downAt = 0, upAt = 0; static bool longFired = false;
   int b = readButtons(); uint32_t now = millis();
@@ -191,7 +194,7 @@ Gesture pollGesture() {
   if (!b && last && !longFired) { clicks++; upAt = now; }
   last = b;
   if (!b && clicks && now - upAt > 320) {
-    Gesture g = lastBtn == 1 ? (clicks >= 2 ? B1_DOUBLE : B1_SINGLE) : (clicks >= 2 ? B2_DOUBLE : B2_SINGLE);
+    Gesture g = lastBtn == 1 ? (clicks >= 3 ? B1_TRIPLE : clicks == 2 ? B1_DOUBLE : B1_SINGLE) : (clicks >= 2 ? B2_DOUBLE : B2_SINGLE);
     clicks = 0; return g;
   }
   return NONE;
@@ -238,6 +241,7 @@ void loop() {
   switch (pollGesture()) {
     case B1_SINGLE: finding = true; findingUntil = now + 60000; break;
     case B1_DOUBLE: send(COME_FIND); pattern((const uint16_t[]){80, 60, 80}, 3); break;
+    case B1_TRIPLE: send(HOME); pendingHome = true; pattern((const uint16_t[]){120, 100, 120}, 3); showLeds(2, GREEN); delay(400); showLeds(0, 0); break;
     case B1_LONG:
       if (!groupKey) { groupKey = (uint32_t)random(1, 0x7FFFFFFF); send(JOIN); pattern((const uint16_t[]){80, 80, 80}, 3); } // pairing: first band starts the group
       else { send(CHECKIN); buzz(80); showLeds(2, GREEN); delay(300); showLeds(0, 0); }
@@ -266,6 +270,12 @@ void loop() {
   // SOS: flash red and buzz until cancelled or 30 s
   if (sosUntil && now < sosUntil) { bool on = (now / 250) % 2; showLeds(on ? 4 : 0, RED); if (on && (now % 1000) < 20) buzz(200); }
   else if (sosUntil) { sosUntil = 0; showLeds(0, 0); }
+
+  // Hand my own "I'm home" to my phone (from = 0 means "this band's wearer") so the app sends the texts
+  if (pendingHome && Bluefruit.connected()) {
+    Packet h = { 0xF1, HOME, 0, 0, ++seq, batteryPercent(), 0, 0 };
+    ffEvents.notify((const uint8_t*)&h, sizeof(h)); pendingHome = false;
+  }
 
   static uint32_t nextRoster = 0;
   if (now > nextRoster) { publishRoster(); nextRoster = now + 2000; }

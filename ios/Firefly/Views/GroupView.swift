@@ -16,6 +16,7 @@ struct GroupView: View {
                     NavigationLink(value: f.id) { FriendRow(friend: f) }
                 }
             }
+            GettingHomeSection()
             Section {
                 Button("Ping all bands", systemImage: "dot.radiowaves.left.and.right") { store.pingAll() }
                 Button("Ask for check-in", systemImage: "checkmark.circle") { store.askCheckIn() }
@@ -26,6 +27,7 @@ struct GroupView: View {
                     Button("Priya: I'm okay") { store.simulate(.checkIn, from: 2) }
                     Button("Priya: I need help") { store.simulate(.help, from: 2) }
                     Button("Jordan: SOS", role: .destructive) { store.simulate(.sos, from: 1) }
+                    Button("Jordan: I'm home") { store.simulate(.home, from: 1) }
                 }
             }
         }

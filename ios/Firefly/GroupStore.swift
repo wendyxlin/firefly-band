@@ -15,6 +15,7 @@ struct Friend: Identifiable, Equatable {
     var status: Status = .ok
     var lastCheckIn: Date = .now
     var isHelpContact = true
+    var homeAt: Date?
 
     static func == (a: Friend, b: Friend) -> Bool { a.id == b.id && a.distance == b.distance && a.status == b.status && a.bandBattery == b.bandBattery }
     var link: String { distance < 25 ? "Bluetooth" : distance < 300 ? "LoRa" : "out of range" }
@@ -44,6 +45,12 @@ final class GroupStore: NSObject, ObservableObject {
     @Published var shareGPS = true
     @Published var keepHistory = false
     @Published var cloudRelay = false
+    @Published var meHomeAt: Date?
+    /// Set when this wearer's own band reports "I'm home" (or the user taps it); the UI then offers the text.
+    @Published var pendingHomeText = false
+    @Published var homeContacts: [HomeContact] = HomeContact.load()
+    @Published var myName: String = UserDefaults.standard.string(forKey: "firefly.myName") ?? ""
+    @Published var homeMessage: String = UserDefaults.standard.string(forKey: "firefly.homeMessage") ?? "{name} got home safe at {time}."
 
     let band = BandConnection()
     private let location = CLLocationManager()
@@ -83,6 +90,23 @@ final class GroupStore: NSObject, ObservableObject {
         let text: String = switch t { case .checkIn: "You checked in: I'm okay"; case .comeFindMe: "You sent \"Come find me\""; case .help: "You sent a discreet \"I need help\""; case .sos: "You sent an SOS"; default: "Sent" }
         log(t == .sos ? .sos : t == .help ? .help : .ok, nil, text)
     }
+    /// "I'm home": tell the group through the band, then text the chosen contacts from this phone.
+    func imHome() {
+        band.send(.home)
+        meHomeAt = .now
+        pendingHomeText = true
+        log(.ok, nil, "You're home. The group was told over your band.")
+    }
+    var homeTextBody: String {
+        homeMessage.replacingOccurrences(of: "{name}", with: myName.isEmpty ? "I" : myName)
+                   .replacingOccurrences(of: "{time}", with: Date.now.formatted(date: .omitted, time: .shortened))
+    }
+    func saveHomeSettings() {
+        HomeContact.save(homeContacts)
+        UserDefaults.standard.set(myName, forKey: "firefly.myName")
+        UserDefaults.standard.set(homeMessage, forKey: "firefly.homeMessage")
+    }
+
     func resolve(_ f: Friend) {
         update(f.id) { $0.status = .ok; $0.lastCheckIn = .now }
         band.send(.cancel, to: f.id)
@@ -96,6 +120,7 @@ final class GroupStore: NSObject, ObservableObject {
 
     // MARK: Incoming packets
     func handle(_ p: GroupPacket) {
+        if p.from == 0 && p.type == .home { imHome(); return }   // my own band: triple-press Button 1
         if !friends.contains(where: { $0.id == p.from }) {
             friends.append(Friend(id: p.from, name: "Band \(p.from)", colorHex: 0xC9A0FF, coordinate: myLocation, distance: 30, bandBattery: Int(p.battery), phoneAlive: false))
         }
@@ -111,6 +136,7 @@ final class GroupStore: NSObject, ObservableObject {
         case .sos: update(f.id) { $0.status = .sos }; log(.sos, f.id, "\(f.name): SOS"); raise(f.id)
         case .cancel: update(f.id) { $0.status = .ok }; log(.ok, f.id, "\(f.name) cancelled the alert"); if activeAlert?.id == f.id { activeAlert = nil }
         case .leave: log(.help, f.id, "\(f.name) left the group"); friends.removeAll { $0.id == f.id }
+        case .home: update(f.id) { $0.homeAt = .now; $0.status = .ok }; log(.ok, f.id, "\(f.name) is home")
         default: break
         }
     }
@@ -176,4 +202,16 @@ extension GroupStore: CLLocationManagerDelegate {
         let h = newHeading.trueHeading >= 0 ? newHeading.trueHeading : newHeading.magneticHeading
         Task { @MainActor in self.heading = h }
     }
+}
+
+/// Someone who gets a text when you get home.
+struct HomeContact: Identifiable, Codable, Equatable {
+    var id = UUID()
+    var name: String
+    var phone: String
+    static func load() -> [HomeContact] {
+        guard let d = UserDefaults.standard.data(forKey: "firefly.homeContacts"), let v = try? JSONDecoder().decode([HomeContact].self, from: d) else { return [] }
+        return v
+    }
+    static func save(_ v: [HomeContact]) { UserDefaults.standard.set(try? JSONEncoder().encode(v), forKey: "firefly.homeContacts") }
 }

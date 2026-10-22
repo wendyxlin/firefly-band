@@ -1,4 +1,5 @@
 import SwiftUI
+import MessageUI
 
 @main
 struct FireflyApp: App {
@@ -29,6 +30,16 @@ struct RootView: View {
             NavigationStack { PrivacyView() }.tabItem { Label("Privacy", systemImage: "lock.shield") }.tag(4)
         }
         .fullScreenCover(item: $store.activeAlert) { f in SOSView(friend: f) }
+        .sheet(isPresented: $store.pendingHomeText) {
+            if MFMessageComposeViewController.canSendText(), !store.homeContacts.isEmpty {
+                MessageComposer(recipients: store.homeContacts.map(\.phone), body: store.homeTextBody) { store.pendingHomeText = false }
+            } else {
+                VStack(spacing: 12) {
+                    Text("Add people under My band → Text when I'm home, and Firefly will text them next time.").multilineTextAlignment(.center)
+                    Button("OK") { store.pendingHomeText = false }.buttonStyle(.borderedProminent)
+                }.padding().presentationDetents([.medium])
+            }
+        }
     }
 }
 

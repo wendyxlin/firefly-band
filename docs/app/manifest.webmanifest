@@ -1,0 +1,16 @@
+{
+  "name": "Firefly",
+  "short_name": "Firefly",
+  "description": "Find your friends, get alerts, and know everyone got home. Companion app for the Firefly bracelet.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e0d16",
+  "theme_color": "#0e0d16",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

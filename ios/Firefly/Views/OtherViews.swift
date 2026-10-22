@@ -54,9 +54,11 @@ struct BandView: View {
                 Button("Come find me") { store.sendAsMe(.comeFindMe) }
                 Button("I need help") { store.sendAsMe(.help) }.foregroundStyle(.orange)
                 Button("SOS", role: .destructive) { store.sendAsMe(.sos) }
+                Button("I'm home") { store.imHome() }
             }
+            HomeTextSettings()
             Section("Button guide") {
-                Text("**Button 1 · Find**\n1× find friends · 2× come find me · hold: I'm okay")
+                Text("**Button 1 · Find**\n1× find friends · 2× come find me · 3× I'm home · hold: I'm okay")
                 Text("**Button 2 · Safety** (dimpled)\n1× discreet help · 2× cancel · hold 3 s: SOS")
                 Text("**Both, 5 s:** leave the group")
             }

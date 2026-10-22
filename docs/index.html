@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Firefly · Never lose your people</title>
+<meta name="description" content="Firefly is a gold bangle that finds your friends when your phone is dead, sends a discreet SOS, and tells your people when you get home. Join the waitlist.">
+<meta property="og:title" content="Firefly · Never lose your people">
+<meta property="og:description" content="A bracelet that finds your friends when your phone can't. Join the waitlist.">
+<meta property="og:image" content="renders/firefly-product-champagne.jpg">
+<meta name="theme-color" content="#0e0d16">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: single-scroll launch page; nightlife palette (indigo-black, champagne gold, firefly amber). */
+:root{
+  --bg:#0e0d16; --bg2:#14131d; --panel:#1a1924; --line:#2a2838; --fg:#efecf6; --muted:#a39fb5;
+  --gold:#d9b878; --amber:#f5b544; --amber-fg:#1a1200; --ok:#5ed39a; --bad:#ef5b6b;
+  --display:"Outfit",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--body)}
+a{color:var(--amber)}
+img,video{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.08;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.muted{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 1rem var(--display);padding:13px 22px;border-radius:999px;text-decoration:none;border:1px solid var(--line);color:var(--fg);background:transparent;cursor:pointer}
+.btn.primary{background:var(--amber);color:var(--amber-fg);border-color:var(--amber);box-shadow:0 8px 30px rgba(245,181,68,.25)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+section{padding-block:88px}
+.head{max-width:680px;margin-bottom:40px;display:grid;gap:12px}
+.head h2{font-size:clamp(2rem,4.4vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+.head p{font-size:1.1rem}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(14,13,22,.82);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);padding-top:env(safe-area-inset-top,0px)}
+nav .wrap{display:flex;align-items:center;gap:22px;height:64px}
+nav .logo{font:700 1.3rem var(--display);color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:9px}
+nav .logo i{width:10px;height:10px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px var(--amber)}
+nav .links{display:flex;gap:22px;margin-left:auto}
+nav .links a{color:var(--muted);text-decoration:none;font:500 .95rem var(--display)}
+nav .links a:hover{color:var(--fg)}
+nav .btn{padding:9px 16px;font-size:.9rem}
+
+/* hero */
+.hero{padding-block:56px 40px;background:radial-gradient(900px 500px at 75% 20%,rgba(245,181,68,.16),transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.8rem,6.6vw,5.4rem);font-weight:700;letter-spacing:-.03em}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .sub{font-size:1.2rem;margin-top:20px;max-width:34ch}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero .proof{display:flex;gap:26px;flex-wrap:wrap;margin-top:34px;font:500 .85rem var(--mono);color:var(--muted)}
+.hero .proof b{display:block;color:var(--fg);font:700 1.5rem var(--display)}
+.hero-img{border-radius:28px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/11;background:#0b0a12}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+
+/* video */
+.film video{width:100%;aspect-ratio:16/9;border-radius:24px;border:1px solid var(--line);background:#000}
+
+/* problem */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.trio .c{border-top:2px solid var(--amber);padding-top:18px}
+.trio h3{font-size:1.35rem;margin-bottom:8px}
+
+/* buttons */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:26px;min-width:0}
+.card h3{font-size:1.4rem;margin:10px 0 12px}
+.gest{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.gest li{display:flex;gap:12px;align-items:baseline}
+.gest .k{flex:none;min-width:58px;font:500 .78rem var(--mono);color:var(--amber);border:1px solid rgba(245,181,68,.35);border-radius:999px;padding:2px 9px;text-align:center}
+.bead{width:16px;height:16px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:8px;box-shadow:inset -3px -3px 5px rgba(0,0,0,.35)}
+
+/* network */
+.net{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+.net svg{width:100%;height:auto}
+.net ul{margin:18px 0 0;padding-left:20px;display:grid;gap:8px}
+
+/* jewelry */
+.gallery{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:14px}
+.gallery figure{margin:0;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#0b0a12;position:relative}
+.gallery figure:first-child{grid-row:1/3}
+.gallery img{width:100%;height:100%;object-fit:cover}
+.gallery figcaption{position:absolute;left:14px;bottom:12px;font:500 .78rem var(--mono);color:var(--fg);background:rgba(14,13,22,.7);padding:4px 10px;border-radius:999px}
+.finishes{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.finishes span{display:inline-flex;align-items:center;gap:8px;font:500 .85rem var(--display);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.finishes i{width:14px;height:14px;border-radius:50%}
+
+/* specs */
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.specs .card b{display:block;font:700 2.2rem var(--display);margin:8px 0 6px;line-height:1.1}
+
+/* app */
+.app{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.steps{counter-reset:s;list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.steps li{counter-increment:s;position:relative;padding-left:40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font:600 .85rem var(--display);color:var(--amber)}
+
+/* waitlist */
+.wl{background:radial-gradient(800px 400px at 20% 0%,rgba(245,181,68,.14),transparent 70%),var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.wl .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+form{display:grid;gap:14px}
+label{display:grid;gap:6px;font:600 .85rem var(--display)}
+input,select{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+.note{font-size:.9rem;padding:12px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.note.ok{border-color:var(--ok)} .note.err{border-color:var(--bad)}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font:600 1.1rem var(--display);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;color:var(--amber)}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px;max-width:70ch}
+
+footer{padding-block:40px calc(40px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
+
+@media (max-width:900px){
+  nav .links{display:none}
+  .hero .wrap,.net,.app,.wl .wrap{grid-template-columns:1fr}
+  .trio,.how{grid-template-columns:1fr}
+  .specs{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:1fr;grid-template-rows:none}
+  .gallery figure:first-child{grid-row:auto}
+  section{padding-block:64px}
+}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top"><i></i>Firefly</a>
+  <div class="links"><a href="#film">Film</a><a href="#how">How it works</a><a href="#design">Design</a><a href="#app">App</a><a href="#faq">FAQ</a></div>
+  <a class="btn primary" href="#waitlist">Join the waitlist</a>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <div class="eyebrow">Launching 2027 · NYC</div>
+    <h1 style="margin-top:14px">Never lose<br>your <em>people.</em></h1>
+    <p class="sub muted">Firefly is a fine gold bangle with a glowing stone. It finds your friends when your phone is dead, sends a quiet SOS, and tells your people you got home.</p>
+    <div class="ctas"><a class="btn primary" href="#waitlist">Join the waitlist</a><a class="btn" href="#film">▶ Watch the 50-second film</a></div>
+    <div class="proof"><div><b>25 g</b>lighter than most watches</div><div><b>~26 h</b>battery</div><div><b>0%</b>phone battery needed</div></div>
+  </div>
+  <div class="hero-img"><img src="renders/firefly-product-champagne.jpg" alt="Firefly hinged gold bangle with a bezel-set opalite stone"></div>
+</div></header>
+
+<section class="film" id="film"><div class="wrap">
+  <div class="head"><div class="eyebrow">The film</div><h2>1:47 AM. Your phone just died.</h2></div>
+  <video controls playsinline preload="metadata" poster="renders/firefly-product-champagne.jpg" src="media/firefly-promo.mp4"></video>
+</div></section>
+
+<section id="problem"><div class="wrap">
+  <div class="head"><div class="eyebrow">Why we're building it</div><h2>Every night out, the same three problems.</h2><p class="muted">We interviewed NYU juniors and seniors who go out every week. These came up again and again.</p></div>
+  <div class="trio">
+    <div class="c"><h3>Phones die</h3><p class="muted">Photos, Maps and location sharing drain the battery. The friend with 0% is the one nobody can reach.</p></div>
+    <div class="c"><h3>No signal, no sightline</h3><p class="muted">Basements kill GPS and cell service, and a shared location can't help you spot someone in a dark, packed room.</p></div>
+    <div class="c"><h3>Groups split</h3><p class="muted">Drinks, restrooms, Ubers. One person ends up coordinating, and someone gets home without anyone knowing.</p></div>
+  </div>
+</div></section>
+
+<section id="how" style="background:var(--bg2)"><div class="wrap">
+  <div class="head"><div class="eyebrow">How it works</div><h2>Two gold beads. Everything you need in the dark.</h2><p class="muted">No screen, no app to open. Feel for the beads beside the stone and press.</p></div>
+  <div class="how">
+    <div class="card"><span class="bead" style="background:#e8d9b5"></span><span class="eyebrow">Button 1 · Find</span><h3>Hot or cold</h3>
+      <ul class="gest"><li><span class="k">1×</span><span>Find your friends. The bangle pulses faster and the stone glows brighter as you get closer.</span></li><li><span class="k">2×</span><span>"Come find me" to the group.</span></li><li><span class="k">hold</span><span>"I'm okay" check-in.</span></li></ul></div>
+    <div class="card"><span class="bead" style="background:#d98f86"></span><span class="eyebrow">Button 2 · Safety</span><h3>Help, quietly</h3>
+      <ul class="gest"><li><span class="k">1×</span><span>A discreet "I need help" to the friends you choose. No light, one small buzz.</span></li><li><span class="k">2×</span><span>Cancel an accidental alert.</span></li><li><span class="k">3 s</span><span>SOS to every band nearby, with your distance and direction.</span></li></ul></div>
+    <div class="card"><span class="bead" style="background:#e8d9b5"></span><span class="eyebrow">Button 1 · 3×</span><h3>I'm home</h3>
+      <ul class="gest"><li><span class="k">3×</span><span>Friends still out get "Jordan is home" right away.</span></li><li><span class="k">text</span><span>Your phone texts Mom or your roommate as soon as it's charging, even if it died on the way.</span></li><li><span class="k">auto</span><span>Or turn on "text when I arrive home" and skip the button.</span></li></ul></div>
+  </div>
+</div></section>
+
+<section id="network"><div class="wrap net">
+  <div>
+    <div class="eyebrow">Works without your phone</div>
+    <h2 style="font-size:clamp(2rem,4.4vw,3rem);margin:12px 0 16px">No battery. No signal. Still connected.</h2>
+    <p class="muted" style="font-size:1.08rem">Every band carries its own long-range radio. Bands talk to each other directly, through walls and crowds, with nothing in between.</p>
+    <ul class="muted"><li><b style="color:var(--fg)">LoRa radio, 915 MHz:</b> band to band, 300 m+ indoors.</li><li><b style="color:var(--fg)">Bluetooth:</b> precise finding within 25 m, plus the link to whichever friend still has battery and the app.</li><li><b style="color:var(--fg)">Private:</b> no GPS on the band, a group key that expires at sunrise, and nothing stored on a server.</li></ul>
+  </div>
+  <svg viewBox="0 0 520 380" role="img" aria-label="Four bands connected by radio links across a club and a pizza place">
+    <rect x="20" y="40" width="300" height="240" rx="18" fill="none" stroke="#2a2838" stroke-width="3"/><text x="38" y="70" font-family="IBM Plex Mono" font-size="13" fill="#a39fb5">CLUB · basement</text>
+    <rect x="350" y="150" width="150" height="130" rx="18" fill="none" stroke="#2a2838" stroke-width="3"/><text x="366" y="178" font-family="IBM Plex Mono" font-size="13" fill="#a39fb5">PIZZA</text>
+    <g stroke="#f5b544" stroke-width="2" stroke-dasharray="6 7" fill="none" opacity=".7"><path d="M90 120 L230 200"/><path d="M90 120 L150 230"/><path d="M230 200 L425 225"/><path d="M150 230 L230 200"/></g>
+    <g font-family="IBM Plex Sans" font-size="15" font-weight="600" fill="#efecf6" text-anchor="middle">
+      <circle cx="90" cy="120" r="34" fill="#f5b544" opacity=".15"/><rect x="72" y="112" width="36" height="16" rx="8" fill="#f5b544"/><text x="90" y="160">You</text>
+      <circle cx="230" cy="200" r="34" fill="#c9a0ff" opacity=".15"/><rect x="212" y="192" width="36" height="16" rx="8" fill="#c9a0ff"/><text x="230" y="240">Priya</text>
+      <circle cx="150" cy="230" r="34" fill="#5ed39a" opacity=".15"/><rect x="132" y="222" width="36" height="16" rx="8" fill="#5ed39a"/><text x="150" y="270">Jordan</text>
+      <circle cx="425" cy="225" r="34" fill="#6fa8ff" opacity=".15"/><rect x="407" y="217" width="36" height="16" rx="8" fill="#6fa8ff"/><text x="425" y="265">Sam</text>
+    </g>
+    <text x="260" y="340" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#a39fb5">bands relay for each other · no phone in the loop</text>
+  </svg>
+</div></section>
+
+<section id="design" style="background:var(--bg2)"><div class="wrap">
+  <div class="head"><div class="eyebrow">Designed like jewelry</div><h2>Fine jewelry first. A tracker never.</h2><p class="muted">A hinged gold bangle, a bezel-set opalite stone framed in milgrain that glows only when it needs to, two gold bead buttons, and the battery hidden in the clasp.</p></div>
+  <div class="gallery">
+    <figure><img src="renders/firefly-on-wrist.jpg" alt="Firefly on a wrist" loading="lazy"><figcaption>On the wrist · to scale</figcaption></figure>
+    <figure><img src="renders/firefly-closeup.jpg" alt="Close-up of the centerpiece" loading="lazy"><figcaption>The centerpiece</figcaption></figure>
+    <figure><img src="renders/firefly-inside.jpg" alt="X-ray of the parts inside the bar" loading="lazy"><figcaption>Everything inside</figcaption></figure>
+  </div>
+  <div class="finishes"><span><i style="background:#eab552"></i>Yellow gold</span><span><i style="background:#e7a58d"></i>Rose gold</span><span><i style="background:#e8e5df"></i>White gold</span><span><i style="background:#3c3a40"></i>Black gold</span></div>
+</div></section>
+
+<section id="specs"><div class="wrap">
+  <div class="head"><div class="eyebrow">The numbers</div><h2>Small enough to forget you're wearing it.</h2></div>
+  <div class="specs">
+    <div class="card"><span class="eyebrow">Weight</span><b>25 g</b><p class="muted">The whole bangle. Most smartwatches weigh 30–50 g.</p></div>
+    <div class="card"><span class="eyebrow">Battery</span><b>~26 h</b><p class="muted">A full night with margin. The clasp snaps onto a magnetic charger.</p></div>
+    <div class="card"><span class="eyebrow">Range</span><b>300 m+</b><p class="muted">Indoors, band to band. Over a kilometre outside.</p></div>
+    <div class="card"><span class="eyebrow">Target price</span><b>$149–199</b><p class="muted">Gold-plated launch edition. Waitlist members get first access and launch pricing.</p></div>
+  </div>
+</div></section>
+
+<section id="app" style="background:var(--bg2)"><div class="wrap app">
+  <div>
+    <div class="eyebrow">The app</div>
+    <h2 style="font-size:clamp(2rem,4.4vw,3rem);margin:12px 0 16px">One phone guides everyone.</h2>
+    <p class="muted" style="font-size:1.08rem">Whoever still has battery sees the whole group on a map, gets every alert, follows a compass straight to anyone, and sees who made it home. Try it now: it runs a demo night until you have a band.</p>
+    <p style="margin-top:22px"><a class="btn primary" href="app/">Open the Firefly app</a></p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Install it on your phone</h3>
+    <p class="muted"><b style="color:var(--fg)">iPhone (Safari)</b></p>
+    <ol class="steps"><li>Open <b>wendyxlin.github.io/firefly-band/app</b> in Safari.</li><li>Tap the <b>Share</b> button, then <b>Add to Home Screen</b> → <b>Add</b>.</li><li>Open Firefly from your home screen. It runs full-screen and works offline.</li></ol>
+    <p class="muted" style="margin-top:18px"><b style="color:var(--fg)">Android (Chrome)</b></p>
+    <ol class="steps"><li>Open the same link in Chrome.</li><li>Tap <b>Install app</b> when it pops up (or ⋮ → <b>Add to Home screen</b>).</li><li>On Android you can also pair a real band over Bluetooth.</li></ol>
+  </div>
+</div></section>
+
+<section class="wl" id="waitlist"><div class="wrap">
+  <div>
+    <div class="eyebrow">Waitlist</div>
+    <h2 style="font-size:clamp(2.2rem,5vw,3.6rem);margin:12px 0 16px">Be first to wear one.</h2>
+    <p class="muted" style="font-size:1.1rem">We're making the first batch for NYC in 2027. Join to get early access, launch pricing, and a say in the design.</p>
+    <p class="muted" style="margin-top:16px;font-size:.92rem">We only use your email for Firefly updates. No spam, unsubscribe anytime.</p>
+  </div>
+  <form id="wl" novalidate>
+    <label>Name<input id="wlName" name="name" autocomplete="name" required placeholder="First name is fine"></label>
+    <label>Email<input id="wlEmail" name="email" type="email" autocomplete="email" required placeholder="you@school.edu"></label>
+    <label>How often do you go out?<select id="wlFreq" name="freq"><option>Most weekends</option><option>A few times a month</option><option>Once a month or less</option><option>Only for big events</option></select></label>
+    <label>What matters most to you?<select id="wlWhy" name="why"><option>Finding friends when my phone dies</option><option>A discreet way to ask for help</option><option>Knowing everyone got home</option><option>It has to look good</option></select></label>
+    <button class="btn primary" id="wlBtn" type="submit" style="justify-content:center">Join the waitlist</button>
+    <div class="note" id="wlNote" hidden></div>
+  </form>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <div class="head"><div class="eyebrow">FAQ</div><h2>Questions we get a lot.</h2></div>
+  <details><summary>Does my phone need to be on?</summary><p class="muted">No. Finding, check-ins, help alerts and SOS all run band to band over radio. One friend's phone with the app adds the map and alert history, but it's optional.</p></details>
+  <details><summary>Can anyone track me?</summary><p class="muted">The band has no GPS and stores no location. It only knows that a band with tonight's group key is nearby. The key is created when your group taps bands together and is wiped at the end of the night. Nothing goes to a server.</p></details>
+  <details><summary>How does "I'm home" work if my phone died?</summary><p class="muted">Triple-press Button 1. Friends whose bands are in range hear it right away. Your band also holds the message, and the moment your phone is charging and near the band, the app texts the people you picked.</p></details>
+  <details><summary>Is it waterproof?</summary><p class="muted">It's splash-proof: spilled drinks and rain are fine, and it charges magnetically through the clasp so there's no open port. Don't swim with it.</p></details>
+  <details><summary>How far apart can friends be?</summary><p class="muted">Precise hot-or-cold finding works within about 25 m. Alerts and check-ins reach 300 m or more indoors, and over a kilometre outdoors.</p></details>
+  <details><summary>When can I get one?</summary><p class="muted">We're building prototypes now and planning a first NYC batch in 2027. Waitlist members hear first.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Firefly · an NYU Stern class project, 2026</span>
+  <span><a href="concept/">Full concept & build plan</a> · <a href="app/">App</a> · <a href="https://github.com/wendyxlin/firefly-band">GitHub</a></span>
+</div></footer>
+
+<script>
+/* Waitlist → Google Form. Fill in the form's "formResponse" URL and the entry IDs for each question. */
+const WAITLIST_FORM = {
+  action: 'https://docs.google.com/forms/d/e/1FAIpQLSeDMEhQfYmbDYZgqmqvd1ChsJuqbGd5-0xR9vZAamRsAIr4uA/formResponse',   // "Firefly waitlist" form in BTE Capstone
+  fields: { name: 'entry.1823843195', email: 'entry.872874016', freq: 'entry.1188101906', why: 'entry.494191741' }
+};
+const form = document.getElementById('wl'), note = document.getElementById('wlNote'), btn = document.getElementById('wlBtn');
+function say(t, cls){ note.hidden = false; note.className = 'note ' + (cls || ''); note.textContent = t; }
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = form.wlName.value.trim(), email = form.wlEmail.value.trim();
+  if(!name){ say('Add your name so we know who you are.', 'err'); form.wlName.focus(); return; }
+  if(!/^\S+@\S+\.\S+$/.test(email)){ say('That email doesn\'t look right. Check it and try again.', 'err'); form.wlEmail.focus(); return; }
+  if(!WAITLIST_FORM.action){ say('Signups open in the next day or two. Check back soon, or follow the project on GitHub.', ''); return; }
+  btn.disabled = true;
+  const data = new FormData();
+  const f = WAITLIST_FORM.fields;
+  data.append(f.name, name); data.append(f.email, email); data.append(f.freq, form.wlFreq.value); data.append(f.why, form.wlWhy.value);
+  try{
+    await fetch(WAITLIST_FORM.action, { method: 'POST', mode: 'no-cors', body: data });
+    say('You\'re on the list. We\'ll email you when the first batch is ready.', 'ok'); form.reset();
+  }catch(err){ say('Couldn\'t reach the waitlist just now. Check your connection and try again.', 'err'); }
+  finally{ btn.disabled = false; }
+});
+</script>
+</body>
+</html>

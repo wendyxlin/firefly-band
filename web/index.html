@@ -188,6 +188,10 @@ ol.steps li::before{content:counter(step);position:absolute;left:14px;top:12px;w
 pre.code{font-family:var(--mono);font-size:.72rem;line-height:1.45;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;margin:0;color:var(--fg)}
 code{font-family:var(--mono);font-size:.85em;background:var(--bg2);padding:1px 5px;border-radius:5px}
 .promo{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:16px;border:1px solid var(--line);background:#000}
+.answers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.answers .count{font-size:2.2rem}
+@media (max-width:980px){.answers{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.answers{grid-template-columns:1fr}}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .gallery figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .gallery img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
@@ -209,26 +213,36 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
 
 <nav class="top"><div class="wrap">
   <a class="brand" href="#top">Firefly</a>
-  <a href="#promo">Video</a><a href="#problem">Problem</a><a href="#model">3D model</a><a href="#drawings">Drawings</a><a href="#parts">Parts &amp; cost</a><a href="#build">Build guide</a><a href="#sim">Simulation</a><a href="#connect">How it connects</a><a href="#app">App</a><a href="#privacy">Privacy</a><a href="#waitlist">Waitlist</a>
+  <a href="#answers">Quick answers</a><a href="#promo">Video</a><a href="#problem">Problem</a><a href="#model">3D model</a><a href="#drawings">Drawings</a><a href="#parts">Parts &amp; cost</a><a href="#build">Build guide</a><a href="#sim">Simulation</a><a href="#home">Getting home</a><a href="#connect">How it connects</a><a href="#app">App</a><a href="#privacy">Privacy</a><a href="#waitlist">Waitlist</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap grid">
   <div>
     <div class="eyebrow">Concept &amp; build plan · Oct 2026</div>
     <h1 style="margin-top:10px">A bracelet that finds your friends when your phone is dead.</h1>
-    <p class="prose muted" style="margin-top:16px;font-size:1.05rem">Firefly is a two-button jewelry-weight band with its own radio. It keeps a friend group connected inside a packed bar or club with no signal, and it never needs the wearer's phone. One friend with battery runs the app; everyone else just wears the band.</p>
+    <p class="prose muted" style="margin-top:16px;font-size:1.05rem">Firefly is a hinged gold bangle with a bezel-set opalite stone that glows, two gold bead buttons and its own radio hidden inside. It keeps a friend group connected inside a packed bar or club with no signal, it never needs the wearer's phone, and when you get home it lets your people know. One friend with battery runs the app; everyone else just wears the band.</p>
     <div class="hero-stats">
       <div class="stat"><b id="statWeight">27 g</b><span>total weight, target under 30 g</span></div>
-      <div class="stat"><b>44 × 24 × 11 mm</b><span>pod, modeled to real size</span></div>
-      <div class="stat"><b>30+ h</b><span>battery, target 12–24 h</span></div>
+      <div class="stat"><b>28 × 24 mm</b><span>centerpiece, modeled to real size</span></div>
+      <div class="stat"><b>~26 h</b><span>battery, target 12–24 h</span></div>
     </div>
   </div>
-  <img class="band-illus" src="renders/firefly-product-champagne.jpg" alt="Firefly band render, champagne finish" style="border-radius:18px;object-fit:cover;aspect-ratio:16/11">
+  <img class="band-illus" src="renders/firefly-product-champagne.jpg" alt="Firefly bangle render, yellow gold" style="border-radius:18px;object-fit:cover;aspect-ratio:16/11">
 </div></header>
 
 <section id="promo"><div class="wrap">
   <div class="head"><div class="eyebrow">Promo · 53 seconds</div><h2>Firefly in under a minute</h2></div>
   <video class="promo" controls playsinline preload="metadata" poster="renders/firefly-product-champagne.jpg" src="../media/firefly-promo.mp4"></video>
+</div></section>
+
+<section id="answers"><div class="wrap">
+  <div class="head"><div class="eyebrow">Quick answers</div><h2>Battery, weight, network, cost</h2></div>
+  <div class="answers">
+    <div class="card"><div class="eyebrow">Battery</div><p class="count mono">~26 h</p><p class="muted">On a 110 mAh cell hidden in the clasp, at a 4.1 mA average: listening for the group, a beacon every second, a few alerts and a few minutes of finding. Heavy finding all night brings it to about 16 h, still inside the 12–24 h target. Charges in about 1.5 h on a magnetic cable.</p></div>
+    <div class="card"><div class="eyebrow">Weight</div><p class="count mono" id="ansWeight">~24 g</p><p class="muted">About 25 g for the whole bangle (hollow gold-plated band, centerpiece, clasp box and electronics), against the 30 g limit. That's a typical statement bangle; most smartwatches weigh 30–50 g.</p></div>
+    <div class="card"><div class="eyebrow">Network</div><p class="count mono" style="font-size:1.6rem;line-height:1.25">LoRa 915 MHz<br>+ Bluetooth LE</p><p class="muted">Bands talk to each other directly over LoRa radio: no phone, Wi-Fi or cell signal needed, reaching 300 m+ indoors. Bluetooth handles close-range finding (0–25 m) and the link to the friend whose phone runs the app.</p></div>
+    <div class="card"><div class="eyebrow">Cost</div><p class="count mono" id="ansCost">~$76</p><p class="muted">Per prototype band in off-the-shelf parts (itemized below). About $21 at 1,000 units with a custom board and aluminum shell, which supports a $69–89 retail price.</p></div>
+  </div>
 </div></section>
 
 <section id="problem"><div class="wrap">
@@ -241,7 +255,8 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
   <div class="cols" style="margin-top:24px">
     <div class="card"><h3>Requirements the design has to meet</h3>
       <ul class="clean muted">
-        <li>Under 30 g, looks like jewelry, no screen</li>
+        <li>Under 30 g, looks like jewelry (not a tracker), no screen</li>
+        <li>Lets your people know when you get home</li>
         <li>12–24 h battery, works with the wearer's phone dead</li>
         <li>Splash-proof (spilled drinks, rain), survives crowd impacts</li>
         <li>Finds connected friends within range; guides by vibration and light</li>
@@ -269,25 +284,25 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
       <button class="btn" id="btnWrist" aria-pressed="true">Wrist</button>
       <button class="btn" id="btnCoin" aria-pressed="false">Quarter</button>
       <button class="btn" id="btnSpin" aria-pressed="true">Auto-rotate</button>
-      <label class="range"><span>Finish</span><select id="finish" aria-label="Shell finish"><option value="graphite">Graphite</option><option value="champagne">Champagne</option><option value="rose">Rose</option><option value="silver">Silver</option></select></label>
+      <label class="range"><span>Finish</span><select id="finish" aria-label="Shell finish"><option value="champagne">Yellow gold</option><option value="rose">Rose gold</option><option value="silver">White gold</option><option value="graphite">Black gold</option></select></label>
     </div>
     <div class="views">
       <span class="eyebrow" style="font-size:.62rem">View</span>
       <button class="btn" data-view="iso">Iso</button><button class="btn" data-view="top">Top</button><button class="btn" data-view="front">Front</button><button class="btn" data-view="side">Side</button><button class="btn" data-view="back">Back</button>
     </div>
     <ul class="partlist" id="partList" hidden></ul>
-    <div class="info" id="partInfo"><b>Firefly pod</b> · 44 × 24 × 11 mm · ~27 g with strap<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span></div>
+    <div class="info" id="partInfo"><b>Firefly bangle</b> · 28 × 24 mm centerpiece · ~25 g<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span></div>
   </div>
-  <p class="muted" style="font-size:.82rem;margin-top:10px">Click the two button caps on the model to press them: the LED strip and the simulation below react. The amber glow is the real LED strip state; in finding mode it shows how many LEDs light at the current distance.</p>
+  <p class="muted" style="font-size:.82rem;margin-top:10px">Click the two gold beads on the model to press them: the stone and the simulation below react. At rest the stone looks like a milky moonstone; in finding mode it glows amber brighter as you get closer, and red for SOS. Try the finish menu for rose, white and black gold.</p>
   <div class="legend" id="legend"></div>
   <h3 style="margin-top:28px;margin-bottom:12px">Renders</h3>
   <div class="gallery">
-    <figure><img src="renders/firefly-product-champagne.jpg" alt="Firefly band in champagne finish, amber light strip glowing" loading="lazy"><figcaption>Champagne finish · amber strip shows the band is in a group</figcaption></figure>
+    <figure><img src="renders/firefly-product-champagne.jpg" alt="Firefly hinged gold bangle with a bezel-set opalite stone" loading="lazy"><figcaption>Yellow gold · bezel-set opalite, milgrain border, hinged bangle</figcaption></figure>
     <figure><img src="renders/firefly-on-wrist.jpg" alt="Firefly band on a wrist" loading="lazy"><figcaption>On a 165 mm wrist, to scale</figcaption></figure>
-    <figure><img src="renders/firefly-product-graphite.jpg" alt="Firefly band in graphite finish" loading="lazy"><figcaption>Graphite finish · Find button left, Safety button right</figcaption></figure>
-    <figure><img src="renders/firefly-inside.jpg" alt="X-ray view of the parts inside the pod" loading="lazy"><figcaption>Inside: boards left, battery and motor right, antenna under the lid</figcaption></figure>
-    <figure><img src="renders/firefly-exploded.jpg" alt="Exploded view with every part labeled" loading="lazy"><figcaption>Exploded, every part labeled</figcaption></figure>
-    <figure><img src="renders/firefly-scale-quarter.jpg" alt="Firefly band next to a US quarter" loading="lazy"><figcaption>Rose finish, next to a US quarter</figcaption></figure>
+    <figure><img src="renders/firefly-product-silver.jpg" alt="Firefly bangle in white gold" loading="lazy"><figcaption>White gold · the clasp box underneath hides the battery</figcaption></figure>
+    <figure><img src="renders/firefly-inside.jpg" alt="X-ray view of the parts inside the bar" loading="lazy"><figcaption>Inside the centerpiece: stacked boards, LEDs under the stone, antenna along the back</figcaption></figure>
+    <figure><img src="renders/firefly-exploded.jpg" alt="Exploded view with every part labeled" loading="lazy"><figcaption>Exploded: centerpiece on top, clasp box with battery and motor below</figcaption></figure>
+    <figure><img src="renders/firefly-closeup.jpg" alt="Close-up of the centerpiece: collet, milgrain and gold bead buttons" loading="lazy"><figcaption>Close-up · smooth bead is Find, the bead with a tiny stone is Safety</figcaption></figure>
   </div>
 
 </div></section>
@@ -298,9 +313,9 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
   <div class="drawing" style="margin-top:16px">
     <div class="lifesize">
       <div><h3>Life-size on screen</h3><p class="cap">Drawn in real millimetres. Most laptop screens show this within about 10% of true size; hold a quarter up to the circle to check.</p></div>
-      <svg id="lifesize" width="44mm" height="26mm" viewBox="0 0 44 26" aria-label="Life-size pod outline"></svg>
+      <svg id="lifesize" width="50mm" height="25mm" viewBox="0 0 50 25" aria-label="Life-size bar outline"></svg>
       <svg width="26mm" height="26mm" viewBox="0 0 26 26" aria-label="Life-size US quarter"><circle cx="13" cy="13" r="12.13" fill="none" stroke="var(--muted)" stroke-width=".4"/><text x="13" y="14" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">24.26 mm</text></svg>
-      <svg width="46mm" height="12mm" viewBox="0 0 46 12" aria-label="Life-size side profile"><rect x="1" y="0.5" width="44" height="11" rx="5.5" fill="none" stroke="var(--fg)" stroke-width=".4"/><text x="23" y="7.2" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">11 mm thick</text></svg>
+      <svg width="30mm" height="17mm" viewBox="0 0 30 17" aria-label="Life-size side profile"><rect x="1" y="5.5" width="28" height="11" rx="3.5" fill="none" stroke="var(--fg)" stroke-width=".4"/><path d="M 7.5 5.5 Q 15 -1.5 22.5 5.5" fill="none" stroke="var(--accent)" stroke-width=".4"/><text x="15" y="12.6" text-anchor="middle" font-size="2.4" fill="var(--muted)" font-family="IBM Plex Mono, monospace">11 mm body</text></svg>
     </div>
   </div>
 </div></section>
@@ -310,11 +325,11 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
   <div class="tablewrap"><table id="bom"></table></div>
   <div class="cols-3" style="margin-top:20px">
     <div class="card"><h3>Prototype cost</h3><p class="count mono" id="costProto">—</p><p class="muted">per band, off-the-shelf parts, 3D-printed shell</p></div>
-    <div class="card"><h3>At 1,000 units</h3><p class="count mono">~$19</p><p class="muted">custom PCB (nRF52840 + SX1262 on one 30 × 18 mm board), injection-molded shell, braided strap. Supports a $59–79 retail price.</p></div>
-    <div class="card"><h3>Weight budget</h3><p class="count mono" id="weightTotal">—</p><p class="muted">pod + strap, against the 30 g limit. A production shell drops another 3–4 g.</p></div>
+    <div class="card"><h3>At 1,000 units</h3><p class="count mono">~$34</p><p class="muted">custom PCB (nRF52840 + SX1262 on one 18 × 14 mm board, so the centerpiece shrinks to about 22 mm), cast gold-plated brass, glass cabochon. Supports a $149–199 fine-fashion retail price; a solid 14k version would be a separate high-end line.</p></div>
+    <div class="card"><h3>Weight budget</h3><p class="count mono" id="weightTotal">—</p><p class="muted">bangle + centerpiece + clasp box, against the 30 g limit. A custom PCB drops another 2–3 g.</p></div>
   </div>
   <div class="cols" style="margin-top:20px">
-    <div class="card"><h3>Power budget (150 mAh cell)</h3>
+    <div class="card"><h3>Power budget (110 mAh cell)</h3>
       <div class="tablewrap" style="border:none"><table style="min-width:0">
         <tr><th>State</th><th class="num">Duty</th><th class="num">Avg draw</th></tr>
         <tr><td>Deep sleep (nRF52840 + SX1262 asleep)</td><td class="num">~85%</td><td class="num">0.02 mA</td></tr>
@@ -322,7 +337,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
         <tr><td>LoRa listen window, 200 ms every 2 s</td><td class="num">10%</td><td class="num">1.1 mA</td></tr>
         <tr><td>LoRa transmit (check-ins, alerts), 22 dBm bursts</td><td class="num">~1%</td><td class="num">1.2 mA</td></tr>
         <tr><td>Vibration + LEDs during finding mode</td><td class="num">~5%</td><td class="num">1.5 mA</td></tr>
-        <tr class="total"><td>Average</td><td class="num"></td><td class="num">~4.1 mA → ~36 h</td></tr>
+        <tr class="total"><td>Average</td><td class="num"></td><td class="num">~4.1 mA → ~26 h</td></tr>
       </table></div></div>
     <div class="card"><h3>Why these radios</h3>
       <p class="muted"><b>Bluetooth LE</b> (built into the nRF52840) gives short-range proximity between bands and the link to the responsible friend's phone. Signal strength falls off predictably over 0–25 m indoors, which is what drives the hot/cold vibration in finding mode.</p>
@@ -332,7 +347,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
 </div></section>
 
 <section id="build"><div class="wrap">
-  <div class="head"><div class="eyebrow">Build guide · prototype</div><h2>How to actually build one</h2><p class="muted prose">Everything below is for the off-the-shelf prototype: the two Seeed boards, a battery, a motor, four LEDs, two buttons and a printed shell. Budget about $55 in parts per band, an afternoon for the first one, and under three hours for each one after that. Build at least two so you can test band-to-band.</p></div>
+  <div class="head"><div class="eyebrow">Build guide · prototype</div><h2>How to actually build one</h2><p class="muted prose">Everything below is for the off-the-shelf prototype: the two Seeed boards, a battery, a motor, four LEDs, two gold bead buttons, an opalite cabochon, a gold-plated printed centerpiece and clasp box, and a hinged gold-plated bangle. Budget about $76 in parts per band, an afternoon for the first one, and under three hours for each one after that. Build at least two so you can test band-to-band.</p></div>
 
   <div class="cols">
     <div class="card"><h3>Shopping list</h3>
@@ -343,11 +358,12 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
         <li><b>Resistors:</b> 10 kΩ ×2, 3.3 kΩ, 15 kΩ, 330 Ω, 100 Ω (any ¼ W assortment) · <a href="https://www.amazon.com/s?k=resistor+assortment+kit" target="_blank" rel="noopener">Amazon</a></li>
         <li><b>47 µF capacitor</b> (6.3 V, electrolytic or ceramic) across the motor supply</li>
         <li><b>Low-profile 2.54 mm headers</b>, 1.5 mm body (or cut standard pins to 3 mm) · <a href="https://www.amazon.com/s?k=2.54mm+low+profile+pin+header" target="_blank" rel="noopener">Amazon</a></li>
-        <li><b>JST-PH 2-pin</b> connector pair (most 502020 cells come with one)</li>
+        <li><b>JST-PH 2-pin</b> connector pair (most 401230 cells come with one)</li>
         <li><b>Thin perfboard strip</b> 26 × 4 mm for the four LEDs (or a 4-LED SK6812 "stick" if you can find one under 5 mm wide)</li>
-        <li><b>30 AWG silicone wire</b>, Kapton tape, 1 mm foam tape, 1 mm silicone O-ring cord · <a href="https://www.amazon.com/s?k=30+awg+silicone+wire" target="_blank" rel="noopener">Amazon</a></li>
-        <li><b>M1.6 × 6 mm screws ×4</b> and M1.6 heat-set inserts, or design snap fits in the shell</li>
-        <li><b>Resin or PLA filament</b>, plus a 1 mm frosted acrylic offcut for the diffuser</li>
+        <li><b>30 AWG silicone wire</b>, Kapton tape, 1 mm foam tape, 1 mm silicone O-ring cord, gold metallic spray paint and gloss clear coat · <a href="https://www.amazon.com/s?k=30+awg+silicone+wire" target="_blank" rel="noopener">Amazon</a></li>
+        <li><b>Micro side-push tactile switches ×2</b> (3.5 × 2.9 mm) and <b>Ø4 mm metal beads ×2</b> for the button caps; the halves snap together, no screws to show</li>
+        <li><b>Resin</b> for the centerpiece and clasp box, a <b>gold electroplating kit</b> (or a plating service), a <b>15 × 11 mm opalite cabochon</b>, and a <b>6 mm hinged gold-plated bangle</b> · <a href="https://www.amazon.com/s?k=gold+electroplating+kit" target="_blank" rel="noopener">plating</a> · <a href="https://www.amazon.com/s?k=opalite+oval+cabochon+15x11mm" target="_blank" rel="noopener">stone</a> · <a href="https://www.amazon.com/s?k=gold+plated+hinged+oval+bangle+6mm" target="_blank" rel="noopener">bangle</a></li>
+        <li><b>34 AWG enamelled wire</b> to run the battery leads inside the bangle, and a <b>bezel pusher</b> to set the stone</li>
       </ul></div>
     <div class="card"><h3>Tools</h3>
       <ul class="clean muted">
@@ -385,17 +401,18 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.8rem;
 
   <h3 style="margin-top:28px;margin-bottom:10px">Assembly, step by step</h3>
   <ol class="steps">
-    <li><b>Print the shells.</b> Model two halves of a 44 × 24 mm rounded rectangle (corner radius 9 mm), each 5.5 mm tall with 1.2 mm walls and a flat floor, so the inside is 41.6 × 21.6 × 8.6 mm when closed. Add a 30 × 5 mm slot in the lid for the diffuser, two 7 × 3 mm openings on one long side at 9 mm either side of centre for the button caps, two Ø2 mm holes in the floor for the pogo pins, and a 1 mm groove around the rim for the O-ring. Add a 5.5 mm channel across the underside for the cord. Print in resin at 0.05 mm layers or FDM at 0.12 mm. Tinkercad is enough for this, or use the STL files generated from these exact numbers (<code>hardware/firefly_shell_bottom.stl</code> and <code>hardware/firefly_shell_lid.stl</code> in the <a href="https://github.com/wendyxlin/firefly-band" target="_blank" rel="noopener">GitHub repo</a>).</li>
+    <li><b>Print and plate the centerpiece and clasp box.</b> The centerpiece is a 28 × 24 × 11 mm pillowed cushion (7.5 mm corners, 3.5 mm rounded edges, 1.0 mm walls) with a 1.9 mm dome, a raised oval collet for the 15 × 11 mm stone, a ring of 0.6 mm milgrain beads, a gadrooned gallery around the waist and two seats for the bead buttons. A 6 × 3.2 mm channel runs under it for the bangle. The clasp box is 35 × 14 × 8 mm. Print in resin at 0.05 mm, sand to 1500 grit, apply conductive paint, and electroplate copper then 18k gold (or send them to a plating service). STL files: <code>hardware/firefly_centerpiece_base.stl</code>, <code>firefly_centerpiece_dome.stl</code> and <code>firefly_clasp_box.stl</code> in the <a href="https://github.com/wendyxlin/firefly-band" target="_blank" rel="noopener">GitHub repo</a>.</li>
     <li><b>Flash the XIAO first.</b> Plug it in over USB-C, install the Seeed nRF52 board package (steps below), and upload the Blink example. If the orange LED blinks, the board is good. Do this before soldering anything; a dead board is easier to return bare.</li>
     <li><b>Stack the radio.</b> Solder low-profile headers into the Wio-SX1262 so the XIAO sits on top of it, USB-C up, with about 1.5 mm between the boards. Trim the pins flush underneath. Plug the FPC antenna into the U.FL socket; it clicks. Route the antenna out the back edge of the stack.</li>
-    <li><b>Build the button ladder.</b> Solder the two tactile switches to a 20 × 6 mm scrap of perfboard with their plungers facing outward. Wire: 3V3 → 10 kΩ → D0; D0 → Button 1 → 3.3 kΩ → GND; D0 → Button 2 → 15 kΩ → GND. Check with the multimeter: D0 should read 3.3 V idle, about 0.8 V with Button 1 held, about 2.0 V with Button 2.</li>
-    <li><b>Wire the motor driver.</b> MOSFET source to GND, gate to D6 through 100 Ω with 10 kΩ to GND, drain to one motor lead; other motor lead to 3V3. Diode across the motor leads, stripe toward 3V3. 47 µF across 3V3 and GND right at the motor. Glue the motor to the top of the battery with a dot of E6000 after the next step.</li>
-    <li><b>Make the LED strip.</b> Four SK6812 Mini-E on the 26 mm perfboard strip, 6 mm apart, DOUT of each to DIN of the next. 330 Ω from D7 to the first DIN. VDD to 3V3, GND to GND. Test with the NeoPixel "strandtest" example before you build it in.</li>
-    <li><b>Battery and charging.</b> Solder the JST socket's leads to BAT+ and BAT− on the underside of the XIAO (check polarity twice: red is +). Solder the two pogo receptacle leads to the 5V and GND pads. Wrap the cell in Kapton. Plug the cell in; the XIAO's charge LED should light when the magnetic cable is attached.</li>
-    <li><b>Dry fit.</b> Boards left, battery and motor right, LED strip under the lid slot, antenna along the back inside of the lid on foam tape, button board against the front wall with caps through the openings. Nothing should need force. If the stack is more than 8.5 mm tall, shorten the header pins.</li>
+    <li><b>Build the button ladder.</b> Glue two 3 × 3 × 1.5 mm tactile switches on top of the XIAO's shield (insulated with Kapton) under the two bead seats, 21 mm apart, and glue a Ø3.8 mm gold bead onto each plunger through the dome; Button 2's bead has a tiny set stone. Wire: 3V3 → 10 kΩ → D0; D0 → Button 1 → 3.3 kΩ → GND; D0 → Button 2 → 15 kΩ → GND. Check with the multimeter: D0 should read 3.3 V idle, about 0.8 V with Button 1 held, about 2.0 V with Button 2.</li>
+    <li><b>Wire the motor driver.</b> MOSFET source to GND, gate to D6 through 100 Ω with 10 kΩ to GND, drain to one motor lead; other motor lead to 3V3. Diode across the motor leads, stripe toward 3V3. 47 µF across 3V3 and GND right at the motor. The motor lives in the clasp box: glue it on top of the battery so it presses against the skin.</li>
+    <li><b>Make the LED strip.</b> Four SK6812 Mini-E on a 13 × 3 mm strip, 3.5 mm apart, so they sit right under the stone, DOUT of each to DIN of the next. 330 Ω from D7 to the first DIN. VDD to 3V3, GND to GND. Test with the NeoPixel "strandtest" example before you build it in.</li>
+    <li><b>Battery and charging.</b> The battery and charge pins live in the clasp box. Run two 34 AWG enamelled wires from BAT+ and BAT− on the XIAO through the hollow bangle (and past the hinge with a small slack loop) to the battery's JST plug, and two more from the 5V/GND pads to the charge pins. Check polarity twice: red is +. Wrap the cell in Kapton. The XIAO's charge LED should light when the magnetic cable is attached.</li>
+    <li><b>Dry fit.</b> Board stack in the centerpiece with the LED strip under the stone and the antenna curved along the inside back wall; battery and motor in the clasp box. Nothing should need force. If the board stack is more than 8 mm tall, shorten the header pins.</li>
     <li><b>Flash the real firmware and test the radios.</b> Upload the Firefly sketch (below) to two bands. With both on the bench, a double-press on one should buzz the other within a second. Walk one band down the hall; it should still receive at the far end of the building. Then test finding mode: the pulse should speed up as the bands approach.</li>
     <li><b>Measure current.</b> Put the multimeter in series with the battery. Idle should sit under 5 mA average with the LoRa listen window on, and under 0.1 mA with the radio off. If it is higher, the SX1262 is not sleeping between windows; check <code>radio.sleep()</code> in the loop.</li>
-    <li><b>Close it up.</b> Glue the diffuser into the slot, fill the button openings' edges with a thin bead of UV resin so the caps move but water cannot get in, seat the O-ring, screw or snap the halves together, and thread the cord through the channel. Test the seal with a damp paper towel before trusting it near drinks.</li>
+    <li><b>Set the stone and close up.</b> Drop the opalite into the collet and burnish the bezel over it with a bezel pusher, seal around the bead buttons with a thin ring of silicone so they still click, seat the gasket and snap the dome onto the base around the bangle. Snap the clasp box closed. Test the seal with a damp paper towel before trusting it near drinks.</li>
+    <li><b>Fit the bangle.</b> Open the hinged bangle, slide the centerpiece onto the top of the band and the clasp box onto the bottom, and glue both in place with E6000 once the wires are routed. Size: a 62 × 48 mm inside oval fits most 155–175 mm wrists.</li>
     <li><b>Pair a group.</b> Hold Button 1 on every band for 5 seconds within 10 seconds of each other; the bands exchange a random group key over LoRa and buzz twice when done. The app pairs to its wearer's band over Bluetooth from the Group tab.</li>
   </ol>
 
@@ -472,13 +489,23 @@ void loop() {
         <button class="pb b2" id="pb2" aria-label="Button 2: safety">SAFE</button>
       </div>
       <div class="gest">
-        <div><b>Button 1 · Find</b>1× find friends (press again to cycle)<br>2× "Come find me"<br>hold "I'm okay" check-in</div>
+        <div><b>Button 1 · Find</b>1× find friends (press again to cycle)<br>2× "Come find me"<br>3× "I'm home"<br>hold "I'm okay" check-in</div>
         <div><b>Button 2 · Safety</b>1× discreet "I need help"<br>2× cancel accidental alert<br>hold 3 s urgent SOS</div>
       </div>
       <div class="status" id="simStatus">Band idle. Your phone is at 0%; the band does not care.</div>
       <div class="log" id="simLog"></div>
     </div>
   </div>
+</div></section>
+
+<section id="home"><div class="wrap">
+  <div class="head"><div class="eyebrow">Getting home</div><h2>"I'm home" texts, even with a dead phone</h2><p class="muted prose">Groups split at the end of the night: some take an Uber, some stay out. Firefly closes the loop so nobody has to wonder who made it back.</p></div>
+  <div class="cols-3">
+    <div class="card"><h3>1 · Triple-press</h3><p class="muted">When you're in the door, press Button 1 three times. Two short buzzes confirm. Friends whose bands are still in range get "Jordan is home" over LoRa straight away.</p></div>
+    <div class="card"><h3>2 · Your phone sends the text</h3><p class="muted">Out of range? The band holds the message. As soon as your phone is charging and back in Bluetooth range of your band, the Firefly app texts the people you picked, like "Jordan got home safe at 2:14 AM". Set the list once: Mom, a roommate, the group chat.</p></div>
+    <div class="card"><h3>3 · Everyone home?</h3><p class="muted">The responsible friend's app shows a "Getting home" list: home, on the way, or not heard from. If someone hasn't checked in by the time the session ends, the app nudges you to call them.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Automatic option</h3><p class="muted">Anyone whose phone still has battery can turn on "Text when I arrive home". The app uses their saved home address and sends the same message when they get there, with no button needed. Home addresses stay on the phone and are never shared with the group.</p></div>
 </div></section>
 
 <section id="connect"><div class="wrap">
@@ -522,7 +549,7 @@ void loop() {
   <div class="tablewrap" style="margin-top:16px"><table style="min-width:620px">
     <thead><tr><th>Link</th><th>Radio</th><th>Carries</th><th class="num">Range</th><th class="num">Payload</th></tr></thead><tbody>
     <tr><td>Band ↔ app</td><td>Bluetooth LE (GATT, one custom service)</td><td>Alerts in, pings out, battery levels, group roster, raw signal strengths</td><td class="num">10–25 m</td><td class="num">20 B packets</td></tr>
-    <tr><td>Band ↔ band (messages)</td><td>LoRa SX1262, 915 MHz, SF9</td><td>Check-in, come find me, help, SOS, cancel, ping</td><td class="num">300 m+ indoors</td><td class="num">12 B</td></tr>
+    <tr><td>Band ↔ band (messages)</td><td>LoRa SX1262, 915 MHz, SF9</td><td>Check-in, come find me, help, SOS, cancel, ping, I'm home</td><td class="num">300 m+ indoors</td><td class="num">12 B</td></tr>
     <tr><td>Band ↔ band (proximity)</td><td>Bluetooth LE advertising, 1 s</td><td>"I'm here" beacon with a rotating group ID; signal strength gives distance</td><td class="num">0–25 m</td><td class="num">beacon</td></tr>
     <tr><td>Phone ↔ phone (optional)</td><td>Cell / Wi-Fi via the cloud relay</td><td>Alerts for a group split across venues, only if turned on</td><td class="num">anywhere</td><td class="num">—</td></tr>
     </tbody></table></div>
@@ -602,46 +629,49 @@ void loop() {
 /* ============ PART DATA (mm, g, USD) — single source for 3D, drawings and BOM ============ */
 // Pod coordinate frame: X = across the wrist (length 44), Y = up (height 11), Z = along the arm (width 24). Origin at pod centre.
 const PARTS = [
- {id:'shellBot', name:'Bottom shell', role:'enclosure', dims:'44 × 24 × 5.5', size:[44,5.5,24], pos:[0,-2.75,0], color:0x3b3950, weight:3.2, price:1.5, qty:1, ex:-14,
-  spec:'Resin 3D print (or anodized aluminum for the premium version). Flat inner floor, 1.2 mm walls, pogo-pin charge pads underneath, IP54 gasket groove.',
-  buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service / local lab', shell:true},
- {id:'shellTop', name:'Top shell', role:'enclosure', dims:'44 × 24 × 5.5', size:[44,5.5,24], pos:[0,2.75,0], color:0x3b3950, weight:2.8, price:1.5, qty:1, ex:14,
-  spec:'Matches the bottom shell. 30 × 5 mm slot for the LED diffuser, two 7 × 3 mm side openings for the buttons.', buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service / local lab', shell:true},
- {id:'diffuser', name:'LED diffuser strip', role:'light', dims:'30 × 5 × 1', size:[30,1,5], pos:[0,5.75,0], color:0xf5b544, weight:0.3, price:0.5, qty:1, ex:20, emissive:true,
-  spec:'Frosted acrylic or clear resin. Four amber LEDs behind it read as one soft glow line, jewelry first, indicator second.', buy:'https://www.amazon.com/s?k=frosted+acrylic+sheet+1mm', buyLabel:'Amazon'},
- {id:'xiao', name:'Seeed XIAO nRF52840', role:'brain + BLE', dims:'21 × 17.8 × 3.5', size:[21,3.5,17.8], pos:[-10.3,1.95,0], color:0x1d4d8f, weight:3.0, price:14, qty:1, ex:7,
-  spec:'Bluetooth 5.0 microcontroller with onboard LiPo charger (BQ25101) and 5 µA sleep. Runs the button logic, BLE proximity, LEDs and motor. Sits on top of the LoRa module on 1.5 mm low-profile headers, USB-C facing up for flashing. ~$9.90 direct from Seeed.',
+ {id:'shellBot', name:'Centerpiece base', role:'enclosure', dims:'28 × 24 × 5.5', size:[28,11,24], pos:[0,0,0], color:0xeab552, weight:1.6, price:4, qty:1, ex:-16,
+  spec:'Lower half of the domed centerpiece. Resin print, electroplated in 18k gold for the prototype (solid gold-filled brass in production). 1.0 mm walls, 3 mm pillow-rounded edges so it sits smoothly on the wrist.',
+  buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service', alt:'https://www.amazon.com/s?k=gold+electroplating+kit', altLabel:'Gold plating kit', shell:true, half:-1},
+ {id:'shellTop', name:'Centerpiece dome', role:'enclosure', dims:'28 × 24 × 5.5', size:[28,11,24], pos:[0,0,0], color:0xeab552, weight:1.8, price:4, qty:1, ex:16,
+  spec:'Upper half: a pillowed dome with a raised collet (bezel) and a milgrain border of tiny gold beads around the stone, plus two seats for the bead buttons.', buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service', alt:'https://www.amazon.com/s?k=gold+electroplating+kit', altLabel:'Gold plating kit', shell:true, half:1},
+ {id:'diffuser', name:'Opalite cabochon 15 × 11', role:'light', dims:'15 × 11 × 3.5', size:[15,3.5,11], pos:[0,6.85,0], color:0xf5b544, weight:0.7, price:4, qty:1, ex:26, emissive:true,
+  spec:'Oval opalite (glass moonstone) cabochon, bezel-set like a gemstone. Milky white in daylight; it glows warm amber from the LEDs underneath when your group is near, and red for SOS.', buy:'https://www.amazon.com/s?k=opalite+oval+cabochon+15x11mm', buyLabel:'Amazon'},
+ {id:'xiao', name:'Seeed XIAO nRF52840', role:'brain + BLE', dims:'21 × 17.8 × 3.5', size:[21,3.5,17.8], pos:[0,1.5,0], color:0x1d4d8f, weight:3.0, price:14, qty:1, ex:9,
+  spec:'Bluetooth 5.0 microcontroller with onboard LiPo charger (BQ25101) and 5 µA sleep. Runs the buttons, Bluetooth finding, LEDs and motor. Stacked on the LoRa module on 1.5 mm low-profile headers. ~$9.90 direct from Seeed.',
   buy:'https://www.amazon.com/s?k=Seeed+XIAO+nRF52840', buyLabel:'Amazon', alt:'https://www.seeedstudio.com/catalogsearch/result/?q=XIAO+nRF52840', altLabel:'Seeed'},
- {id:'lora', name:'Wio-SX1262 LoRa module for XIAO', role:'long-range radio', dims:'21 × 17.8 × 3', size:[21,3,17.8], pos:[-10.3,-2.8,0], color:0x2e7d5b, weight:3.0, price:13, qty:1, ex:-5,
-  spec:'Semtech SX1262, 862–930 MHz, 22 dBm, 1.6 µA sleep. Mounts under the XIAO on 1.5 mm low-profile headers (8 mm stack instead of the stock 21 mm). U.FL antenna connector. ~$9.90 direct from Seeed.',
+ {id:'lora', name:'Wio-SX1262 LoRa module for XIAO', role:'long-range radio', dims:'21 × 17.8 × 3', size:[21,3,17.8], pos:[0,-3.25,0], color:0x2e7d5b, weight:3.0, price:13, qty:1, ex:-6,
+  spec:'Semtech SX1262, 862–930 MHz, 22 dBm, 1.6 µA sleep. Mounts under the XIAO on 1.5 mm low-profile headers. U.FL antenna connector. ~$9.90 direct from Seeed.',
   buy:'https://www.amazon.com/s?k=Wio-SX1262+XIAO+LoRa', buyLabel:'Amazon', alt:'https://www.seeedstudio.com/catalogsearch/result/?q=Wio-SX1262', altLabel:'Seeed'},
- {id:'ant', name:'915 MHz flexible antenna', role:'antenna', dims:'38 × 7 × 0.2', size:[38,0.2,7], pos:[0,4.15,-6.5], color:0xc8a04a, weight:0.5, price:2, qty:1, ex:11,
-  spec:'FPC antenna with U.FL pigtail, stuck to the inside of the lid along the back edge. Keep it 1 mm off the battery and 5 mm from the strap metal, if any. A Seeed kit antenna works for testing.', buy:'https://www.amazon.com/s?k=915MHz+FPC+antenna+U.FL', buyLabel:'Amazon'},
- {id:'batt', name:'LiPo cell 150 mAh (502020)', role:'power', dims:'20 × 20 × 5', size:[20,5,20], pos:[10.6,-1.8,0], color:0x8a8fa8, weight:3.8, price:5, qty:1, ex:-8,
-  spec:'3.7 V, with protection circuit and JST connector. 36 h at the modeled 4.1 mA average. Charges in under 2 h from the XIAO’s 100 mA charger.', buy:'https://www.amazon.com/s?k=3.7V+150mAh+lipo+battery+502020', buyLabel:'Amazon'},
- {id:'motor', name:'Coin vibration motor 10 mm', role:'haptics', dims:'Ø10 × 2.7', size:[10,2.7,10], pos:[10.6,2.05,0], color:0xb8b2c4, weight:1.2, price:0.8, qty:1, ex:-1, cyl:true,
-  spec:'3 V ERM coin motor glued to the top of the battery, switched by a small MOSFET. Drives the hot/cold finding pulse and the alert patterns. Sold in 10-packs (~$8).', buy:'https://www.amazon.com/s?k=10mm+coin+vibration+motor+3V', buyLabel:'Amazon'},
- {id:'btn1', name:'Button 1 (Find) tactile switch', role:'input', dims:'6 × 6 × 5 + cap', size:[6,5,6], pos:[-9,-1.3,7.8], color:0x6e6a85, weight:0.3, price:0.1, qty:1, ex:-3,
-  spec:'6 × 6 × 5 mm side-actuated tactile switch, 260 gf so it does not fire in a bag. Overmolded cap, 7 × 3 mm, flush with the shell.', buy:'https://www.amazon.com/s?k=6x6x5mm+tactile+switch', buyLabel:'Amazon'},
- {id:'btn2', name:'Button 2 (Safety) tactile switch', role:'input', dims:'6 × 6 × 5 + cap', size:[6,5,6], pos:[9,-1.3,7.8], color:0x8a3d4a, weight:0.3, price:0.1, qty:1, ex:-3,
-  spec:'Same switch with a dimpled cap so it can be told apart by touch. Hold 3 s for SOS.', buy:'https://www.amazon.com/s?k=6x6x5mm+tactile+switch', buyLabel:'Amazon'},
- {id:'leds', name:'SK6812 Mini-E addressable LEDs ×4', role:'light', dims:'3.2 × 2.8 × 1 each', size:[26,0.8,3], pos:[0,4.0,0], color:0xffd27a, weight:0.1, price:0.5, qty:4, ex:17, emissive:true,
-  spec:'Four addressable mini LEDs on a 26 mm strip of thin perfboard under the diffuser, one data pin (D7). Amber at 40% brightness reads as a soft line; LED count shows the proximity band in finding mode.', buy:'https://www.amazon.com/s?k=SK6812+Mini-E+addressable+LED', buyLabel:'Amazon'},
- {id:'pogo', name:'Magnetic pogo-pin charge connector', role:'charging', dims:'Ø10 × 2 (2-pin)', size:[10,2,10], pos:[0,-4.6,0], color:0xd0b060, weight:1.0, price:7, qty:1, ex:-19, cyl:true,
-  spec:'2-pin magnetic connector set with USB cable. No port to seal; the band stays splash-proof.', buy:'https://www.amazon.com/s?k=2+pin+magnetic+pogo+pin+charging+connector', buyLabel:'Amazon'},
+ {id:'ant', name:'Compact 915 MHz flex antenna', role:'antenna', dims:'22 × 6 × 0.2', size:[22,6,0.2], pos:[0,-0.5,-9.7], color:0xc8a04a, weight:0.3, price:3, qty:1, ex:4,
+  spec:'Small FPC antenna with U.FL pigtail, curved along the inside back wall of the centerpiece, away from the wrist. The resin shell lets the signal out; in a production gold piece the band itself becomes the antenna.', buy:'https://www.amazon.com/s?k=915MHz+FPC+antenna+U.FL+small', buyLabel:'Amazon'},
+ {id:'leds', name:'SK6812 Mini-E addressable LEDs ×4', role:'light', dims:'3.2 × 2.8 × 1 each', size:[13,0.6,3], pos:[0,3.85,0], color:0xffd27a, weight:0.1, price:0.5, qty:4, ex:21, emissive:true,
+  spec:'Four addressable mini LEDs on a 13 mm flex strip right under the stone, one data pin (D7). In finding mode the stone brightens and the number lit (1–4) shows how close you are; red means SOS.', buy:'https://www.amazon.com/s?k=SK6812+Mini-E+addressable+LED', buyLabel:'Amazon'},
+ {id:'btn1', name:'Button 1 (Find) gold bead', role:'input', dims:'3 × 3 × 1.5 switch + Ø3.8 bead', size:[3,1.5,3], pos:[-10.5,4.0,0], color:0xe2b85c, weight:0.1, price:0.2, qty:1, ex:14,
+  spec:'Low-profile 3 × 3 × 1.5 mm tactile switch (260 gf, so it does not fire in a bag) under a polished Ø3.8 mm gold bead set on the dome to the left of the stone. Smooth bead = Find.', buy:'https://www.amazon.com/s?k=3x3x1.5mm+SMD+tactile+switch', buyLabel:'Amazon'},
+ {id:'btn2', name:'Button 2 (Safety) gold bead with stone', role:'input', dims:'3 × 3 × 1.5 switch + Ø3.8 bead', size:[3,1.5,3], pos:[10.5,4.0,0], color:0xe2b85c, weight:0.1, price:0.2, qty:1, ex:14,
+  spec:'Same switch under a gold bead crowned with a tiny prong-set white stone, so it feels different under your finger in the dark. Hold 3 s for SOS.', buy:'https://www.amazon.com/s?k=3x3x1.5mm+SMD+tactile+switch', buyLabel:'Amazon'},
+ {id:'batt', name:'LiPo cell 110 mAh (401230)', role:'power', dims:'30 × 12 × 4', size:[30,4,12], pos:[0,-56.45,0], color:0x8a8fa8, weight:2.6, price:5, qty:1, ex:-10,
+  spec:'3.7 V, 4 × 12 × 30 mm with protection circuit, hidden in the clasp box under the wrist and wired to the centerpiece through the hollow band. About 26 h at the modeled 4.1 mA average. Charges in about 1.5 h.', buy:'https://www.amazon.com/s?k=3.7V+lipo+battery+401230', buyLabel:'Amazon'},
+ {id:'motor', name:'Coin vibration motor 8 mm', role:'haptics', dims:'Ø8 × 2', size:[8,2,8], pos:[0,-53.45,0], color:0xb8b2c4, weight:0.7, price:1, qty:1, ex:-4, cyl:true,
+  spec:'3 V ERM coin motor (0820) in the clasp box, pressed against the skin side, so the hot/cold pulse is felt right on the underside of the wrist. Switched by a small MOSFET.', buy:'https://www.amazon.com/s?k=8mm+coin+vibration+motor+0820', buyLabel:'Amazon'},
+ {id:'pogo', name:'Magnetic charge pins (2-pin)', role:'charging', dims:'Ø8 × 1.2', size:[8,1.2,8], pos:[0,-59.05,0], color:0xd0b060, weight:0.8, price:7, qty:1, ex:-20, cyl:true,
+  spec:'Flush 2-pin magnetic receptacle on the outside of the clasp box, with a USB cable that snaps on. No port to seal, so the bangle stays splash-proof.', buy:'https://www.amazon.com/s?k=2+pin+magnetic+pogo+pin+charging+connector', buyLabel:'Amazon'},
+ {id:'clasp', name:'Clasp box', role:'enclosure', dims:'35 × 14 × 8', size:[35,8,14], pos:[0,-55.45,0], color:0xeab552, weight:1.6, price:3, qty:1, ex:-26, box:true,
+  spec:'Sleek pillowed box at the bottom of the bangle that hides the battery and motor and doubles as the push clasp. Resin, electroplated gold, with a fine engraved line.', buy:'https://www.amazon.com/s?k=resin+3d+printing+service', buyLabel:'Print service'},
  {id:'elec', name:'Driver parts: MOSFET, diode, resistors, JST-PH', role:'electronics', dims:'—', size:[0,0,0], pos:[0,0,0], color:0x777, weight:0.5, price:2, qty:1, ex:0, hidden:true,
   spec:'AO3400 (or 2N7002) N-channel MOSFET, 1N4148 flyback diode, resistors 10 kΩ ×2, 3.3 kΩ, 15 kΩ, 330 Ω, 100 Ω, 47 µF capacitor, JST-PH 2-pin. One assortment kit covers ten bands.', buy:'https://www.amazon.com/s?k=AO3400+MOSFET+SOT-23', buyLabel:'Amazon'},
- {id:'strap', name:'Braided cord strap', role:'strap', dims:'165 mm × Ø5', size:[0,0,0], pos:[0,0,0], color:0x2c2a3a, weight:6.5, price:6, qty:1, ex:0, strap:true,
-  spec:'Waxed braided nylon with hidden elastic core so it slides over the hand. Available in colours; the pod clips to a 5 mm cord so straps are swappable.', buy:'https://www.amazon.com/s?k=braided+nylon+cord+bracelet+5mm', buyLabel:'Amazon'},
- {id:'misc', name:'Wires, Kapton tape, foam, gasket', role:'assembly', dims:'—', size:[0,0,0], pos:[0,0,0], color:0x555, weight:1.0, price:1, qty:1, ex:0, hidden:true,
-  spec:'30 AWG silicone wire, Kapton tape to insulate the battery, 1 mm foam to stop rattle, silicone gasket cord.', buy:'https://www.amazon.com/s?k=30+awg+silicone+wire+kapton+tape', buyLabel:'Amazon'}
+ {id:'strap', name:'Hinged gold bangle', role:'strap', dims:'6 × 3.2 band, 62 × 50 inside', size:[0,0,0], pos:[0,0,0], color:0xeab552, weight:7.5, price:12, qty:1, ex:0, strap:true,
+  spec:'Hollow 18k gold-plated brass bangle, 6 mm wide and 3.2 mm thick with a soft rounded profile, hinged at the side with a push clasp at the clasp box. Gadrooned collars where it meets the centerpiece. Two fine wires run inside it from the battery to the electronics.', buy:'https://www.amazon.com/s?k=gold+plated+hinged+oval+bangle+6mm', buyLabel:'Amazon'},
+ {id:'misc', name:'Wires, Kapton tape, foam, gasket', role:'assembly', dims:'—', size:[0,0,0], pos:[0,0,0], color:0x555, weight:1.0, price:3, qty:1, ex:0, hidden:true,
+  spec:'34 AWG enamelled wire for the battery run through the band, 30 AWG silicone wire, Kapton tape, 1 mm foam to stop rattle, silicone gasket cord.', buy:'https://www.amazon.com/s?k=34+awg+enamelled+copper+wire', buyLabel:'Amazon'}
 ];
-const POD = {L:44, W:24, H:11, R:9};
+const POD = {L:28, W:24, H:11, R:7.5, B:3.5};
 const totalWeight = PARTS.reduce((s,p)=>s+p.weight,0);
 const totalCost = PARTS.reduce((s,p)=>s+p.price,0);
 document.getElementById('statWeight').textContent = Math.round(totalWeight)+' g';
 document.getElementById('weightTotal').textContent = totalWeight.toFixed(1)+' g';
 document.getElementById('costProto').textContent = '$'+totalCost.toFixed(0);
+try{ document.getElementById('ansCost').textContent='~$'+totalCost.toFixed(0); document.getElementById('ansWeight').textContent='~'+Math.round(totalWeight)+' g'; }catch(e){}
 const hex = c => '#'+c.toString(16).padStart(6,'0');
 
 /* ============ BOM TABLE ============ */
@@ -659,92 +689,93 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
 
 /* ============ DRAWINGS (SVG from PARTS) ============ */
 (function(){
-  const S = 4; // px per mm
+  const S = 5; // px per mm
   const fg='var(--fg)', mu='var(--muted)', ac='var(--accent)';
-  function dim(x1,y1,x2,y2,label,off){ // dimension line with ticks and label; horizontal if y1==y2
+  function dim(x1,y1,x2,y2,label,off){
     const horiz = y1===y2;
     const ox = horiz?0:off, oy = horiz?off:0;
     const X1=x1+ox,Y1=y1+oy,X2=x2+ox,Y2=y2+oy;
-    const ext = horiz?`<line x1="${x1}" y1="${y1}" x2="${X1}" y2="${Y1}" stroke="${mu}" stroke-width=".6"/><line x1="${x2}" y1="${y2}" x2="${X2}" y2="${Y2}" stroke="${mu}" stroke-width=".6"/>`
-                     :`<line x1="${x1}" y1="${y1}" x2="${X1}" y2="${Y1}" stroke="${mu}" stroke-width=".6"/><line x1="${x2}" y1="${y2}" x2="${X2}" y2="${Y2}" stroke="${mu}" stroke-width=".6"/>`;
+    const ext = `<line x1="${x1}" y1="${y1}" x2="${X1}" y2="${Y1}" stroke="${mu}" stroke-width=".6"/><line x1="${x2}" y1="${y2}" x2="${X2}" y2="${Y2}" stroke="${mu}" stroke-width=".6"/>`;
     const tx = horiz?(X1+X2)/2:X1+(off>0?10:-10), ty = horiz?Y1+(off>0?12:-5):(Y1+Y2)/2+3;
     const anchor = horiz?'middle':(off>0?'start':'end');
     return ext+`<line x1="${X1}" y1="${Y1}" x2="${X2}" y2="${Y2}" stroke="${ac}" stroke-width=".8" marker-start="url(#tick)" marker-end="url(#tick)"/><text x="${tx}" y="${ty}" text-anchor="${anchor}" font-size="10" fill="${fg}">${label}</text>`;
   }
   const defs = `<defs><marker id="tick" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><line x1="3" y1="0" x2="3" y2="6" stroke="${ac}" stroke-width="1"/></marker></defs>`;
   function rr(x,y,w,h,r,stroke,dash,fill){ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill||'none'}" stroke="${stroke}" stroke-width="1" ${dash?'stroke-dasharray="3 2"':''}/>`; }
+  const P = id => PARTS.find(q=>q.id===id);
+  const GOLD='#d8a948';
   const views = [];
-  // TOP VIEW: X across (L), Z down (W)
+  // TOP VIEW of the centerpiece
   {
-    const ox=50, oy=40, W=POD.L*S, H=POD.W*S;
-    let s = `<svg viewBox="0 0 ${W+110} ${H+100}" width="${W+110}">${defs}`;
-    s += rr(ox,oy,W,H,POD.R*S,fg);
-    for(const p of PARTS){ if(p.hidden||p.strap||p.shell||p.id==='diffuser'||p.id==='leds'||p.id==='ant') continue;
-      const [sx,sy,sz]=p.size, [px,py,pz]=p.pos; const x=ox+(px-sx/2+POD.L/2)*S, y=oy+(pz-sz/2+POD.W/2)*S;
-      s += p.cyl? `<circle cx="${ox+(px+POD.L/2)*S}" cy="${oy+(pz+POD.W/2)*S}" r="${sx/2*S}" fill="none" stroke="${hex(p.color)}" stroke-width="1" stroke-dasharray="3 2"/>` : rr(x,y,sx*S,sz*S,2,hex(p.color),true);
-      if(!p.cyl && sx>8) s += `<text x="${x+sx*S/2}" y="${y+sz*S/2+3}" text-anchor="middle" font-size="8" fill="${mu}">${p.id==='xiao'?'XIAO + SX1262 (stacked)':p.id==='lora'?'':p.name.split(' ').slice(0,2).join(' ')}</text>`;
-    }
-    // diffuser slot
-    s += rr(ox+(POD.L/2-15)*S, oy+(POD.W/2-2.5)*S, 30*S, 5*S, 2, 'var(--accent)', false);
-    s += dim(ox,oy+H,ox+W,oy+H,'44',24);
-    s += dim(ox+W,oy,ox+W,oy+H,'24',24);
-    s += dim(ox+(POD.L/2-15)*S,oy,ox+(POD.L/2+15)*S,oy,'30 (LED slot)',-14);
-    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">TOP VIEW</text>`;
+    const ox=60, oy=46, W=POD.L*S, H=POD.W*S, X=x=>ox+(x+POD.L/2)*S, Z=z=>oy+(z+POD.W/2)*S;
+    let s = `<svg viewBox="0 0 ${W+130} ${H+110}" width="${W+130}">${defs}`;
+    // band passing under
+    s += `<rect x="${ox-40}" y="${Z(-3)}" width="${W+80}" height="${6*S}" fill="none" stroke="${GOLD}" stroke-width="1" stroke-dasharray="4 3"/>`;
+    s += rr(ox,oy,W,H,POD.R*S,fg,false,'var(--panel)');
+    s += rr(ox+POD.B*S,oy+POD.B*S,W-2*POD.B*S,H-2*POD.B*S,(POD.R-POD.B)*S,mu,true);
+    { const p=P('lora'); s += rr(X(-p.size[0]/2),Z(-p.size[2]/2),p.size[0]*S,p.size[2]*S,2,hex(p.color),true); }
+    // milgrain + collet + stone
+    for(let i=0;i<60;i++){ const t=i/60*Math.PI*2; s += `<circle cx="${X(Math.cos(t)*9.1)}" cy="${Z(Math.sin(t)*7.1)}" r="${0.3*S}" fill="${GOLD}"/>`; }
+    s += `<ellipse cx="${X(0)}" cy="${Z(0)}" rx="${7.95*S}" ry="${5.95*S}" fill="none" stroke="${GOLD}" stroke-width="2"/>`;
+    s += `<ellipse cx="${X(0)}" cy="${Z(0)}" rx="${7.5*S}" ry="${5.5*S}" fill="var(--accent)" fill-opacity=".28" stroke="var(--accent)"/>`;
+    for(const id of ['btn1','btn2']){ const p=P(id); s += `<circle cx="${X(p.pos[0])}" cy="${Z(0)}" r="${1.9*S}" fill="${GOLD}" stroke="${fg}" stroke-width=".6"/>`; if(id==='btn2') s+=`<circle cx="${X(p.pos[0])}" cy="${Z(0)}" r="${0.7*S}" fill="#fff"/>`; }
+    s += dim(ox,oy+H,ox+W,oy+H,'28',26);
+    s += dim(ox+W,oy,ox+W,oy+H,'24',30);
+    s += dim(X(-7.5),oy,X(7.5),oy,'15 × 11 stone',-18);
+    s += `<text x="${ox-40}" y="${oy-30}" font-size="11" fill="${fg}" font-weight="600">TOP VIEW · centerpiece</text>`;
     s += `</svg>`;
-    views.push({svg:s, cap:'Top view. Dashed outlines are internal parts: boards left, battery and motor right, buttons on the near edge.'});
+    views.push({svg:s, cap:'Top view. Bezel-set 15 × 11 mm opalite inside a ring of milgrain beads; the smooth gold bead (left) is Find, the bead with a tiny white stone (right) is Safety. Dashed: the boards inside and the band passing underneath.'});
   }
-  // SIDE VIEW: X across, Y down (H)
+  // FRONT VIEW of the centerpiece
   {
-    const ox=50, oy=40, W=POD.L*S, H=POD.H*S;
-    let s = `<svg viewBox="0 0 ${W+110} ${H+110}" width="${W+110}">${defs}`;
-    s += rr(ox,oy,W,H,5.5*S,fg);
-    s += `<line x1="${ox}" y1="${oy+H/2}" x2="${ox+W}" y2="${oy+H/2}" stroke="${mu}" stroke-width=".6" stroke-dasharray="4 3"/>`;
-    for(const p of PARTS){ if(p.hidden||p.strap||p.shell) continue;
-      const [sx,sy,sz]=p.size, [px,py,pz]=p.pos; if(pz>5) continue; // buttons are on the far edge, skip in side
-      const x=ox+(px-sx/2+POD.L/2)*S, y=oy+(POD.H/2-py-sy/2)*S;
-      s += rr(x,y,sx*S,Math.max(sy*S,1.5),1,hex(p.color),true);
-    }
-    // button caps
-    s += rr(ox+(POD.L/2-9-3.5)*S, oy+(POD.H/2+1.3-1.5)*S, 7*S, 3*S, 2, hex(0x6e6a85), false, hex(0x6e6a85));
-    s += rr(ox+(POD.L/2+9-3.5)*S, oy+(POD.H/2+1.3-1.5)*S, 7*S, 3*S, 2, hex(0x8a3d4a), false, hex(0x8a3d4a));
-    s += dim(ox,oy+H,ox+W,oy+H,'44',34);
+    const ox=60, oy=60, W=POD.L*S, H=POD.H*S, X=x=>ox+(x+POD.L/2)*S, Y=y=>oy+(POD.H/2-y)*S;
+    let s = `<svg viewBox="0 0 ${W+130} ${H+150}" width="${W+130}">${defs}`;
+    s += rr(ox,oy,W,H,POD.B*S,fg,false,'var(--panel)');
+    for(let i=0;i<=40;i++){ const x=-POD.L/2+POD.R*0.4+i*(POD.L-POD.R*0.8)/40; s += `<line x1="${X(x)}" y1="${Y(1.3)}" x2="${X(x)}" y2="${Y(-1.3)}" stroke="${GOLD}" stroke-width=".7"/>`; }
+    s += `<path d="M ${X(-11)} ${Y(5.35)} Q ${X(0)} ${Y(5.35+3.8)} ${X(11)} ${Y(5.35)}" fill="none" stroke="${fg}"/>`;
+    s += `<path d="M ${X(-7.5)} ${Y(6.85)} Q ${X(0)} ${Y(6.85+7)} ${X(7.5)} ${Y(6.85)}" fill="var(--accent)" fill-opacity=".3" stroke="var(--accent)"/>`;
+    s += rr(X(-8),Y(8.0),16*S,1.3*S,1,GOLD,false);
+    for(const id of ['btn1','btn2']){ const p=P(id); s += `<circle cx="${X(p.pos[0])}" cy="${Y(p.pos[1]+p.size[1]/2+3.6-0.75)}" r="${1.9*S}" fill="${GOLD}" stroke="${fg}" stroke-width=".6"/>`; }
+    for(const id of ['lora','xiao','leds']){ const p=P(id); s += rr(X(p.pos[0]-p.size[0]/2),Y(p.pos[1]+p.size[1]/2),p.size[0]*S,p.size[1]*S,1,hex(p.color),true); }
+    s += dim(ox,oy+H,ox+W,oy+H,'28',34);
     s += dim(ox+W,oy,ox+W,oy+H,'11',24);
-    s += dim(ox+(POD.L/2-9-3.5)*S,oy+H,ox+(POD.L/2-9+3.5)*S,oy+H,'7',16);
-    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">SIDE VIEW (button side)</text>`;
+    s += dim(ox+W,Y(10.4),ox+W,oy+H,'15.9 with stone',72);
+    s += `<text x="${ox}" y="${oy-40}" font-size="11" fill="${fg}" font-weight="600">FRONT VIEW · centerpiece</text>`;
     s += `</svg>`;
-    views.push({svg:s, cap:'Side view from the button edge. Both button caps sit flush; the parting line is at mid-height so the gasket runs level.'});
+    views.push({svg:s, cap:'Front view. Pillowed base with a gadrooned gallery around the waist, a 1.9 mm dome, the raised collet and the cabochon. 11 mm body, about 16 mm to the top of the stone.'});
   }
-  // END VIEW: Z across (W), Y down
+  // CLASP BOX
   {
-    const ox=50, oy=40, W=POD.W*S, H=POD.H*S;
-    let s = `<svg viewBox="0 0 ${W+140} ${H+110}" width="${W+140}">${defs}`;
-    s += rr(ox,oy,W,H,5.5*S,fg);
-    // stack: battery(4) + motor(2.7) and board stack
-    const stack=[['batt',10],['motor',10],['xiao',-11],['lora',-11],['ant',0],['leds',0],['diffuser',0]];
-    for(const [id] of stack){ const p=PARTS.find(q=>q.id===id); const [sx,sy,sz]=p.size,[px,py,pz]=p.pos;
-      const x=ox+(pz-sz/2+POD.W/2)*S, y=oy+(POD.H/2-py-sy/2)*S; s+=rr(x,y,sz*S,Math.max(sy*S,1.5),1,hex(p.color),true); }
-    s += dim(ox,oy+H,ox+W,oy+H,'24',34);
-    s += dim(ox+W,oy,ox+W,oy+H,'11',24);
-    s += dim(ox+W,oy+(POD.H/2-4.3)*S,ox+W,oy+(POD.H/2+4.3)*S,'8.6 inside',60);
-    s += `<text x="${ox}" y="${oy-22}" font-size="11" fill="${fg}" font-weight="600">END VIEW</text>`;
+    const c=P('clasp'), b=P('batt'), m=P('motor'), ox=50, oy=50, W=c.size[0]*S, H=c.size[1]*S, X=x=>ox+(x+c.size[0]/2)*S, Y=y=>oy+(c.size[1]/2-(y-c.pos[1]))*S;
+    let s = `<svg viewBox="0 0 ${W+150} ${H+120}" width="${W+150}">${defs}`;
+    s += `<rect x="${ox-30}" y="${Y(c.pos[1]+c.size[1]/2)-2}" width="${W+60}" height="${3.2*S}" fill="none" stroke="${GOLD}" stroke-dasharray="4 3"/>`;
+    s += rr(ox,oy,W,H,2*S,fg,false,'var(--panel)');
+    s += rr(X(-b.size[0]/2),Y(b.pos[1]+b.size[1]/2),b.size[0]*S,b.size[1]*S,2,hex(b.color),true);
+    s += rr(X(-m.size[0]/2),Y(m.pos[1]+m.size[1]/2),m.size[0]*S,m.size[1]*S,2,hex(m.color),true);
+    s += `<text x="${X(0)}" y="${Y(b.pos[1])+4}" text-anchor="middle" font-size="9" fill="${mu}">LiPo 401230</text>`;
+    s += dim(ox,oy+H,ox+W,oy+H,'35',26);
+    s += dim(ox+W,oy,ox+W,oy+H,'8',24);
+    s += `<text x="${ox-30}" y="${oy-26}" font-size="11" fill="${fg}" font-weight="600">CLASP BOX · under the wrist (skin side up)</text>`;
     s += `</svg>`;
-    views.push({svg:s, cap:'End view. 8.6 mm internal height: battery 5 + motor 2.7 on the right half, XIAO 3.5 + SX1262 3 on the left, antenna and LED flex under the lid.'});
+    views.push({svg:s, cap:'The clasp box hides the 110 mAh battery and the 8 mm vibration motor, which sits against the skin. It is also the bangle’s push clasp; the charge pins are on the outside face.'});
   }
-  // STRAP / WRIST
+  // ON THE WRIST
   {
-    const a=31, b=23.5, cx=120, cy=120, s4=3;
-    let s = `<svg viewBox="0 0 240 240" width="240">${defs}`;
-    s += `<ellipse cx="${cx}" cy="${cy}" rx="${30*s4}" ry="${22*s4}" fill="none" stroke="${mu}" stroke-width="1" stroke-dasharray="4 3"/>`;
-    s += `<ellipse cx="${cx}" cy="${cy}" rx="${a*s4}" ry="${b*s4}" fill="none" stroke="${hex(0x5a5870)}" stroke-width="${5*s4}"/>`;
-    s += rr(cx-22*s4, cy-(b+5.5)*s4-2, 44*s4, 11*s4, 5.5*s4, fg, false, 'var(--panel)');
-    s += `<text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="10" fill="${mu}">wrist 165 mm</text><text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="10" fill="${mu}">60 × 44 ellipse</text>`;
+    const cx=135, cy=150, k=3;
+    let s = `<svg viewBox="0 0 270 290" width="270">${defs}`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${30*k}" ry="${22*k}" fill="none" stroke="${mu}" stroke-width="1" stroke-dasharray="4 3"/>`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${33*k}" ry="${25.5*k}" fill="none" stroke="${GOLD}" stroke-width="${3.2*k}"/>`;
+    s += rr(cx-14*k, cy-(25.5+1.6)*k-11*k+4, 28*k, 11*k, 3.5*k, fg, false, 'var(--panel)');
+    s += `<ellipse cx="${cx}" cy="${cy-(25.5+1.6)*k-11*k+4}" rx="${7.5*k}" ry="${3}" fill="var(--accent)"/>`;
+    s += rr(cx-17.5*k, cy+(25.5-4)*k, 35*k, 8*k, 2*k, fg, false, 'var(--panel)');
+    s += `<circle cx="${cx-33*k}" cy="${cy}" r="${1.75*k}" fill="${GOLD}"/><text x="${cx-33*k+8}" y="${cy+4}" font-size="9" fill="${mu}">hinge</text>`;
+    s += `<text x="${cx}" y="${cy-2}" text-anchor="middle" font-size="10" fill="${mu}">wrist 165 mm</text><text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="10" fill="${mu}">bangle 62 × 48 inside</text>`;
     s += `<text x="12" y="20" font-size="11" fill="${fg}" font-weight="600">ON THE WRIST (scale 3 px/mm)</text>`;
     s += `</svg>`;
-    views.push({svg:s, cap:'Strap is a 5 mm braided cord, 165 mm around, with an elastic core. The pod rides on top of the wrist like a watch case.'});
+    views.push({svg:s, cap:'A hinged oval bangle: centerpiece on top, clasp box underneath, hinge at the side. It opens at the clasp and closes with a click.'});
   }
   document.getElementById('drawingGrid').innerHTML = views.map(v=>`<div class="drawing">${v.svg}<div class="cap">${v.cap}</div></div>`).join('');
-  // life-size SVG
-  document.getElementById('lifesize').innerHTML = `<rect x="0.2" y="1.2" width="43.6" height="23.6" rx="9" fill="none" stroke="var(--fg)" stroke-width=".4"/><rect x="7" y="10.5" width="30" height="5" rx="1" fill="var(--accent)" opacity=".8"/><text x="22" y="22" text-anchor="middle" font-size="2.6" fill="var(--muted)" font-family="IBM Plex Mono, monospace">44 × 24 mm</text>`;
+  document.getElementById('lifesize').innerHTML = `<rect x="11" y="0.5" width="28" height="24" rx="7.5" fill="none" stroke="var(--fg)" stroke-width=".4"/><ellipse cx="25" cy="12.5" rx="7.5" ry="5.5" fill="var(--accent)" opacity=".8"/><circle cx="14.5" cy="12.5" r="1.9" fill="none" stroke="var(--fg)" stroke-width=".3"/><circle cx="35.5" cy="12.5" r="1.9" fill="none" stroke="var(--fg)" stroke-width=".3"/><text x="25" y="22.8" text-anchor="middle" font-size="2.4" fill="var(--muted)" font-family="IBM Plex Mono, monospace">28 × 24 mm</text>`;
 })();
 
 /* ============ 3D MODEL (three.js r128) ============ */
@@ -754,7 +785,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.2;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 1, 2000);
   const target = new THREE.Vector3(0,36,0), targetGoal = target.clone();
@@ -765,27 +796,31 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   scene.add(new THREE.HemisphereLight(0xfff3e0, 0x1a1826, 0.5));
   const key = new THREE.DirectionalLight(0xfff0d8, 1.0); key.position.set(70,150,90); key.castShadow=true; key.shadow.mapSize.set(2048,2048);
   const sc = key.shadow.camera; sc.left=-80; sc.right=80; sc.top=80; sc.bottom=-80; sc.near=10; sc.far=400; key.shadow.bias=-0.0005; scene.add(key);
-  const fill = new THREE.DirectionalLight(0x9fb4ff, 0.35); fill.position.set(-120,60,-80); scene.add(fill);
+  const fill = new THREE.DirectionalLight(0xd6dcff, 0.25); fill.position.set(-120,60,-80); scene.add(fill);
   const rim = new THREE.PointLight(0xf5b544, 0.0, 120, 2); rim.position.set(0,40,0); scene.add(rim);
 
   // studio environment for metal reflections: dark room with a few soft light panels
-  (function(){ const es=new THREE.Scene(); es.background=new THREE.Color(0x0e0d16);
+  (function(){ const es=new THREE.Scene(); es.background=new THREE.Color(0x16161a);
     const panel=(w,h,c,i,pos,rot)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i), side:THREE.DoubleSide})); m.position.set(...pos); if(rot) m.rotation.set(...rot); es.add(m); };
     panel(60,20,0xfff0dc,3.0,[0,40,0],[Math.PI/2,0,0]);            // top softbox
-    panel(30,30,0xffe2b8,1.6,[45,15,20],[0,-Math.PI/2.5,0]);       // warm key side
-    panel(30,30,0x9fb4ff,0.9,[-45,10,-10],[0,Math.PI/2.5,0]);      // cool fill
-    panel(80,10,0xf5b544,0.6,[0,-10,-40],[0,0,0]);                 // amber floor bounce
+    panel(30,30,0xffe2b8,2.2,[45,15,20],[0,-Math.PI/2.5,0]); panel(60,14,0xfff4e6,1.4,[0,25,45],[0,Math.PI,0]);       // warm key side
+    panel(30,30,0xffffff,0.5,[-45,10,-10],[0,Math.PI/2.5,0]);      // cool fill
+    panel(80,10,0xf5b544,0.35,[0,-10,-40],[0,0,0]);                 // amber floor bounce
     const pm=new THREE.PMREMGenerator(renderer); scene.environment=pm.fromScene(es,0.04).texture; pm.dispose(); })();
-  const POD_Y = 51; const podGroup = new THREE.Group(); podGroup.position.y = POD_Y; scene.add(podGroup);
+  const POD_Y = 51.95; const podGroup = new THREE.Group(); podGroup.position.y = POD_Y; scene.add(podGroup);
   const pickables = [], meshes = {}, labels = {};
   const M = (opts)=>new THREE.MeshStandardMaterial(Object.assign({roughness:.55, metalness:.1}, opts));
   const GOLD = M({color:0xd9b25a, metalness:.85, roughness:.3}), SILVER = M({color:0xcfd0d6, metalness:.9, roughness:.35}), BLACK = M({color:0x15151c, roughness:.5}), WHITE = M({color:0xe8e6ef, roughness:.6});
-  function roundedBox(w,h,d,r){
-    const sh = new THREE.Shape(); const x=-w/2,y=-d/2; r=Math.min(r,w/2,d/2);
-    sh.moveTo(0,y); sh.lineTo(x+w-r,y); sh.quadraticCurveTo(x+w,y,x+w,y+r); sh.lineTo(x+w,y+d-r); sh.quadraticCurveTo(x+w,y+d,x+w-r,y+d); sh.lineTo(x+r,y+d); sh.quadraticCurveTo(x,y+d,x,y+d-r); sh.lineTo(x,y+r); sh.quadraticCurveTo(x,y,x+r,y);
-    const g = new THREE.ExtrudeGeometry(sh,{depth:h-1.2,bevelEnabled:true,bevelThickness:.6,bevelSize:.6,bevelSegments:4,curveSegments:20});
-    g.rotateX(-Math.PI/2); g.translate(0,-(h-1.2)/2,0); return g;
+  function roundedBox(w,h,d,r,b=0.6){
+    // outer size exactly w × h × d: the outline is inset by the bevel b, and the bevel adds it back
+    const iw=w-2*b, id=d-2*b, x=-iw/2, y=-id/2; r=Math.max(0.5,Math.min(r-b,iw/2,id/2));
+    const sh = new THREE.Shape();
+    sh.moveTo(0,y); sh.lineTo(x+iw-r,y); sh.quadraticCurveTo(x+iw,y,x+iw,y+r); sh.lineTo(x+iw,y+id-r); sh.quadraticCurveTo(x+iw,y+id,x+iw-r,y+id); sh.lineTo(x+r,y+id); sh.quadraticCurveTo(x,y+id,x,y+id-r); sh.lineTo(x,y+r); sh.quadraticCurveTo(x,y,x+r,y);
+    const g = new THREE.ExtrudeGeometry(sh,{depth:h-2*b,bevelEnabled:true,bevelThickness:b,bevelSize:b,bevelSegments:6,curveSegments:24});
+    g.rotateX(-Math.PI/2); g.translate(0,-(h-2*b)/2,0); return g;
   }
+  renderer.localClippingEnabled = true;
+  const clipTop = new THREE.Plane(new THREE.Vector3(0,1,0), -POD_Y), clipBot = new THREE.Plane(new THREE.Vector3(0,-1,0), POD_Y);
   function add(parent, geo, mat, pos, rot){ const m=new THREE.Mesh(geo,mat); if(pos) m.position.set(...pos); if(rot) m.rotation.set(...rot); m.castShadow=true; m.receiveShadow=true; parent.add(m); return m; }
   function pads(parent, len, y, z, n){ for(let i=0;i<n;i++){ add(parent, new THREE.BoxGeometry(1.2,0.3,1.6), GOLD, [-len/2+2.2+i*2.54, y, z]); } }
   function texCanvas(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d')); const t=new THREE.CanvasTexture(c); return t; }
@@ -796,10 +831,32 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
     const [sx,sy,sz] = p.size; const g = new THREE.Group(); g.position.set(...p.pos); g.userData.part=p; g.userData.base=p.pos[1];
     let body;
     if(p.shell){
-      body = add(g, roundedBox(sx,sy,sz,POD.R), new THREE.MeshPhysicalMaterial({color:p.color, roughness:.38, metalness:.3, clearcoat:.8, clearcoatRoughness:.25}), [0,0,0]);
-      if(p.id==='shellTop'){ // slot edge highlight + subtle brand mark
-        add(g, new THREE.BoxGeometry(31,0.3,6), M({color:0x2a2838}), [0,sy/2-0.1,0]);
-      } else { // cord channel hint on the underside
+      const plane = p.half>0 ? clipTop : clipBot;
+      body = add(g, roundedBox(sx,sy,sz,POD.R,POD.B), new THREE.MeshPhysicalMaterial({color:p.color, roughness:.16, metalness:1, clearcoat:.6, clearcoatRoughness:.08, side:THREE.DoubleSide, clippingPlanes:[plane], clipShadows:true}), [0,0,0]);
+      if(p.half<0){ // gadrooned gallery: fine vertical ridges around the waist of the centerpiece, hiding the parting line
+        const goldG = new THREE.MeshPhysicalMaterial({color:p.color, metalness:1, roughness:.14, clearcoat:.6});
+        const hx=sx/2, hz=sz/2, rc=POD.R, per=[]; const segs=[[hx-rc,hz-rc,0],[ -(hx-rc),hz-rc,Math.PI/2],[-(hx-rc),-(hz-rc),Math.PI],[hx-rc,-(hz-rc),Math.PI*1.5]];
+        const straightX=2*(hx-rc), straightZ=2*(hz-rc), arc=Math.PI*rc/2, total=2*straightX+2*straightZ+4*arc, N=96;
+        for(let i=0;i<N;i++){ let d=i/N*total; let x,z,nx,nz;
+          const parts=[['sx',straightX],['a',arc],['sz',straightZ],['a',arc],['sx',straightX],['a',arc],['sz',straightZ],['a',arc]];
+          let k=0; for(;k<parts.length;k++){ if(d<=parts[k][1]) break; d-=parts[k][1]; }
+          const q=Math.floor(k/2)%4; // quadrant order: front edge (+z) going -x, left corner, left edge, back corner, back edge, right corner, right edge, front corner
+          if(k===0){ x=hx-rc-d; z=hz; nx=0; nz=1; } else if(k===1){ const t=Math.PI/2+d/rc; x=-(hx-rc)+rc*Math.cos(t); z=(hz-rc)+rc*Math.sin(t); nx=Math.cos(t); nz=Math.sin(t); }
+          else if(k===2){ x=-hx; z=hz-rc-d; nx=-1; nz=0; } else if(k===3){ const t=Math.PI+d/rc; x=-(hx-rc)+rc*Math.cos(t); z=-(hz-rc)+rc*Math.sin(t); nx=Math.cos(t); nz=Math.sin(t); }
+          else if(k===4){ x=-(hx-rc)+d; z=-hz; nx=0; nz=-1; } else if(k===5){ const t=Math.PI*1.5+d/rc; x=(hx-rc)+rc*Math.cos(t); z=-(hz-rc)+rc*Math.sin(t); nx=Math.cos(t); nz=Math.sin(t); }
+          else if(k===6){ x=hx; z=-(hz-rc)+d; nx=1; nz=0; } else { const t=d/rc; x=(hx-rc)+rc*Math.cos(t); z=(hz-rc)+rc*Math.sin(t); nx=Math.cos(t); nz=Math.sin(t); }
+          const r=add(g, new THREE.CylinderGeometry(0.32,0.32,2.6,8), goldG, [x+nx*0.05, 0, z+nz*0.05]); r.castShadow=false; r.userData.bezel=true;
+        }
+      }
+      if(p.half>0){ // gentle dome, raised collet (bezel) around the stone, milgrain border, bead seats
+        const goldHi = new THREE.MeshPhysicalMaterial({color:p.color, metalness:1, roughness:.12, clearcoat:.6});
+        const DA=11, DB=9, DH=1.9, top=sy/2-0.15, domeY=(x,z)=>{ const r=Math.min(1,Math.hypot(x/DA,z/DB)); return top+DH*Math.sqrt(1-r*r); };
+        const dome = add(g, new THREE.SphereGeometry(1,72,24,0,Math.PI*2,0,Math.PI/2), body.material, [0,top,0]); dome.scale.set(DA,DH,DB); dome.userData.bezel=true; dome.userData.domeOf=true;
+        const wall = add(g, new THREE.CylinderGeometry(1,1,1.3,72,1,true), goldHi, [0,domeY(7.9,0)+0.45,0]); wall.scale.set(7.9,1,5.9); wall.userData.bezel=true;
+        const lip = add(g, new THREE.TorusGeometry(1,0.065,10,96), goldHi, [0,domeY(7.9,0)+1.1,0], [Math.PI/2,0,0]); lip.scale.set(7.95,5.95,4); lip.userData.bezel=true;
+        const bead = new THREE.SphereGeometry(0.3,10,8);
+        for(let i=0;i<60;i++){ const t=i/60*Math.PI*2, x=Math.cos(t)*9.1, z=Math.sin(t)*7.1; const m=add(g, bead, goldHi, [x, domeY(x,z)+0.12, z]); m.userData.bezel=true; m.castShadow=false; }
+        for(const sxn of [-1,1]){ const seat=add(g, new THREE.TorusGeometry(2.2,0.22,10,40), goldHi, [sxn*10.5, domeY(10.5,0)+0.05, 0], [Math.PI/2,0,0]); seat.userData.bezel=true; }
       }
     } else if(p.id==='xiao'){
       body = add(g, new THREE.BoxGeometry(sx,1.2,sz), M({color:p.color, roughness:.5}), [0,-sy/2+0.6,0]);
@@ -817,7 +874,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
       pads(g, sx, -sy/2+0.6, sz/2-0.8, 7); pads(g, sx, -sy/2+0.6, -sz/2+0.8, 7);
     } else if(p.id==='batt'){
       body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({color:p.color, metalness:.55, roughness:.35}), [0,0,0]);
-      add(g, new THREE.BoxGeometry(3,sy+0.2,16), M({color:0xe0c060, roughness:.7}), [-sx/2+1.4,0,0]);  // kapton-wrapped protection board, faces the boards
+      add(g, new THREE.BoxGeometry(3,sy+0.2,sz-1), M({color:0xe0c060, roughness:.7}), [-sx/2+1.4,0,0]);  // kapton-wrapped protection board, faces the boards
       add(g, new THREE.CylinderGeometry(.35,.35,2.5,8), M({color:0xd33}), [-sx/2-0.8,0.8,-5], [0,0,Math.PI/2]);
       add(g, new THREE.CylinderGeometry(.35,.35,2.5,8), BLACK, [-sx/2-0.8,-0.8,-5], [0,0,Math.PI/2]);
     } else if(p.id==='motor'){
@@ -826,15 +883,22 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
       add(g, new THREE.CylinderGeometry(.3,.3,3,8), M({color:0xd33}), [-6,0.4,0], [0,0,Math.PI/2]);
       add(g, new THREE.CylinderGeometry(.3,.3,3,8), BLACK, [-6,-0.4,0], [0,0,Math.PI/2]);
     } else if(p.id==='btn1'||p.id==='btn2'){
-      body = add(g, new THREE.BoxGeometry(6,5,6), M({color:0x2b2a36, roughness:.6}), [0,0,0]);
-      add(g, new THREE.CylinderGeometry(1.6,1.6,1.5,20), M({color:0x111}), [0,0,3.6], [Math.PI/2,0,0]);   // plunger
-      const cap = add(g, new THREE.BoxGeometry(7,3,2.2), M({color:p.color, roughness:.45, clearcoat:.5}), [0,0,4.6]); cap.name='cap';
-      if(p.id==='btn2') add(g, new THREE.CylinderGeometry(1,1,0.3,16), M({color:0x5a2630}), [0,0,5.75], [Math.PI/2,0,0]); // dimple
+      body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({color:0x2b2a36, roughness:.6}), [0,0,0]);      // low-profile tact switch
+      add(g, new THREE.CylinderGeometry(0.6,0.6,0.5,12), M({color:0x111}), [0,sy/2+0.25,0]);              // plunger
+      const cap = new THREE.Group(); cap.name='cap'; cap.position.y=3.6; cap.userData.rest=3.6; g.add(cap);
+      const goldBead = new THREE.MeshPhysicalMaterial({color:p.color, metalness:1, roughness:.1, clearcoat:.8, clearcoatRoughness:.05}); goldBead.userData={};
+      const sph = add(cap, new THREE.SphereGeometry(1.9,40,24), goldBead, [0,0,0]); sph.userData.bead=true;
+      if(p.id==='btn2'){ // tiny prong-set white stone on the Safety bead
+        add(cap, new THREE.OctahedronGeometry(0.75,1), new THREE.MeshPhysicalMaterial({color:0xffffff, metalness:0, roughness:0, clearcoat:1, transmission:0, reflectivity:1}), [0,1.95,0]);
+        for(let k=0;k<4;k++){ const t=k*Math.PI/2+Math.PI/4; add(cap, new THREE.CylinderGeometry(0.12,0.12,0.7,6), goldBead, [Math.cos(t)*0.7,1.85,Math.sin(t)*0.7]); }
+      }
     } else if(p.id==='leds'){
       body = add(g, new THREE.BoxGeometry(sx,0.8,sz), M({color:0xb59a6a, roughness:.8}), [0,0,0]);
-      g.userData.leds=[]; for(let i=0;i<4;i++){ const l=add(g, new THREE.BoxGeometry(2.8,0.9,3.2), M({color:0xfff2cc, emissive:0xf5b544, emissiveIntensity:.9}), [-9+i*6,0.85,0]); g.userData.leds.push(l); }
+      g.userData.leds=[]; for(let i=0;i<4;i++){ const l=add(g, new THREE.BoxGeometry(2.8,0.9,3.2), M({color:0xfff2cc, emissive:0xf5b544, emissiveIntensity:.9}), [-5.25+i*3.5,0.75,0]); g.userData.leds.push(l); }
     } else if(p.id==='diffuser'){
-      body = add(g, new THREE.BoxGeometry(sx,sy,sz), new THREE.MeshBasicMaterial({color:0xf5a530, toneMapped:false}), [0,0,0]); body.castShadow=false;
+      const dome = new THREE.SphereGeometry(1,48,24,0,Math.PI*2,0,Math.PI/2);
+      body = add(g, dome, new THREE.MeshBasicMaterial({color:0xf5a530, toneMapped:false}), [0,0,0]); body.scale.set(sx/2,sy,sz/2); body.castShadow=false;
+      const skin = add(g, dome.clone(), new THREE.MeshPhysicalMaterial({color:0xffffff, transparent:true, opacity:.22, roughness:.03, metalness:0, clearcoat:1, clearcoatRoughness:.02}), [0,0,0]); skin.scale.set(sx/2+0.08,sy+0.06,sz/2+0.08); skin.castShadow=false;
     } else if(p.id==='ant'){
       const tex = texCanvas(400,80,c=>{ c.fillStyle='#d8b25a'; c.fillRect(0,0,400,80); c.strokeStyle='#8a6b22'; c.lineWidth=6; c.beginPath(); for(let x=20;x<380;x+=24){ c.moveTo(x,14); c.lineTo(x,66); c.lineTo(x+12,66); c.lineTo(x+12,14); c.lineTo(x+24,14);} c.stroke(); c.fillStyle='#8a6b22'; c.fillRect(0,34,30,12); });
       body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({map:tex, color:0xffffff, metalness:.5, roughness:.45}), [0,0,0]);
@@ -843,22 +907,40 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
       body = add(g, new THREE.CylinderGeometry(sx/2,sx/2,sy,32), M({color:0x2b2a36, roughness:.5}), [0,0,0]);
       for(const dx of [-2.5,2.5]) add(g, new THREE.CylinderGeometry(.8,.8,1.6,12), GOLD, [dx,-sy/2-0.3,0]);
       add(g, new THREE.TorusGeometry(4.2,0.4,8,32), SILVER, [0,-sy/2,0], [Math.PI/2,0,0]);          // magnet ring
+    } else if(p.box){
+      body = add(g, roundedBox(sx,sy,sz,6,2), new THREE.MeshPhysicalMaterial({color:p.color, metalness:1, roughness:.16, clearcoat:.6, clearcoatRoughness:.08, side:THREE.DoubleSide}), [0,0,0]);
+      add(g, new THREE.BoxGeometry(sx-9,0.15,0.4), M({color:0x6b5320, roughness:.5}), [0,-sy/2-0.02,0]);   // engraved line on the outside face
     } else {
       body = add(g, new THREE.BoxGeometry(sx,sy,sz), M({color:p.color}), [0,0,0]);
     }
     g.traverse(o=>{ if(o.isMesh){ o.userData.part=p; } });
     podGroup.add(g); pickables.push(g); meshes[p.id]=g; g.userData.body=body;
-    const lab=document.createElement('div'); lab.className='lab'; lab.textContent=p.name.replace(/ for XIAO| strip| \(502020\)/g,''); lab.dataset.id=p.id; labelLayer.appendChild(lab); labels[p.id]=lab;
+    const lab=document.createElement('div'); lab.className='lab'; lab.textContent=p.name.replace(/ for XIAO| strip| \(401230\)/g,''); lab.dataset.id=p.id; labelLayer.appendChild(lab); labels[p.id]=lab;
   }
-  // strap: braided cord on an ellipse in the XY plane (wrist axis = Z)
+  // strap: hollow hinged gold bangle (6 × 3.2 mm rounded profile) through the centerpiece and the clasp box
   const strapPart = PARTS.find(p=>p.strap);
-  class Ell extends THREE.Curve{ constructor(a,b){super();this.a=a;this.b=b;} getPoint(t){ const th=t*Math.PI*2; return new THREE.Vector3(this.a*Math.cos(th), 22.5+this.b*Math.sin(th), 0); } }
-  const braid = texCanvas(256,64,c=>{ c.fillStyle='#2c2a3a'; c.fillRect(0,0,256,64); c.strokeStyle='#403d55'; c.lineWidth=7; for(let i=-64;i<256;i+=24){ c.beginPath(); c.moveTo(i,0); c.lineTo(i+64,64); c.stroke(); } c.strokeStyle='#201e2c'; c.lineWidth=3; for(let i=-64;i<256;i+=24){ c.beginPath(); c.moveTo(i+64,0); c.lineTo(i,64); c.stroke(); } });
-  braid.wrapS=braid.wrapT=THREE.RepeatWrapping; braid.repeat.set(24,1);
-  const strap = new THREE.Mesh(new THREE.TubeGeometry(new Ell(31,23.5),160,2.5,16,true), M({map:braid, color:0xffffff, roughness:.95}));
-  strap.castShadow=true; strap.userData.part=strapPart; scene.add(strap); pickables.push(strap);
-  const clasp = add(scene, new THREE.CylinderGeometry(3.2,3.2,6,24), M({color:0x3b3950, metalness:.5, roughness:.4}), [0,-1,0]); clasp.rotation.z=Math.PI/2; clasp.userData.part=strapPart;
-  const labStrap=document.createElement('div'); labStrap.className='lab'; labStrap.textContent='Braided cord strap'; labStrap.dataset.id='strap'; labelLayer.appendChild(labStrap); labels.strap=labStrap;
+  const strap = new THREE.Group(); strap.userData.part=strapPart; scene.add(strap); pickables.push(strap);
+  const cuffMat = new THREE.MeshPhysicalMaterial({color:strapPart.color, metalness:1, roughness:.15, clearcoat:.6, clearcoatRoughness:.08});
+  const BA=33, BB=25.5, BY=22.5;
+  const ring=[]; for(let i=0;i<96;i++){ const t=i/96*Math.PI*2; ring.push(new THREE.Vector3(BA*Math.cos(t), BY+BB*Math.sin(t), 0)); }
+  const bandPath = new THREE.CatmullRomCurve3(ring, true, 'centripetal');
+  const bandProf = new THREE.Shape(); { const w=3.2, h=6, r=1.5, x=-w/2, y=-h/2; bandProf.moveTo(x+r,y); bandProf.lineTo(x+w-r,y); bandProf.quadraticCurveTo(x+w,y,x+w,y+r); bandProf.lineTo(x+w,y+h-r); bandProf.quadraticCurveTo(x+w,y+h,x+w-r,y+h); bandProf.lineTo(x+r,y+h); bandProf.quadraticCurveTo(x,y+h,x,y+h-r); bandProf.lineTo(x,y+r); bandProf.quadraticCurveTo(x,y,x+r,y); }
+  const band = new THREE.Mesh(new THREE.ExtrudeGeometry(bandProf,{steps:320, bevelEnabled:false, extrudePath:bandPath}), cuffMat); band.castShadow=true; band.receiveShadow=true; band.userData.part=strapPart; strap.add(band);
+  const ptAt = th => new THREE.Vector3(BA*Math.cos(th), BY+BB*Math.sin(th), 0);
+  const tanAt = th => new THREE.Vector3(-BA*Math.sin(th), BB*Math.cos(th), 0).normalize();
+  // gadrooned collars where the band meets the centerpiece
+  const thEdge = Math.acos((POD.L/2+0.6)/BA);
+  for(const side of [1,-1]) for(let k=0;k<3;k++){
+    const th = side>0 ? thEdge-0.022*k : Math.PI-thEdge+0.022*k;
+    const tor = new THREE.Mesh(new THREE.TorusGeometry(1,0.26,10,32), cuffMat); tor.position.copy(ptAt(th));
+    tor.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), tanAt(th)); tor.scale.set(1.75,1.75,1); 
+    tor.geometry.scale(1,1,1); tor.castShadow=true; tor.userData.part=strapPart;
+    const sq = new THREE.Group(); sq.position.copy(tor.position); sq.quaternion.copy(tor.quaternion); tor.position.set(0,0,0); tor.quaternion.identity(); tor.scale.set(1.75,3.15,1); sq.add(tor); strap.add(sq);
+  }
+  // hinge knuckles at the left side
+  for(let k=-1;k<=1;k++){ const kn=new THREE.Mesh(new THREE.CylinderGeometry(1.75,1.75,1.9,24), cuffMat); kn.rotation.x=Math.PI/2; kn.position.set(-BA, BY, k*2.05); kn.castShadow=true; kn.userData.part=strapPart; strap.add(kn); }
+  const clasp = new THREE.Group(); scene.add(clasp);
+  const labStrap=document.createElement('div'); labStrap.className='lab'; labStrap.textContent='Hinged gold bangle'; labStrap.dataset.id='strap'; labelLayer.appendChild(labStrap); labels.strap=labStrap;
   // wrist / forearm
   const prof=[]; const zA=-70, zB=48; for(let i=0;i<=48;i++){ const z=zA+(zB-zA)*i/48; let r=1+0.12*Math.max(0,(-z-10)/60); const endA=Math.min(1,(z-zA)/10), endB=Math.min(1,(zB-z)/8); r*=Math.sqrt(Math.max(0,1-Math.pow(1-Math.min(endA,endB),2))); prof.push(new THREE.Vector2(Math.max(r,0.001),z)); }
   const wristGeo = new THREE.LatheGeometry(prof,64); wristGeo.rotateX(Math.PI/2); wristGeo.scale(30,22,1); wristGeo.computeVertexNormals();
@@ -892,7 +974,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   function setEmissive(id,on){ const g=meshes[id]||(id==='strap'?strap:null); if(!g) return; g.traverse(o=>{ if(o.isMesh && o.material && o.material.emissive && !o.userData.led){ if(on){ o.userData._em=o.userData._em||o.material.emissive.getHex(); o.userData._ei=o.userData._ei??o.material.emissiveIntensity; o.material.emissive.setHex(0xf5b544); o.material.emissiveIntensity=.35; } else if(o.userData._em!==undefined){ o.material.emissive.setHex(o.userData._em); o.material.emissiveIntensity=o.userData._ei; } } }); }
   function setHover(id){ if(hovered===id) return; if(hovered&&hovered!==selected) setEmissive(hovered,false); hovered=id; if(hovered) setEmissive(hovered,true); canvas.style.cursor=hovered?'pointer':'grab'; listEl.querySelectorAll('li').forEach(li=>li.classList.toggle('hover',li.dataset.id===hovered)); }
   let hoverT=0; function hover(e){ const now=performance.now(); if(now-hoverT<40) return; hoverT=now; const h=hitPart(e); setHover(h?h.part.id:null); }
-  function select(id){ if(selected) setEmissive(selected,false); selected=id; if(!id){ targetGoal.set(0,36,0); info.innerHTML='<b>Firefly pod</b> · 44 × 24 × 11 mm · ~'+Math.round(totalWeight)+' g with strap<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span>'; listEl.querySelectorAll('li').forEach(li=>li.classList.remove('sel')); return; }
+  function select(id){ if(selected) setEmissive(selected,false); selected=id; if(!id){ targetGoal.set(0,36,0); info.innerHTML='<b>Firefly bangle</b> · 28 × 24 mm centerpiece · ~'+Math.round(totalWeight)+' g<br><span class="muted">Hover for names, click a part for its spec, drag to orbit, scroll to zoom.</span>'; listEl.querySelectorAll('li').forEach(li=>li.classList.remove('sel')); return; }
     setEmissive(id,true); const p=PARTS.find(q=>q.id===id);
     info.innerHTML = `<b>${p.name}</b> <span class="chip">${p.role}</span><br><span class="mono">${p.dims} mm · ${p.weight.toFixed(1)} g · $${p.price.toFixed(2)}</span><br><span class="muted">${p.spec}</span><br><a href="${p.buy}" target="_blank" rel="noopener">${p.buyLabel}</a>${p.alt?` · <a href="${p.alt}" target="_blank" rel="noopener">${p.altLabel}</a>`:''}`;
     listEl.querySelectorAll('li').forEach(li=>li.classList.toggle('sel',li.dataset.id===id));
@@ -900,7 +982,7 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   function pick(e){ const h=hitPart(e); if(!h){ select(null); return; }
     if(h.part.id==='btn1'||h.part.id==='btn2'){ pressButton(h.part.id); }
     select(h.part.id); }
-  function pressButton(id){ const g=meshes[id]; const cap=g.getObjectByName('cap'); if(cap){ cap.position.z=3.4; setTimeout(()=>{cap.position.z=4.6;},160); }
+  function pressButton(id){ const g=meshes[id]; const cap=g.getObjectByName('cap'); if(cap){ cap.position.y=cap.userData.rest-0.6; setTimeout(()=>{cap.position.y=cap.userData.rest;},160); }
     try{ if(typeof SIM!=='undefined') SIM.press(id==='btn1'?1:2); }catch(err){} }
   // part list
   const listEl = document.getElementById('partList');
@@ -915,12 +997,12 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
   const slider = document.getElementById('explodeRange'); slider.addEventListener('input',()=>{ explodeTarget=slider.value/100; bExplode.setAttribute('aria-pressed',String(explodeTarget>0.02)); });
   tog('btnWrist',on=>{ wrist.visible=on; });
   tog('btnCoin',on=>{ coin.visible=on; });
-  tog('btnShell',on=>{ for(const id of ['shellTop','shellBot']){ meshes[id].traverse(o=>{ if(o.isMesh){ o.material.transparent=on; o.material.opacity=on?.15:1; o.material.depthWrite=!on; o.material.needsUpdate=true; o.castShadow=!on; } }); } });
+  tog('btnShell',on=>{ for(const id of ['shellTop','shellBot','clasp']){ meshes[id].traverse(o=>{ if(o.isMesh){ o.material.transparent=on; o.material.opacity=on?.15:1; o.material.depthWrite=!on; o.material.needsUpdate=true; o.castShadow=!on; } }); } });
   tog('btnSpin',on=>{ spin=on; });
   tog('btnLabels',on=>{ showLabels=on; });
   tog('btnParts',on=>{ document.getElementById('partList').hidden=!on; });
-  const FINISH={graphite:[0x3b3950,.3,.38], champagne:[0xc9a46a,.85,.28], rose:[0xc98a7c,.8,.3], silver:[0xc4c6cf,.9,.25]};
-  function setFinish(k){ const f=FINISH[k]; for(const id of ['shellTop','shellBot']){ const b=meshes[id].userData.body; b.material.color.setHex(f[0]); b.material.metalness=f[1]; b.material.roughness=f[2]; } }
+  const FINISH={graphite:[0x3c3a40,1,.2], champagne:[0xeab552,1,.15], rose:[0xe7a58d,1,.15], silver:[0xe8e5df,1,.14]};
+  function setFinish(k){ const f=FINISH[k]; for(const id of ['shellTop','shellBot','clasp','btn1','btn2']){ meshes[id].traverse(o=>{ if(o.isMesh && (o===meshes[id].userData.body&&id!=='btn1'&&id!=='btn2' || o.userData.bezel || o.userData.bead)){ o.material.color.setHex(f[0]); o.material.metalness=f[1]; o.material.roughness=f[2]; } }); } cuffMat.color.setHex(f[0]); }
   document.getElementById('finish').addEventListener('change',e=>setFinish(e.target.value));
   const VIEWS={iso:[0.7,1.0,190], top:[0,0.05,170], front:[0,1.45,175], side:[Math.PI/2,1.4,180], back:[Math.PI,1.3,185]};
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ const v=VIEWS[b.dataset.view]; camGoal.theta=v[0]; camGoal.phi=v[1]; camGoal.radius=v[2]; }));
@@ -939,11 +1021,11 @@ const hex = c => '#'+c.toString(16).padStart(6,'0');
 
   // LED / glow state mirrors the simulation
   const ledGroup = meshes.leds, diff = meshes.diffuser;
-  function syncGlow(t){ let n=4, cls='on', pulse=0.55+0.1*Math.sin(t*3);
-    try{ if(typeof SIM!=='undefined'){ if(SIM.state.alert==='sos'){ n=4; cls='sos'; pulse=0.6+0.6*Math.abs(Math.sin(t*8)); } else if(SIM.state.finding){ n=SIM.state.leds; pulse=0.5+0.5*Math.abs(Math.sin(t*4)); } else { n=4; pulse=0.45+0.12*Math.sin(t*1.2); } } }catch(err){}
+  function syncGlow(t){ clipTop.constant=-(POD_Y+meshes.shellTop.position.y); clipBot.constant=POD_Y+meshes.shellBot.position.y; let n=4, cls='on', pulse=0.55+0.1*Math.sin(t*3);
+    try{ if(typeof SIM!=='undefined'){ if(SIM.state.alert==='sos'){ n=4; cls='sos'; pulse=0.6+0.6*Math.abs(Math.sin(t*8)); } else if(SIM.state.finding){ n=SIM.state.leds; pulse=0.5+0.5*Math.abs(Math.sin(t*4)); } else { n=4; cls='idle'; pulse=0.45+0.12*Math.sin(t*1.2); } } }catch(err){}
     const col = cls==='sos'?0xef5b6b:0xf5b544;
     ledGroup.userData.leds.forEach((l,i)=>{ const on=i<n; l.material.emissive.setHex(col); l.material.emissiveIntensity=on?pulse*1.6:0.05; l.material.color.setHex(on?(cls==='sos'?0xff7080:0xffb43c):0x6a6676); });
-    const k = n? Math.min(1,0.35+0.75*pulse) : 0.18; diff.userData.body.material.color.setHex(cls==='sos'?0xff4a60:0xffa428).multiplyScalar(k);
+    const gm=diff.userData.body.material.color; if(cls==='idle'){ gm.setHex(0xf1e7d8).lerp(new THREE.Color(0xffc46a), 0.18+0.25*pulse); } else { const k = n? Math.min(1,0.6+0.5*pulse) : 0.22; gm.setHex(cls==='sos'?0xff4a60:0xffa428).multiplyScalar(k); }
     rim.color.setHex(col); rim.intensity = n? pulse*0.9 : 0; }
 
   let last=performance.now(), t0=last;
@@ -1024,7 +1106,7 @@ const SIM = (function(){
   // button gestures
   function gestures(el,handlers,longMs){ let t0=0,timer=null,clicks=0,clickTimer=null,longFired=false;
     el.addEventListener('pointerdown',e=>{ e.preventDefault(); t0=Date.now(); longFired=false; timer=setTimeout(()=>{longFired=true; handlers.long();},longMs); });
-    const up=()=>{ if(!t0) return; clearTimeout(timer); t0=0; if(longFired) return; clicks++; clearTimeout(clickTimer); clickTimer=setTimeout(()=>{ if(clicks>=2) handlers.double(); else handlers.single(); clicks=0; },320); };
+    const up=()=>{ if(!t0) return; clearTimeout(timer); t0=0; if(longFired) return; clicks++; clearTimeout(clickTimer); clickTimer=setTimeout(()=>{ if(clicks>=3 && handlers.triple) handlers.triple(); else if(clicks>=2) handlers.double(); else handlers.single(); clicks=0; },320); };
     el.addEventListener('pointerup',up); el.addEventListener('pointerleave',()=>{ if(t0){ clearTimeout(timer); t0=0; } });
     el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handlers.single(); } });
   }
@@ -1037,6 +1119,7 @@ const SIM = (function(){
     log(`Finding mode → ${friends[state.findIdx].name}`,'find'); }
   gestures(document.getElementById('pb1'),{
     single: startFinding,
+    triple: ()=>{ buzz(120); setTimeout(()=>buzz(120),220); const far=friends.filter(f=>f!==you && dist(you,f)>=LORA_R); log(far.length?`"I'm home" sent to the group in range; queued for ${far.map(f=>f.name).join(', ')} until your phone can text them`:`"I'm home" sent to the group`,'ok'); status('"I\'m home" sent. Friends in range get it over LoRa right away; when your phone is charging and near your band, it also texts the people you picked (Mom, roommate). Two short buzzes confirm.'); setLeds(2); setTimeout(()=>setLeds(state.finding?state.leds:0),600); },
     double: ()=>{ buzz(300); log('Sent "Come find me" to the group (LoRa broadcast)','find'); status('"Come find me" sent. Friends\' bands buzz twice; Maya\'s app shows your distance ring.'); setLeds(4); setTimeout(()=>setLeds(state.finding?state.leds:0),800); },
     long: ()=>{ buzz(150); log('Check-in: "I\'m okay"','ok'); status('Check-in sent. Quiet confirmation buzz; the app marks you okay at this time.'); setLeds(2); setTimeout(()=>setLeds(state.finding?state.leds:0),600); }
   },900);
