@@ -1,8 +1,8 @@
-"""Synthesize a 53 s soundtrack for the Firefly promo: dark pad intro, riser, impact at the reveal,
+"""Synthesize a 66 s soundtrack for the Firefly promo: dark pad intro, riser, impact at the reveal,
 a soft four-on-the-floor groove, and a resolving outro. Pure numpy, writes music.wav (44.1 kHz stereo)."""
 import numpy as np, wave
 
-SR = 44100; DUR = 53.0; BPM = 104.0; BEAT = 60 / BPM
+SR = 44100; DUR = 66.0; BPM = 104.0; BEAT = 60 / BPM
 N = int(SR * DUR); t = np.arange(N) / SR
 L = np.zeros(N); R = np.zeros(N)
 
@@ -43,7 +43,7 @@ while pos < DUR:
 
 # --- Sub bass on the chord roots from the reveal ---
 pos = 9.0; ci = 2
-while pos < 51:
+while pos < DUR - 2:
     root = chords[ci % 4][0] - 24
     for k in range(8):
         n = int(BEAT / 2 * SR)
@@ -61,7 +61,7 @@ def hat():
     x = x - lowpass(x, 4); return x * np.exp(-np.arange(n) / SR * 70) * 0.06
 k = kick(); h = hat()
 b = 9.0
-while b < 50.0:
+while b < DUR - 3:
     add(k, b)
     if b >= 15: add(h, b + BEAT / 2, pan=0.3)
     b += BEAT
@@ -69,7 +69,7 @@ while b < 50.0:
 # --- Pluck arpeggio (firefly sparkle) 15 – 44 s ---
 rng = np.random.default_rng(7)
 b = 15.0; ci = 0
-while b < 44:
+while b < DUR - 9:
     ch = chords[ci % 4]
     for s16 in range(8):
         m = ch[s16 % 3] + 12 + (12 if s16 >= 4 else 0)
@@ -93,6 +93,16 @@ add(boom + lowpass(air, 8), 9.0)
 for i, tick in enumerate(np.arange(0.4, 4.4, 0.5)):
     n = int(0.04 * SR); tt = np.arange(n) / SR
     add(np.sin(2*np.pi*1800*tt) * np.exp(-tt*120) * 0.05, tick, pan=-0.2 if i % 2 else 0.2)
+
+
+# --- Check-in chimes: three soft dings as friends receive "I'm okay" (28.6 s+), a resolve when everyone's home (37.0 s) ---
+def ding(m, g=0.09):
+    n = int(0.9 * SR); tt = np.arange(n) / SR
+    return (np.sin(2*np.pi*note(m)*tt) + 0.25*np.sin(2*np.pi*note(m)*2.01*tt)) * np.exp(-tt * 5) * g
+for i, m in enumerate((76, 79, 84)):
+    add(ding(m), 28.6 + i * 0.55, pan=-0.3 + 0.3 * i)
+for i, m in enumerate((72, 76, 79, 84)):
+    add(ding(m, 0.07), 37.0 + i * 0.06, pan=-0.2 + 0.13 * i)
 
 # --- Master: fade in/out, soft clip ---
 fade = np.ones(N); fi = int(0.3 * SR); fo = int(2.5 * SR)

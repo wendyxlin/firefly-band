@@ -14,7 +14,7 @@ Firefly is a fine-jewelry hinged gold bangle (~25 g) with a bezel-set opalite st
 | ![Exploded view](media/renders/firefly-exploded.png) | ![Close-up of the centerpiece](media/renders/firefly-closeup.png) |
 
 ## Promo video
-[media/firefly-promo.mp4](media/firefly-promo.mp4): 53 seconds, 1080p, rendered from code in `media/promo-source/`. (Shows an earlier version of the design; it gets re-rendered once the design is final.)
+[media/firefly-promo.mp4](media/firefly-promo.mp4): 66 seconds, 1080p, rendered from code in `media/promo-source/`. Shows the gold bangle and every feature: Find, Help and SOS, "I'm okay" check-ins and the home-safe roll call.
 
 ## How it works
 - **Button 1 · Find:** press once to find friends (the band pulses faster as you get closer), twice for "Come find me", three times for "I'm home", hold for "I'm okay".
