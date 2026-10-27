@@ -4,7 +4,7 @@
 
 **Website & waitlist:** https://wendyxlin.github.io/firefly-band/ · **App (install on your phone):** https://wendyxlin.github.io/firefly-band/app/
 
-Firefly is a fine-jewelry hinged gold bangle (~25 g) with a bezel-set opalite stone that glows, two gold bead buttons, the battery hidden in the clasp, and its own radio. It keeps a friend group connected inside packed bars and clubs with no signal, doesn't need the wearer's phone, and tells your people when you get home. One friend with battery runs the app; everyone else just wears the band.
+Firefly is a fine-jewelry gold bangle (~22 g): a cushion-shaped centerpiece stepping up in Art Deco tiers to a halo of small white stones around a glowing opalite, two gold firefly wings for buttons, a slim twin-wire band, the battery hidden in the clasp, and its own radio. It keeps a friend group connected inside packed bars and clubs with no signal, doesn't need the wearer's phone, and tells your people when you get home. One friend with battery runs the app; everyone else just wears the band.
 
 ![Firefly bangle, yellow gold](media/renders/firefly-product-champagne.png)
 

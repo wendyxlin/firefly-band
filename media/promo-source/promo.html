@@ -84,7 +84,7 @@ function s3(t){ // reveal: the gold bangle
   const r=rise(t,T0+0.6,0.9); eyebrow('Introducing',140,190+r.dy,r.alpha*a);
   text('Firefly',140,320+r.dy,{size:150,alpha:r.alpha*a});
   const r2=rise(t,T0+1.6); wrap('The gold bangle that finds your friends when your phone can\'t.',140,410+r2.dy,600,58,{size:44,weight:500,font:'Plex',color:FG,alpha:r2.alpha*a});
-  const r3=rise(t,T0+3.0); text('Hinged gold bangle  ·  opalite stone  ·  two bead buttons',140,H-120+r3.dy,{size:30,weight:500,font:'Mono',color:MUTED,alpha:r3.alpha*a});
+  const r3=rise(t,T0+3.0); text('Stepped cushion  ·  halo of white stones  ·  firefly wings',140,H-120+r3.dy,{size:30,weight:500,font:'Mono',color:MUTED,alpha:r3.alpha*a});
 }
 function featureLayout(t,a,frameName,count,t0,t1,eye,title,body,extra,eyeColor){
   const p=seg(t,t0,t1); const k=Math.min(count-1,Math.floor(p*count));
@@ -97,7 +97,7 @@ function featureLayout(t,a,frameName,count,t0,t1,eye,title,body,extra,eyeColor){
 }
 function s4(t){ // find
   const T0=T.find, T1=T.safety+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
-  featureLayout(t,a,'find',32,T0,T1,'Button 1 · Find','Hot or cold.','Press the gold bead and the stone pulses faster as you get closer. Four lights means they\'re right next to you.',x=>{
+  featureLayout(t,a,'find',32,T0,T1,'Button 1 · Find','Hot or cold.','Press the plain gold wing and the stone pulses faster as you get closer. Four lights means they\'re right next to you.',x=>{
     const r=rise(t,T0+2.5); const n=1+Math.floor(seg(t,T0+2.6,T0+5.4)*3.99); for(let i=0;i<4;i++){ c.save(); c.globalAlpha=a*r.alpha; c.fillStyle=i<n?AMBER:'#2b2a38'; c.beginPath(); c.arc(x+20+i*56,800+r.dy,18,0,Math.PI*2); c.fill(); if(i<n) glow(x+20+i*56,800+r.dy,50,AMBER,0.35*a); c.restore(); }
     text(['far','closer','close','right here'][n-1],x+250,812+r.dy,{size:34,weight:500,font:'Mono',color:FG,alpha:a*r.alpha});
     text('2× come find me  ·  3× I\'m home  ·  hold I\'m okay',x,900+r.dy,{size:24,weight:500,font:'Mono',color:MUTED,alpha:a*r.alpha});
@@ -105,7 +105,7 @@ function s4(t){ // find
 }
 function s5(t){ // safety
   const T0=T.safety, T1=T.checkin+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
-  featureLayout(t,a,'sos',24,T0,T1,'Button 2 · Safety','Help, quietly.','Tap the jeweled bead for a discreet "I need help" to the friends you choose. Hold 3 seconds for an SOS to the whole group.',x=>{
+  featureLayout(t,a,'sos',24,T0,T1,'Button 2 · Safety','Help, quietly.','Tap the jeweled wing for a discreet "I need help" to the friends you choose. Hold 3 seconds for an SOS to the whole group.',x=>{
     const r=rise(t,T0+2.0); const hold=seg(t,T0+2.4,T0+4.4); c.save(); c.globalAlpha=a*r.alpha; c.strokeStyle='#2b2a38'; c.lineWidth=10; c.beginPath(); c.arc(x+60,820+r.dy,46,0,Math.PI*2); c.stroke(); c.strokeStyle=hold>=1?RED:AMBER; c.beginPath(); c.arc(x+60,820+r.dy,46,-Math.PI/2,-Math.PI/2+hold*Math.PI*2); c.stroke(); c.restore();
     text(hold>=1?'SOS sent':(hold*3).toFixed(1)+' s',x+140,832+r.dy,{size:40,weight:600,color:hold>=1?RED:FG,alpha:a*r.alpha});
     text('2×  cancel an accident',x,930+r.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r.alpha});
@@ -113,7 +113,7 @@ function s5(t){ // safety
 }
 function s6(t){ // NEW: "I'm okay" check-in
   const T0=T.checkin, T1=T.home+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
-  featureLayout(t,a,'ok',24,T0,T1,'Check-ins · hold Button 1','"I\'m okay."','Hold the gold bead and your whole group gets a check-in. No phone, no typing. The stone glows green when it\'s delivered.',x=>{
+  featureLayout(t,a,'ok',24,T0,T1,'Check-ins · hold Button 1','"I\'m okay."','Hold the plain wing and your whole group gets a check-in. No phone, no typing. The stone glows green when it\'s delivered.',x=>{
     const sent=T0+2.0; const r=rise(t,sent-0.3);
     const friends=[['Maya',VIOLET],['Jordan',GREEN],['Sam',BLUE]];
     text('Your check-in reached',x,780+r.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r.alpha});
@@ -154,7 +154,7 @@ function s7(t){ // NEW: home-safe roll call
   const r=rise(t,T0+0.2); rollPhone(W*0.6,90+(1-eout(seg(t,T0,T0+0.9)))*80,1.02,t,a);
   eyebrow('End of the night',160,300+r.dy,r.alpha*a,GREEN);
   text('Nobody gets',160,410+r.dy,{size:96,alpha:r.alpha*a}); text('left behind.',160,520+r.dy,{size:96,alpha:r.alpha*a});
-  const r2=rise(t,T0+1.0); wrap('Press the gold bead three times when you\'re home or in your ride. The organizer sees who\'s made it, and who hasn\'t yet.',160,620+r2.dy,760,56,{size:38,weight:400,font:'Plex',color:MUTED,alpha:r2.alpha*a});
+  const r2=rise(t,T0+1.0); wrap('Press the plain wing three times when you\'re home or in your ride. The organizer sees who\'s made it, and who hasn\'t yet.',160,620+r2.dy,760,56,{size:38,weight:400,font:'Plex',color:MUTED,alpha:r2.alpha*a});
   // triple-press indicator
   const r3=rise(t,T0+1.8); const ph=((t-T0-1.8)%1.6+1.6)%1.6;
   for(let i=0;i<3;i++){ const on = ph> i*0.22 && ph< i*0.22+0.18; c.save(); c.globalAlpha=a*r3.alpha; c.fillStyle=on?GOLD:'#2b2a38'; c.beginPath(); c.arc(180+i*54,850+r3.dy,17,0,Math.PI*2); c.fill(); if(on) glow(180+i*54,850+r3.dy,46,GOLD,0.45); c.restore(); }
@@ -205,7 +205,7 @@ function s10(t){ // inside
   c.save(); c.globalAlpha=a; img('expl'+k,W*0.7-W*0.6,-H*0.1,W*1.2,H*1.2); c.restore();
   const g=c.createLinearGradient(0,0,W*0.5,0); g.addColorStop(0,'rgba(14,13,22,0.95)'); g.addColorStop(1,'rgba(14,13,22,0)'); c.save(); c.globalAlpha=a; c.fillStyle=g; c.fillRect(0,0,W*0.5,H); c.restore();
   const r=rise(t,T0+0.3); eyebrow('Inside',140,330+r.dy,r.alpha*a); text('Under 30 grams.',140,440+r.dy,{size:88,alpha:r.alpha*a});
-  const specs=['Bluetooth 5 + LoRa 915 MHz radio','Rechargeable · built for a full night out','Splash-resistant · pin charging','Gold finish · opalite stone · bead buttons'];
+  const specs=['Bluetooth 5 + LoRa 915 MHz radio','Rechargeable · built for a full night out','Splash-resistant · pin charging','Gold finish · halo stones · wing buttons'];
   specs.forEach((s,i)=>{ const rr_=rise(t,T0+1.0+i*0.35); text(s,140,540+i*64+rr_.dy,{size:36,weight:500,font:'Plex',color:i%2?MUTED:FG,alpha:rr_.alpha*a}); });
 }
 function s11(t){ // privacy
