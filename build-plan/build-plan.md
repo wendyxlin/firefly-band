@@ -1,4 +1,4 @@
-<!-- Text of the Google Doc "Build plan" as of 2026-10-22T20:09:39Z -->
+<!-- Text of the Google Doc "Build plan" as of 2026-10-27T20:44:27Z (Tab 1 then Tab 2) -->
 
 Class 10/13
 
@@ -359,3 +359,180 @@ one-page summary for Reggie.
 Where something can't be done in this chat (ordering parts, physical testing, 
 
 legal review), tell me what to do myself instead.
+
+Last build plan edits:
+
+Update to im safe to also add a im home button.
+
+Update lora radio to a longer gps system for nyc to have range for miles
+
+Waitlist and website wont open 
+
+# Tab 2
+
+# **2. Can you use their technology and improve the product?**
+
+**Yes. You can build your own device using similar technologies.**
+
+GPS, Bluetooth, UWB, and various radio communication technologies are not exclusive to Totem or Crowd Compass.
+
+However, you cannot simply copy their proprietary software, patented inventions, or protected designs.
+
+You would need to develop or license your own implementation.
+
+The more important question is:
+
+**What problems do existing festival wearables fail to solve for people going to clubs and bars?**
+
+I see four promising opportunities.
+
+## **Improvement 1: Accurate indoor friend-finding ⭐**
+
+This should be your biggest potential differentiator.
+
+**Existing product problem:**
+
+Totem and Crowd Compass rely on satellite positioning to determine location.
+
+But your target customers spend most of their time indoors.
+
+**Your improvement:**
+
+Use **Ultra-Wideband (UWB)** to measure the distance between nearby bracelets.
+
+For example:
+
+You’re at a nightclub, and your phone dies.
+
+You press your bracelet.
+
+Your bracelet detects another connected bracelet approximately five meters away.
+
+As you approach your friend, your bracelet provides feedback.
+
+UWB can enable accurate indoor distance measurement, although reliable directional tracking may require multiple antennas or additional positioning infrastructure.
+
+**Why this matters:** Your product would be optimized for indoor nightlife rather than outdoor festivals.
+
+-----
+
+## **Improvement 2: A more advanced safety check-in system**
+
+Existing festival wearables already offer SOS alerts, so an SOS button alone isn’t innovative.
+
+Your opportunity is building a more complete check-in system.
+
+### **Proposed buttons**
+
+I would recommend **two physical buttons**.
+
+|  |  |
+| :- | :- |
+| **Action** | **Function** |
+| Button 1: Single press | Find nearby friends |
+| Button 1: Double press | Send a “Come find me” request |
+| Button 2: Single press | Send an “I’m safe” check-in |
+| Button 2: Hold for 3 seconds | Send an urgent SOS alert |
+
+The bracelet would use different vibration patterns to acknowledge requests.
+
+Your app could display each friend’s last reported status.
+
+For example:
+
+🟢 Emma — Checked in
+
+🟢 Sarah — Checked in
+
+🟡 Olivia — Needs help finding friends
+
+⚪ Chloe — Hasn’t responded
+
+🔴 Mia — SOS activated
+
+The important difference is that **you’re not only tracking someone’s location; you’re allowing them to communicate their safety status.**
+
+However, alerts would only reach devices or apps connected through a functioning communication path.
+
+-----
+
+## **Improvement 3: Fashionable jewelry instead of festival equipment**
+
+Look at Totem and Crowd Compass.
+
+Their designs are focused on festivals and outdoor use.
+
+Your target audience is different.
+
+People going out to clubs may not want a relatively bulky electronic device hanging around their neck.
+
+**Your improvement:**
+
+Create a wearable that looks like:
+
+  - A minimalist silver bracelet
+  - A gold cuff
+  - A fashionable wristband
+  - A small jewelry charm
+
+This could be especially attractive to young adults who want a safety device that complements their outfits.
+
+Your competitive advantage would combine **fashion, convenience, and safety**, rather than focusing solely on tracking.
+
+-----
+
+## **Improvement 4: A dedicated nightlife app**
+
+Instead of just offering location tracking, your app could help groups organize their entire night.
+
+**Before going out:**
+
+  - Create a private friend group.
+  - Connect everyone’s bracelets.
+  - Select a designated buddy.
+  - Establish a meeting point.
+
+**During the night:**
+
+  - See available location information.
+  - Receive check-ins and assistance requests.
+  - Identify friends who haven’t responded.
+
+**After going out:**
+
+  - Confirm when friends arrive home.
+  - Close the temporary safety group.
+  - Automatically stop sharing locations.
+
+An important detail: automatic arrival confirmation would require an available location source, such as a working phone or compatible home receiver.
+
+|  |  |  |
+| :- | :- | :- |
+| **Technology** | **Function** | **Priority** |
+| **Bluetooth Low Energy** | Connect bracelet to app and exchange nearby messages | Essential |
+| **UWB** | More accurate indoor proximity detection | Essential for advanced friend-finding |
+| **LoRa** | Longer-distance communication without cellular service | Optional |
+| **GPS** | Outdoor tracking | Optional |
+| **Vibration motor** | Discreet alerts and proximity feedback | Essential |
+
+### **Why not simply copy Totem’s GPS + mesh technology?**
+
+Because that would leave your product with the same major weakness: indoor positioning.
+
+Instead, your startup could combine accurate short-range indoor detection with a separate radio communication system.
+
+The tradeoff is that adding UWB, LoRa, and GPS increases cost, size, power consumption, and design complexity.
+
+For a student startup prototype, **Bluetooth + UWB would be a reasonable starting point**. You could add long-range radio later if customer testing shows it’s necessary.
+
+|  |  |  |  |
+| :- | :- | :- | :- |
+| **eature** | **Totem Compass** | **Crowd Compass** | **Your proposed wearable** |
+| Phone-independent functionality | ✅ | ✅ | ✅ Target |
+| Outdoor friend-finding | ✅ | ✅ | Optional |
+| Indoor friend-finding | Limited | Limited | ⭐ Primary focus |
+| SOS alerts | ✅ | Messaging available | ✅ Proposed |
+| Safety check-ins | Limited | Preset messaging | ⭐ Dedicated system |
+| Digital buddy system | Not a core feature | Not a core feature | ⭐ Proposed |
+| Jewelry-inspired design | Festival accessory | Festival device | ⭐ Primary focus |
+| Nightlife-specific app | No | No | ⭐ Proposed |
