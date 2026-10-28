@@ -1,4 +1,4 @@
-<!-- Text of the Google Doc "Build plan" as of 2026-10-27T20:44:27Z (Tab 1 then Tab 2) -->
+<!-- Text of the Google Doc "Build plan" as of 2026-10-28T01:44:06Z (Tab 1 then Tab 2) -->
 
 Class 10/13
 
@@ -370,169 +370,171 @@ Waitlist and website wont open
 
 # Tab 2
 
-# **2. Can you use their technology and improve the product?**
+Yes! **Adding a feature that notifies the group when a friend leaves a certain radius is technically feasible.** I actually think this would be one of the most useful features for your nightlife safety wearable because it helps prevent friends from getting separated without realizing it.
 
-**Yes. You can build your own device using similar technologies.**
+However, the notification system would need to account for people temporarily leaving the group to use the bathroom, get drinks, or talk to someone.
 
-GPS, Bluetooth, UWB, and various radio communication technologies are not exclusive to Totem or Crowd Compass.
+## **Updated Wearable Features**
 
-However, you cannot simply copy their proprietary software, patented inventions, or protected designs.
+I recommend keeping **two buttons, one LED indicator, and one vibration motor**.
 
-You would need to develop or license your own implementation.
+| **Feature** | **How it works** | **Technology** |
+| :-: | :-: | :-: |
+| **1. Find Friends** | Press Button 1 once. LED lights blink faster as you get closer to a friend. | UWB |
+| **2. Come Find Me** | Press Button 1 twice. Connected friends receive a notification and two vibrations. | Bluetooth |
+| **3. I’m Home** | Press Button 2 once. Sends an “I’m Home” notification to your group through the app. | Bluetooth + app/internet |
+| **4. Separation Alert** ⭐ | Automatically notifies the group when a friend moves outside a selected distance. | UWB + Bluetooth |
+| **5. Companion App** | Creates groups, displays available check-ins, and manages separation alerts. | Smartphone app |
 
-The more important question is:
+I’ve removed the vibration that occurs when you find your friend. **Friend-finding will now use LED lights only.**
 
-**What problems do existing festival wearables fail to solve for people going to clubs and bars?**
+-----
 
-I see four promising opportunities.
+## **How would the separation alert work?**
 
-## **Improvement 1: Accurate indoor friend-finding ⭐**
+### **Example: Five friends at a nightclub**
 
-This should be your biggest potential differentiator.
+Before going out, everyone connects their bracelets through the app.
 
-**Existing product problem:**
-
-Totem and Crowd Compass rely on satellite positioning to determine location.
-
-But your target customers spend most of their time indoors.
-
-**Your improvement:**
-
-Use **Ultra-Wideband (UWB)** to measure the distance between nearby bracelets.
+The group selects a separation threshold.
 
 For example:
 
-You’re at a nightclub, and your phone dies.
+  - **10 meters:** Small group staying close together.
+  - **20 meters:** Friends moving around the same bar or club.
+  - **30 meters:** Larger venue where friends have more freedom to move.
 
-You press your bracelet.
+These are proposed settings, not guaranteed reliable detection distances.
 
-Your bracelet detects another connected bracelet approximately five meters away.
+### **Scenario**
 
-As you approach your friend, your bracelet provides feedback.
+You’re dancing with four friends.
 
-UWB can enable accurate indoor distance measurement, although reliable directional tracking may require multiple antennas or additional positioning infrastructure.
+One friend walks away to another section of the club.
 
-**Why this matters:** Your product would be optimized for indoor nightlife rather than outdoor festivals.
+When their bracelet detects that the distance has exceeded the selected threshold, the system starts a timer.
 
------
+If they’re still outside the radius after two minutes, an alert is triggered.
 
-## **Improvement 2: A more advanced safety check-in system**
+**Example app notification:**
 
-Existing festival wearables already offer SOS alerts, so an SOS button alone isn’t innovative.
+🔔 **Separation Alert**
 
-Your opportunity is building a more complete check-in system.
+“Emma may have moved more than 20 meters away from your group.”
 
-### **Proposed buttons**
+The app could then offer a **Find Emma** option.
 
-I would recommend **two physical buttons**.
+### **What if someone just goes to the bathroom?**
 
-|  |  |
-| :- | :- |
-| **Action** | **Function** |
-| Button 1: Single press | Find nearby friends |
-| Button 1: Double press | Send a “Come find me” request |
-| Button 2: Single press | Send an “I’m safe” check-in |
-| Button 2: Hold for 3 seconds | Send an urgent SOS alert |
+To prevent constant notifications, I recommend including:
 
-The bracelet would use different vibration patterns to acknowledge requests.
+**1. Adjustable radius:** Users select their preferred distance threshold.
 
-Your app could display each friend’s last reported status.
+**2. Alert delay:** The system waits 1–3 minutes before triggering a notification.
 
-For example:
+**3. Temporary pause:** Users can pause separation alerts when they intentionally leave the group.
 
-🟢 Emma — Checked in
+**4. Individual settings:** Each person can decide whether to share separation alerts.
 
-🟢 Sarah — Checked in
-
-🟡 Olivia — Needs help finding friends
-
-⚪ Chloe — Hasn’t responded
-
-🔴 Mia — SOS activated
-
-The important difference is that **you’re not only tracking someone’s location; you’re allowing them to communicate their safety status.**
-
-However, alerts would only reach devices or apps connected through a functioning communication path.
+This is important because your product should promote safety without making people feel constantly monitored.
 
 -----
 
-## **Improvement 3: Fashionable jewelry instead of festival equipment**
+## **Is this actually feasible?**
 
-Look at Totem and Crowd Compass.
+**Yes, but there is an important technical limitation.**
 
-Their designs are focused on festivals and outdoor use.
+UWB can measure the distance between connected bracelets, so it can support radius-based alerts.
 
-Your target audience is different.
+However, there are two different situations.
 
-People going out to clubs may not want a relatively bulky electronic device hanging around their neck.
+### **Situation A: Friend moves beyond your selected radius but remains connected**
 
-**Your improvement:**
+✅ **Feasible.**
 
-Create a wearable that looks like:
+For example, the threshold is 10 meters, and your friend moves 15 meters away.
 
-  - A minimalist silver bracelet
-  - A gold cuff
-  - A fashionable wristband
-  - A small jewelry charm
+If the bracelets can still exchange UWB measurements, the system can detect that the distance exceeded the threshold.
 
-This could be especially attractive to young adults who want a safety device that complements their outfits.
+A connected phone could then display an app notification.
 
-Your competitive advantage would combine **fashion, convenience, and safety**, rather than focusing solely on tracking.
+### **Situation B: Friend moves completely out of wireless range**
+
+⚠️ **More complicated.**
+
+If their bracelet loses connection, your system won’t know their exact location.
+
+It can only detect that their signal disappeared.
+
+Instead of saying:
+
+❌ “Emma is 50 meters away.”
+
+Your app should say:
+
+✅ “Connection with Emma lost. Last detected nearby 2 minutes ago.”
+
+This distinction matters because the friend might have moved away, entered another room, or simply experienced interference.
+
+### **What if someone’s phone dies?**
+
+The bracelet can still detect separation or lost connections when communication is available.
+
+However, **a dead phone cannot receive app notifications**.
+
+For your product, I recommend:
+
+  - **Working phone:** Receives the separation alert through the app.
+  - **Dead phone:** The bracelet can provide an LED warning or vibration when it detects a separation event.
+  - **Out-of-range friend:** Other connected devices can report the lost connection, but cannot confirm the friend’s current distance.
 
 -----
 
-## **Improvement 4: A dedicated nightlife app**
+## **How would the app look?**
 
-Instead of just offering location tracking, your app could help groups organize their entire night.
+Your app could have a **Group Safety Dashboard**.
 
-**Before going out:**
+### **Saturday Night — Group of 5**
 
-  - Create a private friend group.
-  - Connect everyone’s bracelets.
-  - Select a designated buddy.
-  - Establish a meeting point.
+| **Friend** | **Status** |
+| :-: | :-: |
+| Emma | 🟢 Nearby |
+| Sarah | 🟢 Nearby |
+| Olivia | 🟡 Outside selected radius |
+| Chloe | ⚪ Connection lost |
+| Mia | 🏠 I’m Home |
 
-**During the night:**
+Users could select a separation-alert radius when creating the group.
 
-  - See available location information.
-  - Receive check-ins and assistance requests.
-  - Identify friends who haven’t responded.
+The app would also allow them to adjust the delay before an alert is sent.
 
-**After going out:**
+-----
 
-  - Confirm when friends arrive home.
-  - Close the temporary safety group.
-  - Automatically stop sharing locations.
+## **Updated Product Design**
 
-An important detail: automatic arrival confirmation would require an available location source, such as a working phone or compatible home receiver.
+**Hardware:**
 
-|  |  |  |
-| :- | :- | :- |
-| **Technology** | **Function** | **Priority** |
-| **Bluetooth Low Energy** | Connect bracelet to app and exchange nearby messages | Essential |
-| **UWB** | More accurate indoor proximity detection | Essential for advanced friend-finding |
-| **LoRa** | Longer-distance communication without cellular service | Optional |
-| **GPS** | Outdoor tracking | Optional |
-| **Vibration motor** | Discreet alerts and proximity feedback | Essential |
+  - Two buttons
+  - UWB chip for proximity measurement
+  - Bluetooth chip for communication
+  - Small LED indicator for friend-finding
+  - Vibration motor for incoming alerts
+  - Rechargeable battery
 
-### **Why not simply copy Totem’s GPS + mesh technology?**
+**Five core functions:**
 
-Because that would leave your product with the same major weakness: indoor positioning.
+1.  Find Friends
+2.  Come Find Me
+3.  I’m Home
+4.  Automatic Separation Alerts
+5.  Companion App
 
-Instead, your startup could combine accurate short-range indoor detection with a separate radio communication system.
+### **My recommendation**
 
-The tradeoff is that adding UWB, LoRa, and GPS increases cost, size, power consumption, and design complexity.
+**I would definitely include separation alerts in your startup concept.** They make the wearable more proactive instead of requiring someone to realize they’ve lost their friends before using the device.
 
-For a student startup prototype, **Bluetooth + UWB would be a reasonable starting point**. You could add long-range radio later if customer testing shows it’s necessary.
+For the first prototype, I would prioritize a simple separation alert between two bracelets. You could demonstrate that when one device moves beyond a threshold, the connected phone receives a notification.
 
-|  |  |  |  |
-| :- | :- | :- | :- |
-| **eature** | **Totem Compass** | **Crowd Compass** | **Your proposed wearable** |
-| Phone-independent functionality | ✅ | ✅ | ✅ Target |
-| Outdoor friend-finding | ✅ | ✅ | Optional |
-| Indoor friend-finding | Limited | Limited | ⭐ Primary focus |
-| SOS alerts | ✅ | Messaging available | ✅ Proposed |
-| Safety check-ins | Limited | Preset messaging | ⭐ Dedicated system |
-| Digital buddy system | Not a core feature | Not a core feature | ⭐ Proposed |
-| Jewelry-inspired design | Festival accessory | Festival device | ⭐ Primary focus |
-| Nightlife-specific app | No | No | ⭐ Proposed |
+One design decision is especially important: **Should your separation radius be measured from one designated friend (your buddy) or from the entire group?**
+
+I recommend starting with a **designated buddy**, because measuring distance from one person is much simpler and more reliable than determining when someone has left an entire moving group.
