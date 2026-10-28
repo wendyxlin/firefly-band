@@ -13,6 +13,10 @@ Firefly is a fine-jewelry gold bangle (~22 g): a cushion-shaped centerpiece step
 | ![On the wrist](media/renders/firefly-on-wrist.png) | ![Inside the pod](media/renders/firefly-inside.png) |
 | ![Exploded view](media/renders/firefly-exploded.png) | ![Close-up of the centerpiece](media/renders/firefly-closeup.png) |
 
+## Design in review: watch direction
+
+A proposal to disguise Firefly as a dress watch: the crown is Find, a pusher is Safety, the dial lights up, the antennas sit in the strap, and cellular gives 6-mile tracking. See [`design/watch/`](design/watch/) and its [feasibility check](design/watch/FEASIBILITY.md). Nothing else in the repo has changed for it yet.
+
 ## Promo video
 [media/firefly-promo.mp4](media/firefly-promo.mp4): 66 seconds, 1080p, rendered from code in `media/promo-source/`. Shows the gold bangle and every feature: Find, Help and SOS, "I'm okay" check-ins and the home-safe roll call.
 
