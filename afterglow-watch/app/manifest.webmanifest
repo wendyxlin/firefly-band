@@ -1,0 +1,14 @@
+{
+  "name": "Afterglow",
+  "short_name": "Afterglow",
+  "description": "Stay close. Go out. The companion app for the Afterglow watch.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100f16",
+  "theme_color": "#100f16",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

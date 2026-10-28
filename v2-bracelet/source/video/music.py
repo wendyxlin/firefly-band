@@ -1,4 +1,4 @@
-"""Synthesize a 68 s soundtrack for the Afterglow promo: dark pad intro, riser, impact at the reveal,
+"""Synthesize a 68 s soundtrack for the Firefly v2 promo: dark pad intro, riser, impact at the reveal,
 a soft four-on-the-floor groove, and a resolving outro. Pure numpy, writes music.wav (44.1 kHz stereo)."""
 import numpy as np, wave
 
@@ -104,11 +104,16 @@ for i, m in enumerate((76, 79, 84)):
 for i, m in enumerate((72, 76, 79, 84)):
     add(ding(m, 0.07), 37.4 + i * 0.06, pan=-0.2 + 0.13 * i)
 
-# --- Watch buzz cues: separation at 18.2 s, SOS pulses from 42.4 s ---
+# --- Bracelet buzz cues: separation 8.6 s, find 18-21.6 s, come find me 24.4 s, SOS pulses from 42.4 s ---
 def buzz(d=0.18, g=0.10):
     n = int(d * SR); tt = np.arange(n) / SR
     return np.sin(2*np.pi*150*tt) * (0.6 + 0.4*np.sin(2*np.pi*28*tt)) * env_adsr(n, 0.01, 0.05, 0.8, 0.05) * g
-for k in (0, 0.28): add(buzz(), 18.2 + k)
+for k in (0, 0.28): add(buzz(), 8.6 + k)              # Sophia's bracelet: separation
+tt = 18.0
+while tt < 21.6:                                        # find: buzzes speed up as you get closer
+    add(buzz(0.09, 0.07), tt); tt += max(0.18, 0.9 - (tt - 18.0) * 0.22)
+for i in range(3):                                      # come find me: two buzzes on each friend's bracelet
+    for k in (0, 0.2): add(buzz(0.1, 0.07), 24.4 + i * 0.3 + k)
 for k in range(5): add(buzz(0.12, 0.08), 42.4 + k * 0.52)
 
 # --- Master: fade in/out, soft clip ---

@@ -1,111 +1,106 @@
-# Afterglow v2: technical design and feasibility (2026-10-27)
+# Firefly v2 bracelet: technical design and feasibility (2026-10-28)
 
-**Verdict: buildable with parts that exist today.** The v2 changes (two buttons remapped to I'm Home and SOS, plus ultra-wideband for the buddy radius) add about 0.9 g and about 0.2 mA. A 210 mAh cell covers that. The open risks are the same as the v1 watch: weight is 2–3 g over the 29 g target as drawn, the dial needs light windows, and certification takes months. One new risk: the glowing marker can point toward your circle only outdoors (see below).
+**Verdict: buildable with parts that exist today, but battery space is the main constraint.** The design follows the team's v2 design board: a slim gold bangle with a soft capsule on top that carries two round buttons and one pinhole light, in gold, silver, rose gold and black. To keep 6-mile range and get through a heavy night, the battery is split. One cell sits in the capsule and a second sits in a slim clasp under the wrist.
 
-This is a **v2 proposal**. The v1 bangle and the v1 watch direction are unchanged, in `hardware/`, `design/watch/` and `docs/`.
+This is the **v2 proposal**. The v1 bangle (`hardware/`, `docs/`) and the watch directions (`design/watch/`, `afterglow-watch/`) are kept as they are.
 
-## What changed from the v1 watch
+## Button map (firmware)
 
-| | v1 watch (in review) | v2 Afterglow |
-|---|---|---|
-| Name | Firefly | Afterglow, "Stay close. Go out." (from the team's Drive demo, `afterglow_demo.html`) |
-| Crown, 3 o'clock | Find | **I'm Home**: press to send; press again within 5 s to cancel; dial sweeps green when delivered |
-| Pusher, 2 o'clock (red ring) | Safety | **SOS**: hold 3 s; press twice during the 5–10 s grace window to cancel; dial pulses red |
-| Finding a friend | Watch button | **App**: Friends tab, distance from UWB, no map or arrow up close |
-| Come Find Me | — | **App**: one tap shares your position with the circle |
-| Separation | — | **Automatic**: buddy radius 10–30 m, alert delay 1/2/5 min; watch buzzes, marker toward the circle glows lavender |
-| Up-close distance | Bluetooth signal strength (hot or cold) | **UWB ranging**, about ±10 cm |
-| Palette | Gold and amber | Lavender on deep plum, lavender glow |
-
-## Two-button map (firmware)
-
-| Button | Gesture | Action | Feedback | Cancel |
+| Input | Gesture | Action | Feedback | Cancel |
 |---|---|---|---|---|
-| Crown | Single press | Send I'm Home to the circle (BLE → phone if paired, else LoRa/cellular direct) | Two short buzzes confirm it's sent; green sweep around the dial when it's delivered to the circle | Second press within 5 s; one long buzz confirms the cancel |
-| Pusher | Hold 3 s | Start SOS: grace window 5–10 s (set in app), then send position to the circle and the backup contact; repeat every 30 s until a friend acknowledges or you cancel | Three rising buzzes during the hold; dial pulses red during grace and after sending | Two presses during grace; after sending, hold 3 s again and confirm in the app |
-| Both | Hold 10 s | Restart the watch | Long buzz | — |
+| Button 1 (engraved dot) | Press | **Find friends**: UWB ranging to the group at 10 Hz for 60 s | Buzz pulses and the light pulses pink faster as the distance drops | Press again |
+| Button 1 | Press twice | **Come find me**: message to the group (BLE → phone if paired, else LoRa, else cellular) | Two short buzzes; the light blinks amber | Press twice again |
+| Button 2 (engraved line) | Press | **I'm home** to the group | Two short buzzes; the light glows green when delivered | Press twice within 5 s; one long buzz confirms |
+| Both buttons | Hold 3 s | **SOS**: after a 5–10 s grace window (set in the app), position to the group and the backup contact, repeated every 30 s until acknowledged | Three rising buzzes during the hold; the light blinks red | Press either button twice during the grace window |
+| None | Automatic | **Separation alert**: outside the radius (10/20/30 m) for longer than the delay (1/2/5 min) | Long buzz; the light breathes pink | Walk back, or dismiss in the app |
 
-Both switches are 260 gf, so they don't fire in a bag. The crown also turns for setting the time; turning is ignored by the alert logic.
+Each switch needs 260 gf, so a single button won't fire in a bag. Holding both for 3 s makes an accidental SOS very unlikely.
+
+## Hardware layout
+
+| Part | Where | Notes |
+|---|---|---|
+| Capsule | Top of the wrist, 40 × 13.6 × 6.8 mm | Metal frame (titanium or brass, PVD colour) with a ceramic underside, which acts as the radio window |
+| Board | Inside the capsule, stadium 30 × 10.4 mm, 0.8 mm | nRF52840 (BLE, control), SX1262 (LoRa), nRF9151 (LTE-M/NB-IoT + GNSS, 12.1 × 11.1 × 1.2 mm), DW3110 (UWB, 3.1 × 3.5 mm), RGB LED |
+| Buttons | On the capsule, 9 mm caps | Tactile switches under domed caps with an engraved dot and line |
+| Light | Between the buttons | One RGB LED under a 1.3 mm sapphire window |
+| Battery | Capsule cell 85 mAh (about 27 × 10.4 × 3.0 mm) + clasp cell 60 mAh (26 × 6.4 × 3.0 mm) | About 145 mAh together. Wires run through the hollow band. |
+| Motor | Under the capsule | 8 mm coin ERM against the skin |
+| Antennas | The band | The metal band, split by an insulating gap at the hinge, acts as the LoRa (915 MHz) and LTE antenna. A UWB chip antenna sits under the ceramic underside, angled out sideways. |
+| Charging | Under the capsule | Two magnetic pogo pins |
 
 ## Range: at least 6 miles, even with weak signal
 
 | Layer | Reach | Weak or no signal | Part |
 |---|---|---|---|
-| UWB (new in v2) | 0–30 m, ±10 cm | Watch to watch, no network | Qorvo DW3110, 3.1 × 3.5 mm WLCSP, TX 14–17 mA, RX 16–19 mA, 850 nA sleep, channels 5 and 9 |
+| UWB | 0–30 m. About ±10–30 cm with line of sight; reliable to about 10–20 m on wrists in a crowd | Bracelet to bracelet, no network | Qorvo DW3110 (TX 14–17 mA, RX 16–19 mA, 850 nA sleep) |
 | LoRa | 30 m–1 km (50–150 m in a packed club) | Zero bars | Semtech SX1262 |
-| Cellular LTE-M / NB-IoT (core long-range link) | 1 km to 6 miles and beyond, wherever there is IoT coverage | NB-IoT allows about 164 dB maximum coupling loss and LTE-M about 161 dB, about 20 dB better than phone LTE: it gets into basements | Nordic nRF9151 (LTE-M + NB-IoT + GNSS, 12.1 × 11.1 × 1.2 mm). Data: 1NCE, 500 MB over 10 years for $10 + $1 SIM |
-| Amazon Sidewalk | About half a mile per Echo/Ring bridge, about 90% of the US population covered | Uses the same LoRa radio; 19-byte payload limit | No new parts (Nordic supports Sidewalk on nRF52840 + SX1262) |
-| Apple Find My / Google Find Hub | Anywhere a phone passes | Needs no signal at the watch | No new parts; needs Apple MFi or Google's program; one network at a time |
-
-The watch tries the layers in that order and never needs the wearer's phone to send I'm Home or SOS.
+| Cellular LTE-M / NB-IoT | 1 km to 6 miles and beyond, wherever there's IoT coverage | NB-IoT allows about 164 dB maximum coupling loss and LTE-M about 161 dB, about 20 dB better than phone LTE | Nordic nRF9151. Data: 1NCE, 500 MB over 10 years for $10 + $1 SIM |
+| Amazon Sidewalk | About half a mile per Echo/Ring bridge; about 90% of the US population | Same LoRa radio; 19-byte payload | No new parts |
+| Apple Find My / Google Find Hub | Anywhere a phone passes | Needs no signal at the bracelet | Needs Apple MFi or Google's program; one network at a time |
 
 ## Checks
 
 | Item | Verdict | Notes |
 |---|---|---|
-| Two buttons | Feasible | Same switches and case as the v1 watch, only the firmware mapping changes. |
-| Buddy radius with UWB | Feasible at 10–20 m; 30 m is at the edge | Distance between watches every 2 s for up to 4 friends, accurate to about 10–30 cm in line of sight. On wrists in a packed club, bodies block the 6.5–8 GHz signal, so expect reliable readings to roughly 10–20 m and dropouts beyond. A dropout longer than the alert delay (1/2/5 min) counts as a separation, and the app words it as "connection lost" rather than "left the radius". This matches the 2026-10-28 build-plan addendum. |
-| Separation vs signal loss | Feasible, firmware rule | If UWB drops, the watch falls back to LoRa distance and the app shows "signal lost", not "left the radius". This follows the demo. |
-| Marker pointing toward the circle | **Outdoors only** | A single UWB antenna measures distance, not direction. Outdoors, the watch uses both GPS fixes and its compass. Indoors, it lights all markers in a slow lavender pulse instead. True indoor direction needs a 2-antenna PDoA chip (Qorvo DW3220), about +0.3 g and a bigger board; worth a later spin. |
-| Friend-finding in the app | Feasible | The phone shows the watch-to-watch UWB distance relayed over BLE. iPhones and Pixels with UWB could range directly, but that needs Apple's and Google's accessory programs. |
-| 6-mile tracking | Feasible | Cellular where LTE-M/NB-IoT coverage exists; Sidewalk and phone crowds as fallbacks. Test coverage in the venues the group uses. |
-| UWB antenna placement | Needs a prototype | A UWB antenna can't sit under metal. Put a small chip antenna behind the mother-of-pearl dial at 12 o'clock, with a cutout in the movement plate. UWB at 6.5–8 GHz is absorbed by the wrist, so expect the best range when watches face each other. |
-| Battery | Feasible | 210 mAh round cell; see the budget below. |
-| Weight | 2–3 g over target | About 32 g as drawn; about 29 g with a 32 mm case, 2.2 mm strap and 0.8 mm crystal. |
-| Thickness | Feasible | About 12 mm production stack; UWB fits beside the nRF9151 on the same board. Dev-board prototype about 16 mm. |
-| Light through the dial | Needs a prototype | Translucent windows under each marker, lit lavender (separation), green (I'm Home) or red (SOS). |
+| Two buttons + hidden SOS | Feasible | Firmware only: single, double and long-press detection per button, plus a both-buttons hold. |
+| Fit in the capsule | Feasible, tight | Stack from the skin up: ceramic 0.6 mm, battery 3.0, board 0.8, tallest parts 1.2, top wall 0.8, plus the button travel, for 6.4–6.8 mm total. The prototype is bigger (see below). |
+| Battery | **Tight** | The capsule cell alone gives only about 5 h on a heavy night. With the clasp cell it's about 9 h (budget below). |
+| Band as antenna | Needs RF engineering | A metal loop around a wrist detunes easily. It needs a feed across the hinge gap and tuning on real wrists. Fallback: a flex antenna inside the hollow band with a resin inlay strip. |
+| UWB through the ceramic underside | Needs a prototype | Metal blocks UWB and the wrist absorbs it, so the antenna has to radiate out of the capsule's ceramic sides. Expect the best range when wrists face each other. |
+| Separation vs signal loss | Firmware rule | A dropout longer than the alert delay counts as a separation, and the app says "connection lost" rather than "left the radius". |
+| Weight | Feasible | About 15 g in titanium; about 22 g in gold-plated brass. |
+| Waterproofing | Splash-proof | Button seals and pogo pins. No swimming. |
 | Certification | Plan for months | FCC Part 15 (including Subpart F for UWB), carrier approval for cellular, Sidewalk qualification, Apple MFi or Google's program. |
 
-## Battery budget (210 mAh round cell, 85% usable)
+## Battery budget (85 mAh + 60 mAh = 145 mAh, 85% usable)
 
-v1 watch figures plus UWB: background ranging to 4 friends every 2 s (about 5 ms at 18 mA per exchange, 0.18 mA average) and 20 minutes of 10 Hz finding on a heavy night (0.05 mA average).
+The averages are the same as the v2 watch model: the v1 Phase 1 figures plus UWB background ranging (0.18 mA) and 20 minutes of finding on a heavy night (0.05 mA).
 
-| Night | Average | Runtime (210 mAh) | Runtime (185 mAh, for comparison) |
+| Night | Average | Runtime (145 mAh) | Capsule cell only (85 mAh) |
 |---|---|---|---|
-| Typical | 4.0 mA | about 45 h | about 39 h |
-| Heavy | 13.3 mA | about 13.4 h | about 11.8 h |
-| Worst (GPS searching all night) | 21.2 mA | about 8.4 h, needs the firmware GPS cap | about 7.4 h |
-| Heavy + cellular every 2 min | 14.0 mA | about 12.7 h | about 11.2 h |
-| Heavy + cellular every 5 min | 13.6 mA | about 13.1 h | about 11.5 h |
+| Typical | 4.0 mA | about 31 h | about 18 h |
+| Heavy | 13.3 mA | about 9.2 h | about 5.4 h |
+| Worst (GPS searching all night) | 21.2 mA | about 5.8 h, needs the firmware GPS cap | about 3.4 h |
+| Heavy + cellular every 2 min | 14.0 mA | about 8.8 h | about 5.1 h |
+| Heavy + cellular every 5 min | 13.6 mA | about 9.0 h | about 5.3 h |
 
-An hour of SOS, with a cellular report every 30 s, costs about 3 mAh (120 reports × 2 s × 45 mA). I'm Home costs one report. These are models, so measure on hardware, especially the UWB receive windows, which depend on how tightly the watches synchronise over BLE.
+An hour of SOS, with a cellular report every 30 s, costs about 3 mAh. To get more time without a bigger capsule:
+- Send cellular reports only for events (I'm home, come find me, SOS) and every 10 minutes otherwise.
+- Cap GPS searching indoors.
 
-## Weight budget (g)
+## Weight budget (g, titanium)
 
 | Part | g |
 |---|---|
-| Titanium case + lugs, 34 mm, gold PVD | 12.0 |
-| Crystal (1.0 mm sapphire) | 2.5 |
-| Mother-of-pearl dial, 0.4 mm, with marker windows | 0.7 |
-| Round LiPo, 210 mAh | 4.1 |
-| Board with nRF52840, SX1262, nRF9151, DW3110 and passives | 2.3 |
-| UWB chip antenna | 0.1 |
-| GPS/cellular antennas and strap contacts | 1.5 |
-| Hand stepper + hands | 1.0 |
-| Vibration motor | 0.8 |
-| Crown, pusher, gaskets | 0.6 |
-| Leather strap, 16 mm, 2.5 mm average | 5.5 |
-| Titanium buckle | 1.2 |
-| **Total** | **about 32** |
-
-To reach about 29 g: 32 mm case (-1.5 g), 2.2 mm strap (-1 g), 0.8 mm crystal (-0.5 g).
+| Band, 3.2 × 2.2 mm, about 132 mm long, hollow titanium | 2.6 |
+| Capsule frame + button caps | 2.8 |
+| Ceramic underside + sapphire light window | 0.8 |
+| Clasp + hinge | 1.2 |
+| Board with radios and passives | 2.3 |
+| Batteries (85 + 60 mAh) | 3.4 |
+| Motor | 0.8 |
+| Antenna feed, seals, pogo pins | 0.6 |
+| **Total** | **about 14.5** |
 
 ## Prototype plan
 
-The prototype uses dev boards, so it is bigger than the drawn watch (about 44 × 38 × 16 mm) and is worn on a wide strap. It proves the two buttons, UWB buddy radius, LoRa and cellular, not the finished size. Parts are in [`BOM.csv`](BOM.csv): about $247 and 49 g per prototype watch, most of it the UWB module ($59) and the cellular board (about $99). You need two watches to test the buddy radius.
+The prototype uses dev boards, so it is bigger than the drawn design. It uses a printed capsule about 48 × 30 × 18 mm on a wide band. It proves the button gestures, UWB finding and the separation alert, LoRa and cellular. It doesn't prove the finished size. Parts are in [`BOM.csv`](BOM.csv): about $247 and 38 g per prototype, so you need two to test finding.
 
-1. Two XIAO nRF52840 + Wio-SX1262 stacks (one per test wearer), each with a DWM3001C UWB module on SPI.
-2. One nRF9151 Feather for the cellular path on wearer A first; add to B once reports work.
-3. Firmware: remap D1 (crown) to I'm Home with the 5 s cancel and D2 (pusher) to SOS with the 3 s hold and grace window; add UWB ranging and the radius and delay rules.
-   **Pin check (found while planning this):** after the LoRa module, the XIAO has only 3 free pins (D0, D6, D7) plus 2 NFC pads. v1 already uses D0 for the button ladder, D6 for the motor and D7 for the LEDs, and v2 adds two UART links (UWB module and cellular board). The XIAO stack is 2 pins short. Two fixes, both off the shelf: swap the XIAO + Wio pair for a RAK4631 WisBlock core (the same nRF52840 + SX1262, with two UARTs and more GPIO), or let the DWM3001C's own nRF52833 drive the LED ring and motor. Decide before ordering.
-4. Tests: UWB distance at 1/5/10/20/30 m in a bar and a hallway; separation alert timing at each delay; I'm Home and SOS from a basement over cellular; 6-mile report across boroughs.
+**Pin check:** the XIAO + Wio-SX1262 stack has only 3 free pins (D0, D6, D7) plus 2 NFC pads. The UWB module and the cellular board each need a UART. Two fixes, both off the shelf:
+- Use a RAK4631 WisBlock core instead: the same nRF52840 + SX1262, with two UARTs and more GPIO.
+- Let the DWM3001C's own nRF52833 drive the LED and motor.
+
+Tests:
+- UWB distance at 1, 5, 10, 20 and 30 m in a bar and in a hallway
+- the both-buttons SOS gesture in a bag, to make sure it doesn't fire by accident
+- I'm home over cellular from a basement
+- a 6-mile report across boroughs
 
 ## Sources
 
 - Qorvo DW3110 package, current and channels (everything RF): https://www.everythingrf.com/products/rf-transceivers/qorvo/531-483-dw3110
-- Qorvo DW3110 at Digi-Key: https://www.digikey.com/en/products/detail/qorvo/DW3110TR13/24717583
 - Qorvo DWM3001C module (DW3110 + nRF52833, 27 × 19.13 × 3.2 mm, from $59.37): https://rfmw.com/products/detail/dwm3001c-qorvo/692453/
-- Qorvo DWM3001C at Digi-Key: https://www.digikey.com/en/products/detail/qorvo/DWM3001CTR13/24367353
 - Circuit Dojo nRF9151 Feather: https://github.com/circuitdojo/nrf9151-feather
 - nRF9160 Feather launch price ($99, for reference): https://www.electronics-lab.com/news/nrf9160-feather-launches-for-99-with-gps-support/
 - Nordic nRF9151: https://www.nordicsemi.com/Nordic-news/2024/09/nRF9151-the-smallest-and-lowest-power-cellular-IoT-solution-for-the-massive-IoT-market
@@ -116,6 +111,5 @@ The prototype uses dev boards, so it is bigger than the drawn watch (about 44 ×
 - AWS, Sidewalk track and trace (19-byte payload, roaming): https://aws.amazon.com/blogs/iot/building-track-and-trace-applications-using-aws-iot-core-for-amazon-sidewalk/
 - GeekWire, Sidewalk covers about 90% of the US population: https://www.geekwire.com/2023/amazon-says-sidewalk-reaches-90-of-u-s-population-as-it-opens-network-to-developers/
 - Nordic, Apple Find My support: https://www.nordicsemi.com/Products/Technologies/Apple-Find-My-network
-- Grepow round LiPo cells: https://grepow.com/battery-news/grepow-185mah-3-8v-round-shaped-lipo-battery-3030028.html
 - Nordic DevZone, nRF9160 LTE-M current profile: https://devzone.nordicsemi.com/f/nordic-q-a/120415/nrf9160-lte-m-current-profile
-- v1 watch feasibility, which this builds on: [`design/watch/FEASIBILITY.md`](../../design/watch/FEASIBILITY.md)
+- Antenna embedded in a band (patent): https://patents.google.com/patent/US10027023

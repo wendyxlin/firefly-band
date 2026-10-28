@@ -2,101 +2,105 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Afterglow</title>
-<meta name="theme-color" content="#100f16">
+<title>Firefly</title>
+<meta name="theme-color" content="#121012">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Afterglow">
+<meta name="apple-mobile-web-app-title" content="Firefly">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
-/* Afterglow v2 app. Palette and layout follow the Afterglow demo: lavender on deep plum, rounded cards, four tabs.
+/* Firefly v2 app (bracelet). Layout follows the team's demo (rounded cards, four tabs); colours follow the v2 design board: blush pink on near-black, gold bracelet.
    Wide screens show the demo's presentation layout (intro + phone); phones get the app full screen. */
 :root{
-  --bg:#100f16; --phone:#1b1824; --card:#292333; --line:#42384f; --ink:#f8f3ff; --muted:#baadcb; --soft:#d9c7f0;
-  --accent:#dfc7ff; --accent-ink:#21152f; --chip:#3b304b; --btn2:#453951; --warn:#e9bd7c; --ok:#9cdea9; --off:#97909c; --sos:#ff6b7a; --sos-bg:#4a1f2a;
+  --bg:#121012; --phone:#1b1719; --card:#262023; --line:#3e3337; --ink:#fbf3f1; --muted:#c3b0b3; --soft:#f3d2d7;
+  --accent:#f6c1c8; --accent-ink:#2b1218; --chip:#3a2c31; --btn2:#43363b; --warn:#f0c27e; --ok:#9cdea9; --off:#9a9093; --sos:#ff6b7a; --sos-bg:#4a1f2a;
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--bg); color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
-body{background:radial-gradient(ellipse at 15% 10%,#352647 0%,transparent 45%),var(--bg)}
+body{background:radial-gradient(ellipse at 15% 10%,#3d2329 0%,transparent 45%),var(--bg)}
 button,select,input{font:inherit}
 button{cursor:pointer}
-:focus-visible{outline:3px solid #e1c8ff;outline-offset:3px}
+:focus-visible{outline:3px solid #f6c1c8;outline-offset:3px}
 .layout{max-width:1060px;margin:auto;padding:32px max(20px,env(safe-area-inset-right)) 32px max(20px,env(safe-area-inset-left));display:grid;grid-template-columns:1fr 390px;gap:48px;align-items:center;min-height:100vh}
-.intro .eyebrow{letter-spacing:.27em;color:#d1b7f9;font-weight:750;font-size:12px}
-.intro h1{font-size:clamp(42px,6vw,72px);letter-spacing:-.06em;line-height:1.02;margin:15px 0 18px}
-.intro h1 em{font-style:normal;color:#d6b4ff}
-.intro p{color:#bdb3cc;line-height:1.7;font-size:16px;max-width:440px;margin:0}
+.intro .eyebrow{letter-spacing:.27em;color:#f2b6bf;font-weight:750;font-size:12px}
+.intro h1{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(46px,6vw,76px);letter-spacing:-.02em;line-height:1.0;margin:15px 0 18px}
+.intro h1 em{color:#f6c1c8}
+.intro p{color:#c7b6b9;line-height:1.7;font-size:16px;max-width:440px;margin:0}
 .steps{margin:28px 0;padding:0;list-style:none}
-.steps li{margin:15px 0;color:#e3ddec}
-.steps b{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #857393;border-radius:50%;margin-right:12px;color:#e5caff}
-.install{font-size:13px;color:#a99fb8;line-height:1.6;border-top:1px solid #2e2638;padding-top:16px;margin-top:8px}
-.phone{width:100%;max-width:390px;margin:auto;border:8px solid #3d3547;border-radius:44px;background:var(--phone);box-shadow:0 30px 80px #050307a8;overflow:hidden;height:760px;display:flex;flex-direction:column;position:relative}
-.notch{width:100px;height:19px;border-radius:0 0 18px 18px;background:#3d3547;margin:0 auto;flex:none}
+.steps li{margin:15px 0;color:#efe3e5}
+.steps b{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #8f6f76;border-radius:50%;margin-right:12px;color:#f6c1c8}
+.install{font-size:13px;color:#ab9ca0;line-height:1.6;border-top:1px solid #33292c;padding-top:16px;margin-top:8px}
+.phone{width:100%;max-width:390px;margin:auto;border:8px solid #3d3336;border-radius:44px;background:var(--phone);box-shadow:0 30px 80px #050307a8;overflow:hidden;height:760px;display:flex;flex-direction:column;position:relative}
+.notch{width:100px;height:19px;border-radius:0 0 18px 18px;background:#3d3336;margin:0 auto;flex:none}
 .app{padding:14px 20px 0;flex:1;overflow-y:auto;scrollbar-width:none}
 .app::-webkit-scrollbar{display:none}
-.status{display:flex;justify-content:space-between;color:#b9aec8;font-size:12px;margin-bottom:16px}
-.brand{font-size:11px;letter-spacing:.28em;color:#d9bafa;font-weight:800}
+.status{display:flex;justify-content:space-between;color:#c3b3b6;font-size:12px;margin-bottom:16px}
+.brand{font-size:11px;letter-spacing:.28em;color:#f2b6bf;font-weight:800}
 .topline{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px}
 .topline h2{font-size:26px;letter-spacing:-.045em;margin:0}
-.badge{background:var(--chip);color:#ddc7ff;font-size:11px;border-radius:100px;padding:8px 11px;white-space:nowrap}
+.badge{background:var(--chip);color:#f6c9cf;font-size:11px;border-radius:100px;padding:8px 11px;white-space:nowrap}
 .badge.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px;vertical-align:1px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:23px;padding:18px;margin-top:18px}
 .card.alert{background:var(--sos-bg);border-color:#7a3443}
-.kicker{font-size:10px;letter-spacing:.16em;color:#bdb0d0;font-weight:750;text-transform:uppercase}
+.kicker{font-size:10px;letter-spacing:.16em;color:#cdb4b9;font-weight:750;text-transform:uppercase}
 .card h3{margin:8px 0;font-size:21px}
 .muted{color:var(--muted);font-size:13px;line-height:1.55;margin:0}
 .primary,.secondary,.danger{border:0;border-radius:14px;padding:13px 15px;min-height:45px;font-weight:750;font-size:13px}
 .primary{background:var(--accent);color:var(--accent-ink)}
-.secondary{background:var(--btn2);color:#f6e9ff}
+.secondary{background:var(--btn2);color:#fbecee}
 .danger{background:var(--sos);color:#2a0c12}
 .wide{width:100%}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.person{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #44394e}
+.person{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #3e3337}
 .person:last-child{border-bottom:0}
-.avatar{background:#58436b;color:#eee0ff;border-radius:50%;height:38px;width:38px;display:grid;place-items:center;font-size:11px;font-weight:750;flex-shrink:0}
+.avatar{background:#5b3d45;color:#ffe6ea;border-radius:50%;height:38px;width:38px;display:grid;place-items:center;font-size:11px;font-weight:750;flex-shrink:0}
 .grow{flex:1;min-width:0}
 .name{font-weight:700;font-size:14px}
-.sub{color:#b7aac7;font-size:11px;margin-top:3px}
+.sub{color:#c0adb1;font-size:11px;margin-top:3px}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none}
 .dot.warn{background:var(--warn)} .dot.off{background:var(--off)} .dot.sos{background:var(--sos);box-shadow:0 0 0 4px #ff6b7a33}
 .notice{margin-top:12px;padding:13px;border-radius:15px;background:#4b343a;color:#ffe1cf;font-size:12px;line-height:1.5}
 .notice.good{background:#2f473c;color:#d5ffe8}
-.notice.info{background:#33294a;color:#e9dcff}
+.notice.info{background:#3f2a31;color:#ffe3e8}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .chip{border:1px solid var(--line);background:transparent;color:var(--soft);border-radius:999px;padding:7px 12px;font-size:12px}
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .finder{height:196px;display:grid;place-items:center;position:relative}
-.ring{width:172px;height:172px;border:1px dashed #aa8cbd;border-radius:50%;display:grid;place-items:center;position:relative}
-.ring .pulse{position:absolute;inset:-2px;border-radius:50%;border:2px solid #d6b4ff;opacity:0}
+.ring{width:172px;height:172px;border:1px dashed #c48a95;border-radius:50%;display:grid;place-items:center;position:relative}
+.ring .pulse{position:absolute;inset:-2px;border-radius:50%;border:2px solid #f6c1c8;opacity:0}
 .finding .ring .pulse{animation:pulse var(--rate,1.6s) ease-out infinite}
 @keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.15);opacity:0}}
-.ring>div.core{width:114px;height:114px;border:1px solid #bd97ec;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:12px;text-align:center}
-.ring strong{font-size:28px;color:#dec1ff;letter-spacing:-.03em}
-.tabs{padding:12px 12px calc(16px + env(safe-area-inset-bottom));border-top:1px solid #463a52;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:none;background:var(--phone)}
-.tab{background:transparent;border:0;border-radius:12px;color:#b3a7c0;font-size:11px;padding:9px 2px;line-height:1.6}
-.tab.active{background:#473457;color:#f8eeff}
+.ring>div.core{width:120px;height:120px;border:1px solid #e9a5b1;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:12px;text-align:center}
+.ring strong{font-size:28px;color:#f6c1c8;letter-spacing:-.03em}
+.tabs{padding:12px 12px calc(16px + env(safe-area-inset-bottom));border-top:1px solid #43363b;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:none;background:var(--phone)}
+.tab{background:transparent;border:0;border-radius:12px;color:#b8a8ab;font-size:11px;padding:9px 2px;line-height:1.6}
+.tab.active{background:#4b3238;color:#fff1f3}
 .tab span{display:block;font-size:19px}
-label{display:block;font-size:13px;margin:16px 0 8px;color:#dbcfe9}
+label{display:block;font-size:13px;margin:16px 0 8px;color:#ecd9dc}
 input[type=range],select,input[type=text],input[type=tel]{width:100%}
-input[type=range]{accent-color:#d9b5fc}
-select,input[type=text],input[type=tel]{border:1px solid #685778;border-radius:12px;background:#403349;color:#fff;padding:11px}
-.line{border-bottom:1px solid #44394e;padding:14px 0;font-size:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+input[type=range]{accent-color:#f6c1c8}
+select,input[type=text],input[type=tel]{border:1px solid #6e5559;border-radius:12px;background:#3a2d31;color:#fff;padding:11px}
+.line{border-bottom:1px solid #3e3337;padding:14px 0;font-size:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
 .line:last-of-type{border-bottom:0}
-.line span{color:#c4b6d2;font-size:12px;text-align:right}
+.line span{color:#cdbcbf;font-size:12px;text-align:right}
 .line span.ok{color:var(--ok)}
-.smallnote{font-size:11px;line-height:1.6;color:#aca0ba;margin:12px 0 0}
+.smallnote{font-size:11px;line-height:1.6;color:#ad9fa2;margin:12px 0 0}
 .watch{display:flex;align-items:center;gap:16px;margin-top:12px}
-.face{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fbf7ff,#e7def0 60%,#cfc4da);border:6px solid #d9b56e;position:relative;flex:none;box-shadow:inset 0 0 0 2px #fff6}
-.face i{position:absolute;width:6px;height:6px;border-radius:50%;left:50%;top:50%;margin:-3px;background:#cdb07a}
-.face i.on{background:var(--lit,#c9a2ff);box-shadow:0 0 10px 3px var(--lit,#c9a2ff)}
-.face .crown,.face .pusher{position:absolute;border-radius:3px;background:#d9b56e}
-.face .crown{right:-14px;top:41px;width:10px;height:14px}
-.face .pusher{right:-11px;top:18px;width:8px;height:9px;transform:rotate(-30deg);box-shadow:0 0 0 2px #b23847 inset}
+.bp{width:150px;height:118px;position:relative;flex:none}
+.bp::before{content:"";position:absolute;left:8px;right:8px;top:8px;height:104px;border:5px solid #d9b56e;border-radius:50%;box-shadow:inset 0 -2px 0 #b8894a}
+.bp .cap{position:absolute;left:4px;right:4px;top:0;height:50px;border-radius:25px;background:linear-gradient(170deg,#f6e0ad,#d6aa62 55%,#b98a45);box-shadow:0 4px 10px #0007,inset 0 1px 0 #fff8;display:flex;align-items:center;justify-content:space-between;padding:0 7px}
+.bp .b{width:36px;height:36px;border-radius:50%;border:2px solid #b8894a;background:radial-gradient(circle at 40% 35%,#fbe7b9,#d9b06a);display:grid;place-items:center}
+.bp .b.on{box-shadow:0 0 0 3px #fff6}
+.bp .b i{display:block;background:#6b5434}
+.bp .b1 i{width:5px;height:5px;border-radius:50%}
+.bp .b2 i{width:3px;height:13px;border-radius:2px}
+.bp .led{width:7px;height:7px;border-radius:50%;background:#efe6dc;box-shadow:0 0 0 2px #b8894a}
+.bp .led.on{background:var(--lit,#f6c1c8);box-shadow:0 0 12px 5px var(--lit,#f6c1c8)}
 .wbtns{display:grid;gap:8px;flex:1}
-.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:#e5cbff;color:#261931;padding:10px 15px;border-radius:22px;box-shadow:0 8px 20px #0005;font-size:12px;min-width:210px;text-align:center;pointer-events:none;z-index:5}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:#f6c1c8;color:#2b1218;padding:10px 15px;border-radius:22px;box-shadow:0 8px 20px #0005;font-size:12px;min-width:210px;text-align:center;pointer-events:none;z-index:5}
 .hidden{display:none!important}
 .sosbar{position:absolute;inset:0;background:#2a0d14ee;z-index:4;display:flex;flex-direction:column;justify-content:center;padding:28px;gap:14px;text-align:center}
 .sosbar h3{font-size:30px;margin:0;color:#ffd2d8}
@@ -113,17 +117,18 @@ select,input[type=text],input[type=tel]{border:1px solid #685778;border-radius:1
 <body>
 <div class="layout">
   <section class="intro">
-    <div class="eyebrow">AFTERGLOW / V2 APP</div>
-    <h1>Stay close.<br><em>Go out.</em></h1>
-    <p>The companion app for the Afterglow watch. One friend with battery runs it; everyone else just wears the watch, which has two buttons: the crown says <b>I'm Home</b>, the red pusher sends <b>SOS</b>.</p>
-    <ol class="steps"><li><b>1</b> Start your night-out circle.</li><li><b>2</b> Simulate a friend leaving the buddy radius.</li><li><b>3</b> Find a friend or send Come Find Me.</li><li><b>4</b> Press the watch crown for I'm Home, or hold the pusher for SOS (Settings → Watch).</li></ol>
-    <p class="install">Install it: open this page on your phone, then <b>Share → Add to Home Screen</b> (iPhone) or <b>⋮ → Install app</b> (Android). Distances and alerts are simulated until a watch is paired.</p>
+    <div class="eyebrow">FIREFLY / V2 APP</div>
+    <h1>Stay connected.<br><em>Go further together.</em></h1>
+    <p>The companion app for the Firefly bracelet. Create a group, check on your friends, and see who's made it home. The bracelet has two buttons: <b>Button 1</b> finds friends (press) or calls them to you (press twice), <b>Button 2</b> says <b>I'm home</b>. Hold both for 3 seconds for SOS.</p>
+    <ol class="steps"><li><b>1</b> Start your group for the night.</li><li><b>2</b> Find a friend: "Getting closer… 3 meters away".</li><li><b>3</b> Simulate a friend drifting outside the radius.</li><li><b>4</b> Try the bracelet's buttons in Settings → Bracelet.</li></ol>
+    <p class="install">Install it: open this page on your phone, then <b>Share → Add to Home Screen</b> (iPhone) or <b>⋮ → Install app</b> (Android). Distances and alerts are simulated until a bracelet is paired.</p>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&display=swap">
   </section>
   <div class="phone" id="phone">
     <div class="notch"></div>
     <div class="app" id="appScroll">
       <div class="status"><span id="clock">9:41</span><span>●●● ▰</span></div>
-      <div class="brand">AFTERGLOW ✦</div>
+      <div class="brand">FIREFLY ✦</div>
       <div class="topline"><h2 id="heading">Your night, together.</h2><span class="badge" id="badge">Not started</span></div>
       <main id="content" aria-live="polite"></main>
       <div style="height:18px"></div>
@@ -135,11 +140,11 @@ select,input[type=text],input[type=tel]{border:1px solid #685778;border-radius:1
       <button class="tab" data-tab="settings"><span>⚙</span>Settings</button>
     </nav>
     <div class="sosbar hidden" id="sosbar" role="alertdialog" aria-labelledby="sosTitle">
-      <div class="kicker" style="color:#ffb3bd">SOS · from a watch</div>
-      <h3 id="sosTitle">Sarah needs help</h3>
-      <p id="sosText">She held her SOS button for 3 seconds. Last location: 2 min ago, about 120 m north of you. Her backup contact will be texted in 60 s unless someone responds.</p>
+      <div class="kicker" style="color:#ffb3bd">SOS · from a bracelet</div>
+      <h3 id="sosTitle">Sophia needs help</h3>
+      <p id="sosText">She held both buttons on her bracelet for 3 seconds. Last location: 2 min ago, about 120 m north of you. Her backup contact will be texted in 60 s unless someone responds.</p>
       <button class="danger wide" data-action="ack">I'm on my way</button>
-      <button class="secondary wide" data-action="call">Call Sarah</button>
+      <button class="secondary wide" data-action="call">Call Sophia</button>
     </div>
     <div class="toast hidden" role="status" id="toast"></div>
   </div>
@@ -147,73 +152,77 @@ select,input[type=text],input[type=tel]{border:1px solid #685778;border-radius:1
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
-const store={get(k,d){ try{ const v=localStorage.getItem('ag.'+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem('ag.'+k,JSON.stringify(v)); }catch(e){} }};
+const store={get(k,d){ try{ const v=localStorage.getItem('ff2.'+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem('ff2.'+k,JSON.stringify(v)); }catch(e){} }};
 let S={ started:false, tab:'home', separated:false, requested:false, finding:false, target:0, dist:8, home:false, sos:false, sosAck:false,
-  radius:store.get('radius',20), delay:store.get('delay',2), contact:store.get('contact',{name:'Mom',phone:''}), lit:-1, litColor:'#c9a2ff', paired:false };
-const F=[ {name:'Emma',ini:'EM',dist:8,home:true}, {name:'Sarah',ini:'SA',dist:14,home:false}, {name:'Olivia',ini:'OL',dist:22,home:false}, {name:'Chloe',ini:'CH',dist:3700,home:false,lastSeen:4} ];
+  radius:store.get('radius',20), delay:store.get('delay',2), contact:store.get('contact',{name:'Mom',phone:''}), lit:-1, litColor:'#f6c1c8', paired:false, press:'' };
+const F=[ {name:'Emma',ini:'EM',dist:8,home:false}, {name:'Sophia',ini:'SO',dist:14,home:false}, {name:'Olivia',ini:'OL',dist:22,home:false}, {name:'Mia',ini:'MI',dist:3700,home:true,lastSeen:1} ];
 let toastT, findT, litT;
 const btn=(label,id,kind='secondary')=>`<button type="button" class="${kind}" data-action="${id}">${label}</button>`;
 const fmt=m=> m>=1000 ? (m/1609).toFixed(1)+' mi' : Math.round(m)+' m';
 function status(f,i){
   if(S.sos && i===1) return ['SOS · needs help','sos'];
   if(i===1 && S.separated) return [`Outside ${S.radius} m radius · ${S.delay} min`,'warn'];
-  if(i===2 && S.requested) return ['Come Find Me sent to her','warn'];
-  if(i===3) return [`${fmt(f.dist)} away · via cellular · updated ${f.lastSeen} min ago`,'off'];
+  if(i===1 && S.comeFind) return ['Come find me · 14 m','warn'];
+  if(i===2 && S.requested) return ['You asked her to come find you','warn'];
+  if(i===3) return [`I'm home · ${fmt(f.dist)} away · via cellular`,'off'];
   return [`Nearby · ${fmt(f.dist)}`,''];
 }
 const row=(f,i)=>{ const [st,cls]=status(f,i); return `<div class="person"><div class="avatar">${f.ini}</div><div class="grow"><div class="name">${f.name}</div><div class="sub">${st}</div></div><span class="dot ${cls}" aria-label="${st}"></span></div>`; };
 function flash(m){ const t=$('#toast'); t.textContent=m; t.classList.remove('hidden'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.add('hidden'),2600); }
 function buzz(p){ try{ navigator.vibrate&&navigator.vibrate(p); }catch(e){} }
-function faceHTML(){ let s=''; for(let h=0;h<12;h++){ const a=h/12*Math.PI*2; s+=`<i class="${h===S.lit||S.lit===99?'on':''}" style="transform:translate(${Math.sin(a)*36}px,${-Math.cos(a)*36}px);--lit:${S.litColor}"></i>`; } return `<div class="face" aria-label="Watch face preview">${s}<span class="crown"></span><span class="pusher"></span></div>`; }
+function faceHTML(){ const p=S.press; return `<div class="bp" aria-label="Bracelet preview"><div class="cap"><span class="b b1 ${p==='b1'||p==='both'?'on':''}"><i></i></span><span class="led ${S.lit!==-1?'on':''}" style="--lit:${S.litColor}"></span><span class="b b2 ${p==='b2'||p==='both'?'on':''}"><i></i></span></div></div>`; }
 function render(){
   document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===S.tab));
-  $('#heading').textContent=({home:'Your night, together.',friends:'Find your people.',checkins:'Made it home?',settings:'Make it yours.'})[S.tab];
+  $('#heading').textContent=({home:'My Group',friends:'Find Friends',checkins:'Made it home?',settings:'Make it yours.'})[S.tab];
   const bd=$('#badge'); bd.textContent=S.started?'Night active':'Not started'; bd.classList.toggle('live',S.started);
   $('#sosbar').classList.toggle('hidden',!(S.sos&&!S.sosAck));
   const c=$('#content');
   if(!S.started){
-    c.innerHTML=`<div class="card"><div class="kicker">Your circle</div><h3>Girls' Night Out ✨</h3><p class="muted">Create a temporary circle, pair your watches and choose a buddy before going out. Everything ends at sunrise.</p><div style="margin-top:14px">${btn('Start Night Out →','start','primary wide')}</div></div>
-    <div class="card"><div class="kicker">Your watch</div><div class="watch">${faceHTML()}<p class="muted"><b style="color:var(--ink)">Two buttons.</b> Crown: I'm Home. Red pusher (hold 3 s): SOS. Separation alerts and friend-finding glow on the dial by themselves.</p></div></div>`;
+    c.innerHTML=`<div class="card"><div class="kicker">Your group</div><h3>Girls' Night Out ✨</h3><p class="muted">Create a group for tonight and pair your bracelets before going out. The group key expires at the end of the night.</p><div style="margin-top:14px">${btn('Start the night →','start','primary wide')}</div></div>
+    <div class="card"><div class="kicker">Your bracelet</div><div class="watch">${faceHTML()}<p class="muted"><b style="color:var(--ink)">Two buttons.</b> Button 1: find friends (press) or come find me (press twice). Button 2: I'm home. Hold both 3 s: SOS.</p></div></div>`;
     return;
   }
   if(S.tab==='home'){
-    c.innerHTML=`<div class="card"><div class="kicker">Saturday night · demo</div><h3>Girls' Night Out ✨</h3><p class="muted">4 friends in your circle · buddy: Emma</p>${F.map(row).join('')}</div>
-    ${S.sos?`<div class="notice" style="background:var(--sos-bg);color:#ffd2d8">🆘 Sarah sent SOS from her watch. ${S.sosAck?'You said you\'re on your way; the circle can see that.':''}</div>`:''}
-    ${S.separated?`<div class="notice">⚠ Sarah may have left your ${S.radius} m buddy radius. Her watch buzzed and is pointing her back toward you. This is a distance alert, not a confirmed location.</div>`:''}
-    <div class="actions">${btn('Simulate separation','separate')}${btn('Clear alert','clear')}</div>
+    c.innerHTML=`<div class="card"><div class="kicker">Saturday night · demo</div><h3>Girls' Night Out ✨</h3><p class="muted">4 friends in your group · radius ${S.radius} m</p>${F.map(row).join('')}</div>
+    ${S.sos?`<div class="notice" style="background:var(--sos-bg);color:#ffd2d8">🆘 Sophia sent SOS from her bracelet. ${S.sosAck?'You said you\'re on your way; the group can see that.':''}</div>`:''}
+    ${S.separated?`<div class="notice">⚠ Sophia may have left your ${S.radius} m radius. Her bracelet buzzed so she knows. This is a distance alert, not a confirmed location.</div>`:''}
+    ${S.comeFind?`<div class="notice info">✦ Sophia pressed Button 1 twice: <b>come find me</b>. Your bracelet buzzed twice.</div>`:''}
+    <div class="actions">${btn('Simulate separation','separate')}${btn('Clear alerts','clear')}</div>
     <p class="smallnote">Signal loss is shown separately from confirmed separation, so a dropped connection never looks like someone walked away.</p>`;
   } else if(S.tab==='friends'){
     const f=F[S.target], far=f.dist>=1000;
     c.innerHTML=`<div class="card ${S.finding&&!far?'finding':''}" style="--rate:${Math.max(.35,S.dist/6).toFixed(2)}s"><div class="kicker">Friend-finding${far?' · long range':' · up close'}</div>
       <div class="chips" role="group" aria-label="Choose a friend">${F.map((x,i)=>`<button class="chip" data-target="${i}" aria-pressed="${i===S.target}">${x.name}</button>`).join('')}</div>
-      <h3 style="margin-top:14px">${f.name} <span style="color:#d7b6fa">${far?fmt(f.dist)+' away':'~'+fmt(S.finding?S.dist:f.dist)+' away'}</span></h3>
-      <p class="muted">${far?`Her watch is out of radio range, so it sends a GPS position over cellular every 1–2 minutes. Last update ${f.lastSeen} min ago.`:'Distance from ultra-wideband ranging between watches. No map or arrow up close: just walk until the number drops.'}</p>
-      <div class="finder"><div class="ring"><span class="pulse"></span><div class="core"><strong>${far?'⌖':'◎'}</strong>You ↔ ${f.name}</div></div></div>
+      <h3 style="margin-top:14px">${f.name} <span style="color:#f6c1c8">${far?fmt(f.dist)+' away':'~'+fmt(S.finding?S.dist:f.dist)+' away'}</span></h3>
+      <p class="muted">${far?`Her bracelet is out of radio range, so it sends a GPS position over cellular. Last update ${f.lastSeen} min ago.`:'Distance from ultra-wideband between bracelets. Your bracelet buzzes and its light pulses faster as you get closer.'}</p>
+      <div class="finder"><div class="ring"><span class="pulse"></span><div class="core"><strong>${far?'⌖':(S.finding?Math.round(S.dist)+' m':'◎')}</strong>${far?'You ↔ '+f.name:(S.finding?(S.dist<=1?'Right here':'Getting closer…'):'You ↔ '+f.name)}</div></div></div>
       <div class="actions">${far?btn('Open in Maps','maps','primary'):btn(S.finding?'Stop finding':'Find '+f.name,'find','primary')}${btn('Come Find Me','request')}</div>
-      <p class="smallnote">${far?'Positions are end-to-end encrypted with your circle\'s key and not stored after delivery.':S.finding?`${f.name}'s watch dial is glowing so she knows you're looking for her. Your phone pulses faster as you get closer.`:S.requested?'Come Find Me sent: their watches buzz and the marker toward you glows.':'Up close the watches range over UWB; farther away they fall back to LoRa signal strength.'}</p></div>`;
+      <p class="smallnote">${far?'Positions are end-to-end encrypted with your group\'s key and not stored after delivery.':S.finding?`${f.name}'s bracelet light is glowing so she knows you're looking for her.`:S.requested?'Come find me sent: their bracelets buzz twice.':'Same as pressing Button 1 on your bracelet. Up close it uses UWB; farther away, LoRa signal strength.'}</p></div>`;
   } else if(S.tab==='checkins'){
     c.innerHTML=`<div class="card"><div class="kicker">Tonight's check-ins</div><h3>Who's home?</h3>
       <div class="line"><strong>You</strong><span class="${S.home?'ok':''}">${S.home?'✓ I\'m Home · just now':'Not checked in'}</span></div>
-      ${F.map((f,i)=>`<div class="line"><strong>${f.name}</strong><span class="${f.home?'ok':''}">${f.home?'✓ I\'m Home · 1:52 AM':i===3?'Pending · last seen 4 min ago':'Pending'}</span></div>`).join('')}
+      ${F.map((f,i)=>`<div class="line"><strong>${f.name}</strong><span class="${f.home?'ok':''}">${f.home?'✓ I\'m home · 1:52 AM':'Pending'}</span></div>`).join('')}
       <div class="actions">${btn(S.home?'✓ Check-in recorded':'Send I\'m Home','home','primary')}${btn('Nudge pending','nudge')}</div>
-      <p class="smallnote">Friends with no phone press the crown on their watch. It's self-reported and doesn't verify arrival. Out of range, the watch sends it over cellular, or queues it until a signal returns.</p></div>
-      ${S.home?'<div class="notice good">✓ Your circle now shows your check-in.</div>':''}`;
+      <p class="smallnote">Friends with no phone press Button 2 on their bracelet. It's self-reported and doesn't verify arrival. Out of range, the bracelet sends it over cellular, or queues it until a signal returns.</p></div>
+      ${S.home?'<div class="notice good">✓ Your group now shows your check-in.</div>':''}`;
   } else {
     c.innerHTML=`<div class="card"><div class="kicker">Separation alerts</div>
       <label for="radius">Buddy radius: <strong>${S.radius} meters</strong></label><input type="range" id="radius" min="10" max="30" step="10" value="${S.radius}">
       <div class="muted" style="display:flex;justify-content:space-between;font-size:11px"><span>10 m</span><span>20 m</span><span>30 m</span></div>
       <label for="delay">Alert delay</label><select id="delay"><option value="1" ${S.delay===1?'selected':''}>1 minute</option><option value="2" ${S.delay===2?'selected':''}>2 minutes</option><option value="5" ${S.delay===5?'selected':''}>5 minutes</option></select>
       <p class="smallnote">Radius monitoring needs successful distance updates. Signal loss shows separately from confirmed separation.</p></div>
-    <div class="card"><div class="kicker">Watch · two buttons</div><div class="watch">${faceHTML()}<div class="wbtns">${btn('Crown · I\'m Home','w-home','secondary')}${btn('Pusher · hold 3 s · SOS','w-sos','danger')}</div></div>
-      <p class="smallnote">${S.paired?'Paired watch: battery 84%.':'Simulated watch. Try both buttons to see what your circle receives.'}</p>
-      <div style="margin-top:10px">${btn(S.paired?'✓ Watch paired':'Pair a watch (Bluetooth)','pair','primary wide')}</div></div>
-    <div class="card"><div class="kicker">SOS backup contact</div><p class="muted">If nobody in the circle responds to an SOS within 60 seconds, the app texts this person. It never calls 911 for you.</p>
+    <div class="card"><div class="kicker">Bracelet · two buttons</div><div class="watch">${faceHTML()}</div>
+      <div class="wbtns" style="margin-top:12px">${btn('Button 1 · press · Find friends','w-find','secondary')}${btn('Button 1 · press twice · Come find me','w-come','secondary')}${btn('Button 2 · press · I\'m home','w-home','secondary')}${btn('Hold both 3 s · SOS','w-sos','danger')}</div>
+      <p class="smallnote">${S.paired?'Paired bracelet: battery 84%.':'Simulated bracelet. Try each button to see what your group receives.'}</p>
+      <div style="margin-top:10px">${btn(S.paired?'✓ Bracelet paired':'Pair a bracelet (Bluetooth)','pair','primary wide')}</div></div>
+    <div class="card"><div class="kicker">SOS backup contact</div><p class="muted">If nobody in the group responds to an SOS within 60 seconds, the app texts this person. It never calls 911 for you.</p>
       <label for="cname">Name</label><input type="text" id="cname" value="${S.contact.name||''}" autocomplete="name">
       <label for="cphone">Phone</label><input type="tel" id="cphone" value="${S.contact.phone||''}" placeholder="(555) 123-4567" autocomplete="tel"></div>
     <div style="margin-top:14px">${btn('End night','end','wide secondary')}</div>`;
   }
 }
 function startFinding(){ clearInterval(findT); S.dist=F[S.target].dist; findT=setInterval(()=>{ if(!S.finding) return clearInterval(findT); S.dist=Math.max(1,S.dist-0.6); if(S.dist<=1){ S.finding=false; flash(F[S.target].name+' is right here ✨'); buzz([60,40,60]); } render(); },700); }
+function pressB(w){ S.press=w; setTimeout(()=>{ S.press=''; render(); },500); }
 function lightWatch(h,color,ms){ S.lit=h; S.litColor=color; render(); clearTimeout(litT); litT=setTimeout(()=>{ S.lit=-1; render(); },ms||2600); }
 document.addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b) return;
@@ -222,18 +231,20 @@ document.addEventListener('click',e=>{
   switch(b.dataset.action){
     case 'start': S.started=true; S.tab='home'; flash('Night Out started ✨'); break;
     case 'separate': S.separated=true; buzz(200); flash('Separation alert'); break;
-    case 'clear': S.separated=false; flash('Alert cleared'); break;
+    case 'clear': S.separated=false; S.comeFind=false; flash('Alerts cleared'); break;
     case 'find': S.finding=!S.finding; if(S.finding) startFinding(); flash(S.finding?'Finding '+F[S.target].name+'…':'Stopped finding'); break;
-    case 'request': S.requested=true; flash('Come Find Me sent ✦'); break;
+    case 'request': S.requested=true; flash('Come find me sent ✦'); break;
     case 'maps': flash('Opens her last position in Maps'); break;
     case 'home': S.home=true; buzz([40,60,40]); flash('I\'m Home sent 🏠'); break;
-    case 'nudge': flash('Nudged Sarah, Olivia and Chloe'); break;
-    case 'w-home': if(!S.started){ S.started=true; } S.home=true; buzz([40,60,40]); lightWatch(99,'#4fe3a0',2400); flash('Crown pressed · I\'m Home delivered'); break;
-    case 'w-sos': if(!S.started){ S.started=true; } S.sos=true; S.sosAck=false; buzz([300,100,300,100,300]); lightWatch(99,'#ff3448',3500); break;
-    case 'ack': S.sosAck=true; flash('Sarah will see you\'re on your way'); break;
-    case 'call': flash('Calling Sarah…'); break;
+    case 'nudge': flash('Nudged Emma, Sophia and Olivia'); break;
+    case 'w-find': if(!S.started){ S.started=true; } pressB('b1'); S.tab='friends'; S.target=0; S.finding=true; startFinding(); lightWatch(0,'#ff9fb8',2400); flash('Button 1 · finding Emma…'); break;
+    case 'w-come': if(!S.started){ S.started=true; } pressB('b1'); S.comeFind=true; lightWatch(0,'#ffb45a',2000); buzz([80,60,80]); flash('Button 1 ×2 · come find me sent'); break;
+    case 'w-home': if(!S.started){ S.started=true; } pressB('b2'); S.home=true; buzz([40,60,40]); lightWatch(0,'#4fe3a0',2400); flash('Button 2 · I\'m home delivered'); break;
+    case 'w-sos': if(!S.started){ S.started=true; } pressB('both'); S.sos=true; S.sosAck=false; buzz([300,100,300,100,300]); lightWatch(0,'#ff3448',3500); break;
+    case 'ack': S.sosAck=true; flash('Sophia will see you\'re on your way'); break;
+    case 'call': flash('Calling Sophia…'); break;
     case 'pair': pair(); return;
-    case 'end': Object.assign(S,{started:false,separated:false,requested:false,finding:false,home:false,sos:false,sosAck:false,tab:'home'}); flash('Night ended · sharing stopped'); break;
+    case 'end': Object.assign(S,{started:false,separated:false,requested:false,comeFind:false,finding:false,home:false,sos:false,sosAck:false,tab:'home'}); flash('Night ended · sharing stopped'); break;
     default: return;
   }
   render();
@@ -243,13 +254,13 @@ document.addEventListener('change',e=>{ if(e.target.id==='delay'){ S.delay=+e.ta
   if(e.target.id==='cname'||e.target.id==='cphone'){ S.contact={name:$('#cname').value,phone:$('#cphone').value}; store.set('contact',S.contact); flash('Backup contact saved'); } });
 async function pair(){
   if(!navigator.bluetooth){ flash('Bluetooth pairing works in Chrome on Android'); return; }
-  try{ await navigator.bluetooth.requestDevice({filters:[{namePrefix:'Afterglow'},{namePrefix:'Firefly'}],optionalServices:['f1f1a000-7c3b-4e2a-9a1d-5b0e46f1f1f1']}); S.paired=true; flash('Watch paired'); render(); }
+  try{ await navigator.bluetooth.requestDevice({filters:[{namePrefix:'Afterglow'},{namePrefix:'Firefly'}],optionalServices:['f1f1a000-7c3b-4e2a-9a1d-5b0e46f1f1f1']}); S.paired=true; flash('Bracelet paired'); render(); }
   catch(e){ flash('Pairing cancelled'); }
 }
 function tick(){ const d=new Date(); $('#clock').textContent=d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}).replace(/\s?[AP]M/,''); }
 tick(); setInterval(tick,30000);
-// apart state lights the 4 o'clock marker toward the circle on the preview face
-setInterval(()=>{ if(S.separated && S.lit===-1){ S.lit=4; S.litColor='#c9a2ff'; render(); setTimeout(()=>{ if(S.lit===4){ S.lit=-1; render(); } },900); } },2200);
+// separated: the bracelet light breathes pink on the preview
+setInterval(()=>{ if(S.separated && S.lit===-1){ S.lit=0; S.litColor='#ff8fb0'; render(); setTimeout(()=>{ if(S.lit===0){ S.lit=-1; render(); } },900); } },2200);
 if('serviceWorker' in navigator){ addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 render();
 })();

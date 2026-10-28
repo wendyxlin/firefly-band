@@ -1,12 +1,12 @@
 import asyncio, base64, json
 from playwright.async_api import async_playwright
 S='/tmp/claude-0/-home-claude/05671788-1db4-51ad-86c7-0131427b2680/scratchpad/v2/'
-JS=r"""(()=>{ const T=FW.THREE; FW.explode(0); FW.photo(false); FW.time(10,9,36); FW.state('idle'); FW.xray(false); FW.render(0,64,64);
+JS=r"""(()=>{ const T=FW.THREE; FW.explode(0); FW.photo(false); FW.state('idle'); FW.xray(false); FW.render(0,64,64);
   const out=[], mtl=new Set(); let vo=1, to=1, no=1; const v=new T.Vector3(), n=new T.Vector3(), M=new T.Matrix4(), NM=new T.Matrix3(), IM=new T.Matrix4();
   const visible=o=>{ for(let p=o;p;p=p.parent){ if(!p.visible) return false; } return true; };
   let k=0;
   FW.scene.updateMatrixWorld(true);
-  FW.scene.traverse(o=>{ if(!o.isMesh) return; const name=(o.material&&o.material.name)||''; const isGlow=name.startsWith('glow_');
+  FW.scene.traverse(o=>{ if(!o.isMesh) return; const name=(o.material&&o.material.name)||''; const isGlow=name==='glow';
     if(!name) return; if(!isGlow && !visible(o)) return;
     const g=o.geometry, P=g.attributes.position, N=g.attributes.normal, U=g.attributes.uv; const idx=g.index;
     const count=o.isInstancedMesh?o.count:1;
@@ -25,13 +25,12 @@ JS=r"""(()=>{ const T=FW.THREE; FW.explode(0); FW.photo(false); FW.time(10,9,36)
 })()"""
 async def main():
     async with async_playwright() as p:
-        b = await p.chromium.launch(args=["--use-gl=swiftshader","--enable-webgl","--ignore-gpu-blocklist"])
+        b = await p.chromium.launch(args=["--use-gl=angle","--use-angle=swiftshader"])
         pg = await (await b.new_context(viewport={'width':800,'height':600})).new_page()
         await pg.goto('file://'+S+'mockup/test.html'); await pg.wait_for_timeout(2500)
         d=json.loads(await pg.evaluate(JS))
-        open(S+'blender/watch.obj','w').write('mtllib watch.mtl\n'+d['obj'])
-        open(S+'blender/watch.mtl','w').write('\n'.join(f'newmtl {m}\nKd 0.8 0.8 0.8\n' for m in d['mtl']))
-        png=await pg.evaluate("FW.dialPNG()"); open(S+'blender/dial.png','wb').write(base64.b64decode(png.split(',')[1]))
+        open(S+'blender/bracelet.obj','w').write('mtllib bracelet.mtl\n'+d['obj'])
+        open(S+'blender/bracelet.mtl','w').write('\n'.join(f'newmtl {m}\nKd 0.8 0.8 0.8\n' for m in d['mtl']))
         print('materials', d['mtl'], 'lines', d['obj'].count('\n'))
         await b.close()
 asyncio.run(main())

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Afterglow Watch v2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a design review for the v2 Afterglow watch. One wide stage for the 3D piece, then the two buttons, where the parts hide, range and renders. Palette follows the Afterglow demo: lavender on deep plum. */
+:root{
+  --bg:#f4f2f7; --surface:#ffffff; --ink:#1c1824; --muted:#5f5870; --line:#ddd6e6; --gold:#6c48a6; --stage:#ebe6f1; --red:#b2333f; --green:#2f8a5f;
+  --display:"Bodoni Moda",Didot,"Bodoni 72",Georgia,serif; --body:"Instrument Sans",system-ui,-apple-system,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#100f16; --surface:#1b1824; --ink:#f8f3ff; --muted:#b9adc9; --line:#352c42; --gold:#d6b4ff; --stage:#17141f; --red:#ef7a86; --green:#7fe0ad; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#100f16; --surface:#1b1824; --ink:#f8f3ff; --muted:#b9adc9; --line:#352c42; --gold:#d6b4ff; --stage:#17141f; --red:#ef7a86; --green:#7fe0ad; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;line-height:1.08}
+h1{font-size:clamp(2.2rem,5.4vw,3.8rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2.1rem)}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.muted{color:var(--muted)}
+header{padding-block:44px 22px;display:grid;gap:14px}
+header .lead{max-width:64ch;font-size:1.06rem;color:var(--muted)}
+.note{display:inline-flex;gap:8px;align-items:center;font-size:.82rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px;width:fit-content}
+.note i{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block}
+.stage{position:relative;background:radial-gradient(900px 520px at 50% 75%, color-mix(in srgb,var(--gold) 12%, var(--stage)), var(--stage) 70%);border:1px solid var(--line);border-radius:18px;overflow:hidden;height:min(68vh,640px);min-height:420px}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.group{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.group span{font:500 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 8px}
+.btn{font:600 .82rem var(--body);color:var(--ink);background:transparent;border:0;border-radius:999px;padding:7px 12px;cursor:pointer}
+.btn:hover{background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.sw{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:-2px;margin-right:6px;border:1px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+.hint{font-size:.82rem;color:var(--muted);margin-top:8px}
+.stateline{position:absolute;left:14px;bottom:14px;right:14px;max-width:440px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.86rem}
+.stateline b{font-family:var(--display);font-size:1rem;font-weight:600}
+section{padding-block:44px;border-top:1px solid var(--line);margin-top:40px}
+.head{display:grid;gap:8px;margin-bottom:22px;max-width:70ch}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.ledger{width:100%;border-collapse:collapse;font-size:.92rem}
+.ledger th,.ledger td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.ledger th{font:500 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ledger tr:last-child td{border-bottom:0}
+.ledger td:first-child{font-weight:600;white-space:nowrap}
+.ledger td.watch{font-family:var(--display);font-size:1.02rem}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{margin-bottom:10px}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.card li{display:grid;grid-template-columns:72px 1fr;gap:10px;font-size:.92rem}
+.card li b{font:500 .8rem var(--mono);color:var(--gold)}
+.card.sos{border-top:3px solid var(--red)} .card.home{border-top:3px solid var(--green)}
+.renders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.renders figure{margin:0;min-width:0}
+.renders img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:var(--stage)}
+.renders figcaption{font-size:.82rem;color:var(--muted);margin-top:6px}
+footer{padding-block:28px 48px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:40px}
+@media (max-width:820px){ .two{grid-template-columns:1fr} .renders{grid-template-columns:1fr 1fr} }
+@media (max-width:480px){ .renders{grid-template-columns:1fr} .stage{height:58vh} }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Afterglow · v2 bracelet · design review</div>
+  <h1>Afterglow, worn as a watch</h1>
+  <p class="lead">A dress watch with exactly two buttons. The crown sends <b>I'm Home</b>, the red-ringed pusher is <b>SOS</b>. Everything else from the Afterglow app happens on its own: the watch buzzes when you drift outside your buddy radius, and its mother-of-pearl dial glows to show where your circle is.</p>
+  <span class="note"><i></i>Version 2. The v1 bangle outputs stay unchanged in the main folders.</span>
+</header>
+
+<div class="stage" id="stage">
+  <canvas id="c" aria-label="Interactive 3D model of the Afterglow watch"></canvas>
+  <div class="stateline" id="stateline"><b>At rest.</b> <span class="muted">A plain mother-of-pearl dial. Nobody can tell it's anything but a watch.</span></div>
+</div>
+<div class="controls">
+  <div class="group" role="group" aria-label="Dial state"><span>Dial</span>
+    <button class="btn" data-state="idle" aria-pressed="true">At rest</button>
+    <button class="btn" data-state="apart" aria-pressed="false">Outside buddy radius</button>
+    <button class="btn" data-state="home" aria-pressed="false">I'm Home sent</button>
+    <button class="btn" data-state="sos" aria-pressed="false">SOS</button>
+  </div>
+  <div class="group" role="group" aria-label="Case finish"><span>Case</span>
+    <button class="btn" data-finish="yellow" aria-pressed="true"><i class="sw" style="background:#e8c27a"></i>Yellow gold</button>
+    <button class="btn" data-finish="rose" aria-pressed="false"><i class="sw" style="background:#e9b49d"></i>Rose</button>
+    <button class="btn" data-finish="steel" aria-pressed="false"><i class="sw" style="background:#d9dadd"></i>Steel</button>
+  </div>
+  <div class="group" role="group" aria-label="Strap"><span>Strap</span>
+    <button class="btn" data-strap="black" aria-pressed="true"><i class="sw" style="background:#1b1a1c"></i>Black</button>
+    <button class="btn" data-strap="plum" aria-pressed="false"><i class="sw" style="background:#4a2a52"></i>Plum</button>
+    <button class="btn" data-strap="blush" aria-pressed="false"><i class="sw" style="background:#d9a99a"></i>Blush</button>
+  </div>
+  <div class="group" role="group" aria-label="View"><span>View</span>
+    <button class="btn" data-view="hero" aria-pressed="false">Three-quarter</button>
+    <button class="btn" data-view="dial" aria-pressed="false">Dial</button>
+    <button class="btn" data-view="crown" aria-pressed="false">Buttons</button>
+    <button class="btn" id="btnExplode" aria-pressed="false">Explode</button>
+    <button class="btn" id="btnXray" aria-pressed="false">X-ray</button>
+  </div>
+</div>
+<p class="hint">Drag to turn it, scroll or pinch to zoom. Real size: 34 mm case, 16 mm strap, on a 165 mm wrist.</p>
+
+<section>
+  <div class="head"><div class="eyebrow">Two buttons</div><h2>One to say you're home, one for help</h2><p class="muted">Each button feels different, so you can find the right one by touch in the dark. Finding friends and "Come Find Me" moved into the app, as in the Afterglow demo, so the watch only needs these two.</p></div>
+  <div class="two">
+    <div class="card home"><h3>Crown at 3 o'clock · I'm Home</h3><ul>
+      <li><b>press</b><span>Sends "I'm Home" to your circle. Two short buzzes confirm it, then a green sweep around the dial when it's delivered.</span></li>
+      <li><b>press again</b><span>Within 5 seconds: cancels, in case you pressed it by accident.</span></li>
+      <li><b>feel</b><span>Knurled gold crown with a lavender opal on the tip.</span></li></ul></div>
+    <div class="card sos"><h3>Pusher at 2 o'clock · SOS</h3><ul>
+      <li><b>hold 3 s</b><span>SOS to your whole circle and your backup contact. The dial pulses red until someone acknowledges.</span></li>
+      <li><b>press 2×</b><span>Cancels during the 5–10 second grace window, before anything is sent.</span></li>
+      <li><b>feel</b><span>Smooth, slimmer than the crown, ringed in red enamel. Recessed so a bent wrist can't press it.</span></li></ul></div>
+  </div>
+  <div class="tablewrap" style="margin-top:16px"><table class="ledger">
+    <thead><tr><th>Afterglow feature</th><th>On the watch</th><th>In the app</th></tr></thead>
+    <tbody>
+      <tr><td>Night-out circle</td><td class="muted">Paired to the circle before you go out; it ends at sunrise.</td><td class="muted">Start Night Out, add friends, pick a buddy.</td></tr>
+      <tr><td>Buddy radius and separation alerts</td><td class="muted">Buzzes on its own if you drift outside the radius for longer than the alert delay. The marker pointing toward your circle glows lavender.</td><td class="muted">Set the radius (10–30 m) and the delay (1, 2 or 5 min). The organizer sees "Outside 20 m radius".</td></tr>
+      <tr><td>Find friends</td><td class="muted">Your dial glows when a friend is finding you, so you know to look up.</td><td class="muted">"Find Emma": distance (about 8 m), with no map or arrow up close.</td></tr>
+      <tr><td>Come Find Me</td><td class="muted">A distinct buzz tells you someone asked; the marker toward them glows.</td><td class="muted">Send a Come Find Me request to the circle.</td></tr>
+      <tr><td>I'm Home</td><td class="muted">The crown.</td><td class="muted">"Who's home?" list: You, Emma ✓, Sarah pending…</td></tr>
+      <tr><td>SOS</td><td class="muted">The pusher.</td><td class="muted">Alert on every phone in the circle, with the last location.</td></tr>
+    </tbody></table></div>
+</section>
+
+<section>
+  <div class="head"><div class="eyebrow">Where everything hides</div><h2>Every Afterglow part has a watch part to hide behind</h2></div>
+  <div class="tablewrap"><table class="ledger">
+    <thead><tr><th>Afterglow needs</th><th>Hidden as</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td>The glow</td><td class="watch">Mother-of-pearl dial, lit markers</td><td class="muted">Twelve LEDs shine through a small translucent window under each hour marker: lavender toward your circle, green for I'm Home, red for SOS.</td></tr>
+      <tr><td>Antennas</td><td class="watch">Inside the strap</td><td class="muted">Flexible antennas laminated in the leather, outside the metal case: LoRa on one side, cellular and GPS on the other.</td></tr>
+      <tr><td>Close-range distance</td><td class="watch">Under the dial</td><td class="muted">An ultra-wideband (UWB) chip measures distance to nearby friends to about 10–30 cm, which powers the buddy radius and "about 8 m away".</td></tr>
+      <tr><td>Long range</td><td class="watch">One chip on the board</td><td class="muted">Cellular LTE-M / NB-IoT with built-in GPS (Nordic nRF9151) for 6 miles and beyond, with Amazon Sidewalk and phone crowd networks as fallbacks.</td></tr>
+      <tr><td>Battery</td><td class="watch">Under the dial</td><td class="muted">A round cell about 30 mm across and 3.3 mm thick, about 210 mAh.</td></tr>
+      <tr><td>Vibration and charging</td><td class="watch">The caseback</td><td class="muted">A coin motor against the skin, and two magnetic charge pins.</td></tr>
+      <tr><td>Telling time</td><td class="watch">Real hands</td><td class="muted">A small stepper driven by the same chip, like a hybrid smartwatch.</td></tr>
+    </tbody></table></div>
+</section>
+
+<section>
+  <div class="head"><div class="eyebrow">Range · at least 6 miles, even with a weak signal</div><h2>Close, near and far: three ways to stay connected</h2><p class="muted">No wrist-sized radio reaches 6 miles directly, so the watch picks the best link for how far apart you are.</p></div>
+  <div class="tablewrap"><table class="ledger">
+    <thead><tr><th>Distance</th><th>Link</th><th>What you get</th></tr></thead>
+    <tbody>
+      <tr><td>0–30 m</td><td class="watch">UWB, watch to watch</td><td class="muted">Distance to within 10–30 cm when there's a clear path; bodies in a crowd block it, so it falls back to LoRa signal strength. Powers the buddy radius.</td></tr>
+      <tr><td>30 m – 1 km</td><td class="watch">LoRa, watch to watch</td><td class="muted">Separation alerts, Come Find Me and SOS with no phone, tower or internet; 50–150 m in a packed club, more with relays.</td></tr>
+      <tr><td>1 km – 6+ miles</td><td class="watch">Cellular LTE-M / NB-IoT</td><td class="muted">GPS position every 1–2 minutes, I'm Home and SOS from anywhere with coverage; about 20 dB more reach than a phone's normal LTE in basements. Fallbacks: Amazon Sidewalk and passing phones.</td></tr>
+    </tbody></table></div>
+</section>
+
+<section>
+  <div class="head"><div class="eyebrow">Renders</div><h2>How it looks</h2><p class="muted">Path-traced in Blender Cycles from the 3D model above, with physically based gold, sapphire, mother-of-pearl and leather. They are renders, not photographs.</p></div>
+  <div class="renders">
+    <figure><img src="../renders/v2-hero.jpg" alt="Afterglow watch in yellow gold with a mother-of-pearl dial and black leather strap" loading="lazy"><figcaption>Yellow gold, mother-of-pearl dial, black leather</figcaption></figure>
+    <figure><img src="../renders/v2-buttons.jpg" alt="Close-up of the crown (I'm Home) and the red-ringed SOS pusher" loading="lazy"><figcaption>Crown: I'm Home · red-ringed pusher: SOS</figcaption></figure>
+    <figure><img src="../renders/v2-apart.jpg" alt="Dial with one marker glowing lavender toward the circle" loading="lazy"><figcaption>Outside the buddy radius: the marker toward your circle glows</figcaption></figure>
+    <figure><img src="../renders/v2-home.jpg" alt="Dial glowing green after I'm Home is delivered" loading="lazy"><figcaption>I'm Home delivered: a green sweep</figcaption></figure>
+    <figure><img src="../renders/v2-sos.jpg" alt="Dial pulsing red for SOS" loading="lazy"><figcaption>SOS: the dial pulses red</figcaption></figure>
+    <figure><img src="../renders/v2-rose.jpg" alt="Afterglow watch in rose gold with a plum leather strap" loading="lazy"><figcaption>Rose gold with plum leather</figcaption></figure>
+  </div>
+</section>
+</div>
+<footer><div class="wrap">Afterglow · v2 bracelet · design review, October 2026. Dimensions in millimetres; weights and battery life are estimates until parts are measured.</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage'), canvas=document.getElementById('c');
+if(!window.THREE){ document.getElementById('stateline').innerHTML='<b>3D viewer unavailable.</b> <span class="muted">The renders below show the design.</span>'; return; }
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=0.95;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(26,1,1,2000);
+const target=new THREE.Vector3(0,-6,0);
+const cam={theta:0.85,phi:0.95,radius:150}, goal={theta:0.85,phi:0.95,radius:150};
+function placeCam(){ camera.position.set(target.x+cam.radius*Math.sin(cam.phi)*Math.sin(cam.theta), target.y+cam.radius*Math.cos(cam.phi), target.z+cam.radius*Math.sin(cam.phi)*Math.cos(cam.theta)); camera.lookAt(target); }
+
+// ---------- lighting: a jewellery studio (soft top box, two strip lights, warm bounce) ----------
+scene.add(new THREE.HemisphereLight(0xfff6ea,0x24222a,0.35));
+const key=new THREE.DirectionalLight(0xfff1de,1.4); key.position.set(60,140,70); key.castShadow=true; key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-70,right:70,top:70,bottom:-70,near:10,far:400}); key.shadow.bias=-0.0004; key.shadow.radius=6; scene.add(key);
+const fill=new THREE.DirectionalLight(0xdfe6ff,0.35); fill.position.set(-110,50,-60); scene.add(fill);
+(function(){ const es=new THREE.Scene(); es.background=new THREE.Color(0x1a1a1e);
+  const panel=(w,h,c,i,p,r)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i),side:THREE.DoubleSide})); m.position.set(...p); if(r) m.rotation.set(...r); es.add(m); };
+  panel(70,40,0xffffff,2.6,[0,45,0],[Math.PI/2,0,0]);
+  panel(8,60,0xfff2e2,3.2,[42,10,18],[0,-Math.PI/2.3,0]); panel(8,60,0xffffff,2.4,[-40,10,-22],[0,Math.PI/2.6,0]);
+  panel(60,10,0xffe7c4,1.2,[0,8,46],[0,Math.PI,0]); panel(60,14,0xc8d2ff,0.5,[0,6,-46],[0,0,0]);
+  panel(90,30,0x3a3028,1.0,[0,-30,0],[-Math.PI/2,0,0]);
+  const pm=new THREE.PMREMGenerator(renderer); scene.environment=pm.fromScene(es,0.035).texture; pm.dispose(); })();
+
+// ---------- helpers ----------
+const add=(parent,geo,mat,pos,rot)=>{ const m=new THREE.Mesh(geo,mat); if(pos) m.position.set(...pos); if(rot) m.rotation.set(...rot); m.castShadow=true; m.receiveShadow=true; parent.add(m); return m; };
+const canvasTex=(w,h,draw,srgb=true)=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); const t=new THREE.CanvasTexture(c); t.anisotropy=8; return t; };
+const clockDir=h=>{ const a=h/12*Math.PI*2; return new THREE.Vector3(-Math.cos(a),0,-Math.sin(a)); };   // 12 o'clock = -x, 3 o'clock = -z (toward the hand)
+const alongY=(obj,dir)=>obj.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().normalize());
+function rnd(i){ const x=Math.sin(i*127.1+311.7)*43758.5453; return x-Math.floor(x); }
+
+// ---------- materials ----------
+const FIN={yellow:0xf2c97e, rose:0xf0b8a0, steel:0xdcdee2};
+const metal=new THREE.MeshPhysicalMaterial({color:FIN.yellow,metalness:1,roughness:.16,clearcoat:.35,clearcoatRoughness:.08});
+const metalSatin=new THREE.MeshPhysicalMaterial({color:FIN.yellow,metalness:1,roughness:.38});
+const caseback=new THREE.MeshPhysicalMaterial({color:0xd6d7da,metalness:1,roughness:.42});
+const opal=new THREE.MeshPhysicalMaterial({color:0xe2d2fb,roughness:.12,clearcoat:1,clearcoatRoughness:.03,sheen:new THREE.Color(0x9fd6ff)});
+const enamelRed=new THREE.MeshPhysicalMaterial({color:0x9c1c2a,roughness:.18,clearcoat:1,clearcoatRoughness:.05});
+const pcbMat=new THREE.MeshStandardMaterial({color:0x1e5a3c,roughness:.55});
+const chip=new THREE.MeshStandardMaterial({color:0x17171b,roughness:.45});
+const can=new THREE.MeshStandardMaterial({color:0xc9ccd2,metalness:.9,roughness:.32});
+const goldPad=new THREE.MeshStandardMaterial({color:0xd8b25a,metalness:.9,roughness:.3});
+const batt=new THREE.MeshStandardMaterial({color:0xb7bbc6,metalness:.7,roughness:.35});
+metal.name='gold'; metalSatin.name='gold_satin'; caseback.name='steel_brushed'; opal.name='opal'; enamelRed.name='enamel_red';
+const xrayable=[];
+const parts=[]; // {group, ex}
+
+// mother-of-pearl dial texture (pearly base, soft iridescent clouds, fine sunray, minute track, wordmark)
+const dialTex=canvasTex(1024,1024,(g,W)=>{
+  const c=W/2; g.fillStyle='#f4f1ec'; g.fillRect(0,0,W,W);
+  const hues=['rgba(255,190,205,','rgba(170,225,235,','rgba(255,226,170,','rgba(205,190,255,','rgba(190,240,215,'];
+  for(let i=0;i<70;i++){ const x=rnd(i)*W, y=rnd(i+90)*W, r=60+rnd(i+7)*220; const gr=g.createRadialGradient(x,y,0,x,y,r); const h=hues[i%hues.length]; gr.addColorStop(0,h+(0.10+0.12*rnd(i+3))+')'); gr.addColorStop(1,h+'0)'); g.fillStyle=gr; g.fillRect(0,0,W,W); }
+  for(let i=0;i<900;i++){ const x=rnd(i+400)*W, y=rnd(i+1700)*W; g.strokeStyle=`rgba(255,255,255,${0.05+0.07*rnd(i+50)})`; g.lineWidth=0.6+rnd(i)*1.4; g.beginPath(); g.moveTo(x,y); g.bezierCurveTo(x+20,y-10,x+40,y+12,x+60+rnd(i+9)*40,y+4); g.stroke(); }
+  g.save(); g.translate(c,c); g.rotate(-Math.PI/2);            // 12 o'clock at the canvas left, 3 o'clock at the top (see clockDir)
+  for(let i=0;i<180;i++){ g.rotate(Math.PI*2/180); g.strokeStyle='rgba(255,255,255,.05)'; g.lineWidth=2; g.beginPath(); g.moveTo(40,0); g.lineTo(c-30,0); g.stroke(); }
+  for(let m=0;m<60;m++){ const a=m/60*Math.PI*2-Math.PI/2; const r1=c*0.94, r2=c*(m%5?0.915:0.895); g.strokeStyle='rgba(60,52,44,.55)'; g.lineWidth=m%5?2:3.4; g.beginPath(); g.moveTo(Math.cos(a)*r1,Math.sin(a)*r1); g.lineTo(Math.cos(a)*r2,Math.sin(a)*r2); g.stroke(); }
+  g.strokeStyle='rgba(60,52,44,.35)'; g.lineWidth=1.5; g.beginPath(); g.arc(0,0,c*0.945,0,Math.PI*2); g.stroke();
+  g.fillStyle='rgba(54,46,38,.88)'; g.textAlign='center'; g.font='600 40px "Bodoni Moda", Didot, Georgia, serif'; g.letterSpacing='9px'; g.fillText('AFTERGLOW',0,-c*0.38);
+  g.font='500 20px "Instrument Sans", Arial, sans-serif'; g.fillStyle='rgba(54,46,38,.6)'; g.fillText('STAY CLOSE',0,c*0.42);
+  g.restore(); });
+
+// ---------- the watch head (case at the origin, dial facing +y) ----------
+const head=new THREE.Group(); scene.add(head);
+const caseG=new THREE.Group(); head.add(caseG);
+const prof=[[13.6,-0.05],[14.6,0.15],[15.6,0.6],[16.4,1.4],[16.85,2.7],[17.0,4.6],[16.95,6.6],[16.7,8.1],[16.2,9.0],[16.0,9.3],[16.05,9.6],[15.85,10.05],[15.3,10.35],[14.6,10.45],[14.15,10.3],[13.95,9.95],[13.9,9.4]].map(([r,y])=>new THREE.Vector2(r,y));
+const caseBody=add(caseG,new THREE.LatheGeometry(prof,160),metal); xrayable.push(caseBody);
+// lugs: curved horns, 18 mm apart inside, carrying 16 mm strap
+const lugShape=new THREE.Shape(); lugShape.moveTo(13.5,1.2); lugShape.lineTo(13.5,6.9); lugShape.quadraticCurveTo(18.6,7.2,22.4,3.7); lugShape.quadraticCurveTo(23.4,2.2,22.0,1.25); lugShape.quadraticCurveTo(19.6,0.85,17.2,1.55); lugShape.lineTo(13.5,1.2);
+const lugGeo=new THREE.ExtrudeGeometry(lugShape,{depth:1.7,bevelEnabled:true,bevelThickness:.45,bevelSize:.45,bevelSegments:5,curveSegments:24});
+for(const sx of [1,-1]) for(const sz of [1,-1]){ const l=add(caseG,lugGeo,metal); l.position.z = sz>0 ? 8.55 : -8.55-1.7; if(sx<0){ l.rotation.y=Math.PI; l.position.z = sz>0 ? 8.55+1.7 : -8.55; } xrayable.push(l); }
+for(const sx of [1,-1]) add(caseG,new THREE.CylinderGeometry(.55,.55,17.2,16),metalSatin,[sx*20.3,2.55,0],[Math.PI/2,0,0]);
+// crown at 3 o'clock (I'm Home): knurled, opal cabochon on the tip
+{ const d=clockDir(3), cg=new THREE.Group(); cg.position.copy(d.clone().multiplyScalar(16.88)).setY(5.0); alongY(cg,d); caseG.add(cg);
+  add(cg,new THREE.CylinderGeometry(1.25,1.25,1.4,24),metalSatin,[0,0.6,0]);
+  add(cg,new THREE.CylinderGeometry(2.55,2.55,2.6,48),metal,[0,2.5,0]);
+  for(let i=0;i<28;i++){ const a=i/28*Math.PI*2; add(cg,new THREE.BoxGeometry(.32,2.3,.42),metal,[Math.cos(a)*2.58,2.5,Math.sin(a)*2.58],[0,-a,0]).castShadow=false; }
+  const cab=add(cg,new THREE.SphereGeometry(1.35,32,16,0,Math.PI*2,0,Math.PI/2),opal,[0,3.8,0]); cab.scale.set(1,0.55,1);
+  add(cg,new THREE.TorusGeometry(1.45,.18,10,40),metal,[0,3.82,0],[Math.PI/2,0,0]);
+  cg.userData.rest=cg.position.clone(); caseG.userData.crown=cg; }
+// pusher at 2 o'clock (SOS): smooth, slimmer, red enamel ring
+{ const d=clockDir(2), pg=new THREE.Group(); pg.position.copy(d.clone().multiplyScalar(16.75)).setY(5.6); alongY(pg,d); caseG.add(pg);
+  add(pg,new THREE.CylinderGeometry(.85,.85,1.2,20),metalSatin,[0,0.5,0]);
+  add(pg,new THREE.CylinderGeometry(1.45,1.45,1.9,32),metal,[0,1.9,0]);
+  const tip=add(pg,new THREE.SphereGeometry(1.45,32,16,0,Math.PI*2,0,Math.PI/2),metal,[0,2.85,0]); tip.scale.set(1,.45,1);
+  add(pg,new THREE.TorusGeometry(1.5,.22,12,40),enamelRed,[0,1.25,0],[Math.PI/2,0,0]); }
+
+// crystal: domed sapphire
+const crystalR=(14.3*14.3+1.25*1.25)/(2*1.25);
+const crystalG=new THREE.Group(); head.add(crystalG); parts.push({g:crystalG,ex:22});
+const crystal=add(crystalG,new THREE.SphereGeometry(crystalR,96,16,0,Math.PI*2,0,Math.asin(14.3/crystalR)),new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transparent:true,opacity:.12,clearcoat:1,clearcoatRoughness:0,envMapIntensity:1.6,depthWrite:false}),[0,10.15+1.25-crystalR,0]); crystal.castShadow=false; crystal.renderOrder=5; crystal.material.name='sapphire';
+
+// dial with applied gold indices, LED glows and dauphine hands
+const dialG=new THREE.Group(); head.add(dialG); parts.push({g:dialG,ex:14});
+const dial=add(dialG,new THREE.CircleGeometry(14.0,128),new THREE.MeshPhysicalMaterial({map:dialTex,roughness:.32,clearcoat:.9,clearcoatRoughness:.12,sheen:new THREE.Color(0xbfe3ff)}),[0,9.4,0],[-Math.PI/2,0,0]); dial.castShadow=false; dial.material.name='dial';
+const glowTex=canvasTex(128,128,(g,W)=>{ const gr=g.createRadialGradient(64,64,0,64,64,64); gr.addColorStop(0,'rgba(255,255,255,.95)'); gr.addColorStop(.3,'rgba(255,255,255,.6)'); gr.addColorStop(.65,'rgba(255,255,255,.18)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,W,W); },false);
+const glows=[], indices=[];
+for(let h=0;h<12;h++){ const d=clockDir(h), a=Math.atan2(-d.z,d.x);
+  const offs = h===0 ? [-0.75,0.75] : [0];
+  for(const o of offs){ const t=new THREE.Vector3(-d.z,0,d.x).multiplyScalar(o); const idx=add(dialG,new THREE.BoxGeometry(2.7,.45,.8),metal,[d.x*11.2+t.x,9.65,d.z*11.2+t.z],[0,a,0]); indices.push(idx); }
+  const gm=new THREE.MeshBasicMaterial({map:glowTex,color:0xffb347,transparent:true,opacity:0,depthWrite:false,toneMapped:false});
+  gm.name='glow_'+h; const gl=add(dialG,new THREE.PlaneGeometry(7.5,7.5),gm,[d.x*11.2,9.46,d.z*11.2],[-Math.PI/2,0,0]); gl.castShadow=false; gl.receiveShadow=false; glows.push(gl); }
+function hand(L,w,tail,y,mat){ const s=new THREE.Shape(); s.moveTo(-tail,0); s.lineTo(0,w/2); s.lineTo(L,0); s.lineTo(0,-w/2); s.lineTo(-tail,0);
+  const g=new THREE.ExtrudeGeometry(s,{depth:.12,bevelEnabled:true,bevelThickness:.08,bevelSize:.12,bevelSegments:1}); g.rotateX(-Math.PI/2); const m=add(dialG,g,mat,[0,y,0]); return m; }
+const handMat=new THREE.MeshPhysicalMaterial({color:FIN.yellow,metalness:1,roughness:.1,clearcoat:.6,flatShading:true}); handMat.name='gold_hands';
+const hHour=hand(7.2,1.5,1.6,9.95,handMat), hMin=hand(10.8,1.15,1.9,10.2,handMat);
+const hSec=hand(12.0,.28,3.2,10.42,handMat);
+add(dialG,new THREE.CylinderGeometry(.85,.85,1.1,24),metal,[0,10.1,0]);
+function setTime(hh,mm,ss){ const ang=h=>Math.PI-h/12*Math.PI*2; hHour.rotation.y=ang((hh%12)+mm/60); hMin.rotation.y=ang(mm/5); hSec.rotation.y=ang(ss/5); }
+setTime(10,9,36);
+
+// inside: LED ring, board, hand motor, battery, vibration motor, caseback with charge pins
+const ledG=new THREE.Group(); head.add(ledG); parts.push({g:ledG,ex:8});
+add(ledG,new THREE.RingGeometry(10.2,12.3,96),new THREE.MeshStandardMaterial({color:0xc7a35a,roughness:.6,side:THREE.DoubleSide}),[0,8.95,0],[-Math.PI/2,0,0]);
+for(let h=0;h<12;h++){ const d=clockDir(h); add(ledG,new THREE.BoxGeometry(1.6,.4,1.4),new THREE.MeshStandardMaterial({color:0xfff3d6,emissive:0xffb347,emissiveIntensity:.25}),[d.x*11.2,9.15,d.z*11.2]); }
+const boardG=new THREE.Group(); head.add(boardG); parts.push({g:boardG,ex:2});
+add(boardG,new THREE.CylinderGeometry(13.6,13.6,.8,96),pcbMat,[0,7.1,0]);
+add(boardG,new THREE.BoxGeometry(6,.9,6),chip,[-6,7.95,1.5]);          // nRF52840
+add(boardG,new THREE.BoxGeometry(7.5,1.0,7.5),can,[5.2,8.0,-2.5]);      // SX1262 under its shield
+add(boardG,new THREE.BoxGeometry(2.5,.8,2),chip,[1,7.9,7.2]); add(boardG,new THREE.BoxGeometry(7,1.0,7.5),can,[-1.2,8.0,-4.8]);   // nRF9151 cellular + GPS add(boardG,new THREE.BoxGeometry(3,.7,1.6),chip,[-2,7.85,-8.2]);
+add(boardG,new THREE.CylinderGeometry(4.6,4.6,1.8,40),new THREE.MeshStandardMaterial({color:0x2a2a30,roughness:.5}),[0,8.4,0]);   // hand stepper module (sits under the dial centre)
+const battG=new THREE.Group(); head.add(battG); parts.push({g:battG,ex:-8});
+add(battG,new THREE.CylinderGeometry(14,14,4,96),batt,[0,4.6,0]);
+const ring=add(battG,new THREE.CylinderGeometry(14.05,14.05,1.2,96,1,true),new THREE.MeshStandardMaterial({color:0x3a6fd8,roughness:.6}),[0,4.6,0]);
+const backG=new THREE.Group(); head.add(backG); parts.push({g:backG,ex:-18});
+const backProf=[[0,-0.75],[6,-0.68],[10.5,-0.48],[13.0,-0.18],[13.75,-0.02],[13.75,0.4],[0,0.4]].map(([r,y])=>new THREE.Vector2(r,y));
+const back=add(backG,new THREE.LatheGeometry(backProf,140),caseback); xrayable.push(back);
+add(backG,new THREE.CylinderGeometry(4,4,2.0,32),can,[5.5,1.45,0]);                                    // vibration motor, pressed to the caseback
+for(const dz of [-2.4,2.4]) add(backG,new THREE.CylinderGeometry(.9,.9,.4,20),goldPad,[-6,-0.62,dz]);   // charge pins
+add(backG,new THREE.TorusGeometry(10.5,.06,6,140),new THREE.MeshStandardMaterial({color:0x8d8f94,roughness:.5}),[0,-0.5,0],[Math.PI/2,0,0]);
+parts.forEach(p=>{ p.base=p.g.position.y; });
+
+// ---------- strap: 16 mm leather around a 165 mm wrist, pin buckle, keepers, stitching ----------
+const WR={cx:0,cy:-23,a:31.5,b:24.0};
+const pts=[new THREE.Vector3(17.6,2.5,0),new THREE.Vector3(20.3,2.55,0),new THREE.Vector3(22.4,1.5,0),new THREE.Vector3(24.4,-1.2,0)];   // strap ends tuck under the case between the lugs
+for(let i=0;i<=60;i++){ const t=0.5-(0.5+Math.PI+0.5)*i/60; pts.push(new THREE.Vector3(WR.a*Math.cos(t),WR.cy+WR.b*Math.sin(t),0)); }
+pts.push(new THREE.Vector3(-24.4,-1.2,0),new THREE.Vector3(-22.4,1.5,0),new THREE.Vector3(-20.3,2.55,0),new THREE.Vector3(-17.6,2.5,0));
+const strapPath=new THREE.CatmullRomCurve3(pts,false,'centripetal',0.5);
+const sProf=new THREE.Shape(); { const w=3.1,h=16,r=1.3,x=-w/2,y=-h/2; sProf.moveTo(x+r,y); sProf.lineTo(x+w-r,y); sProf.quadraticCurveTo(x+w,y,x+w,y+r); sProf.lineTo(x+w,y+h-r); sProf.quadraticCurveTo(x+w,y+h,x+w-r,y+h); sProf.lineTo(x+r,y+h); sProf.quadraticCurveTo(x,y+h,x,y+h-r); sProf.lineTo(x,y+r); sProf.quadraticCurveTo(x,y,x+r,y); }
+const grainTex=canvasTex(512,512,(g,W)=>{ g.fillStyle='#808080'; g.fillRect(0,0,W,W); for(let i=0;i<14000;i++){ const x=rnd(i)*W,y=rnd(i+33000)*W, r=0.6+rnd(i+77)*2.2, v=100+rnd(i+9)*80; g.fillStyle=`rgb(${v},${v},${v})`; g.beginPath(); g.arc(x,y,r,0,Math.PI*2); g.fill(); } },false);
+grainTex.wrapS=grainTex.wrapT=THREE.RepeatWrapping; grainTex.repeat.set(0.08,0.08);
+const STRAPS={black:[0x121113,.6],plum:[0x3a1d42,.55],blush:[0xc99484,.56]};
+const leather=(m=>{ m.name='leather'; return m; })(new THREE.MeshPhysicalMaterial({color:STRAPS.black[0],roughness:STRAPS.black[1],bumpMap:grainTex,bumpScale:.035,clearcoat:.15,clearcoatRoughness:.55,envMapIntensity:.45}));
+const strapG=new THREE.Group(); scene.add(strapG);
+const strapFrames=strapPath.computeFrenetFrames(420,false); strapFrames.tangents.forEach((T,i)=>{ strapFrames.normals[i]=new THREE.Vector3(-T.y,T.x,0).normalize(); strapFrames.binormals[i]=new THREE.Vector3(0,0,1); });
+const strap=add(strapG,new THREE.ExtrudeGeometry(sProf,{steps:420,bevelEnabled:false,curveSegments:10,extrudePath:strapPath,frames:strapFrames}),leather); xrayable.push(strap);
+// stitching along both edges of the outer face
+const N=420, stitchGeo=new THREE.BoxGeometry(1.0,.2,.3), stitches=new THREE.InstancedMesh(stitchGeo,(m=>{ m.name='thread'; return m; })(new THREE.MeshStandardMaterial({color:0xe9dcc4,roughness:.8})),N*2), M4=new THREE.Matrix4(), q=new THREE.Quaternion();
+let si=0; for(let i=0;i<N;i++){ const u=(i+0.5)/N; if(u<0.035||u>0.965) continue; if(i%3) continue; const p=strapPath.getPointAt(u), T=strapPath.getTangentAt(u), Nn=new THREE.Vector3(-T.y,T.x,0).normalize();
+  for(const z of [-6.4,6.4]){ q.setFromUnitVectors(new THREE.Vector3(1,0,0),T); M4.compose(p.clone().add(Nn.clone().multiplyScalar(1.53)).setZ(z),q,new THREE.Vector3(1,1,1)); stitches.setMatrixAt(si++,M4); } }
+stitches.count=si; strapG.add(stitches);
+// flex antenna laminated inside the strap on the 12 o'clock side (visible in X-ray)
+const antG=new THREE.Group(); strapG.add(antG); antG.visible=false;
+for(let i=0;i<34;i++){ const u2=0.035+i*0.0065, p2=strapPath.getPointAt(u2), T2=strapPath.getTangentAt(u2); const m2=add(antG,new THREE.BoxGeometry(1.4,.15,9),goldPad,[p2.x,p2.y,0]); m2.rotation.z=Math.atan2(T2.y,T2.x); }
+for(let i=0;i<34;i++){ const u=0.965-i*0.0065, p=strapPath.getPointAt(u), T=strapPath.getTangentAt(u); const m=add(antG,new THREE.BoxGeometry(1.4,.15,9),goldPad,[p.x,p.y,0]); m.rotation.z=Math.atan2(T.y,T.x); }
+// pin buckle and keepers at the bottom of the wrist
+const bottomY=WR.cy-WR.b;
+{ const bk=new THREE.Group(); bk.position.set(7,bottomY-1.55,0); strapG.add(bk);
+  const o=new THREE.Shape(); o.moveTo(-4.8,-10); o.lineTo(3.2,-10); o.quadraticCurveTo(5.2,-10,5.2,-8); o.lineTo(5.2,8); o.quadraticCurveTo(5.2,10,3.2,10); o.lineTo(-4.8,10); o.lineTo(-4.8,-10);
+  const hpath=new THREE.Path(); hpath.moveTo(-3.4,-8.6); hpath.lineTo(2.6,-8.6); hpath.quadraticCurveTo(3.8,-8.6,3.8,-7.4); hpath.lineTo(3.8,7.4); hpath.quadraticCurveTo(3.8,8.6,2.6,8.6); hpath.lineTo(-3.4,8.6); hpath.lineTo(-3.4,-8.6); o.holes.push(hpath);
+  const fg=new THREE.ExtrudeGeometry(o,{depth:1.0,bevelEnabled:true,bevelThickness:.35,bevelSize:.35,bevelSegments:4}); fg.rotateX(Math.PI/2); add(bk,fg,metal,[0,0.2,0]);
+  add(bk,new THREE.BoxGeometry(7.6,.6,.9),metal,[0.3,-0.5,0]); }
+for(const kx of [-1.5,-7]){ const k=new THREE.Shape(); k.moveTo(-2.6,-8.9); k.lineTo(2.6,-8.9); k.lineTo(2.6,8.9); k.lineTo(-2.6,8.9); k.lineTo(-2.6,-8.9); const hp=new THREE.Path(); hp.moveTo(-1.65,-8.15); hp.lineTo(1.65,-8.15); hp.lineTo(1.65,8.15); hp.lineTo(-1.65,8.15); hp.lineTo(-1.65,-8.15); k.holes.push(hp);
+  const kg=new THREE.ExtrudeGeometry(k,{depth:3.2,bevelEnabled:true,bevelThickness:.3,bevelSize:.3,bevelSegments:3}); kg.rotateY(Math.PI/2); const km=add(strapG,kg,leather,[kx-1.6,bottomY,0]); }
+
+// wrist (soft display form) and ground
+const wProf=[]; const zA=-80, zB=60; for(let i=0;i<=56;i++){ const z=zA+(zB-zA)*i/56; let r=1+0.12*Math.max(0,(-z-10)/70); const eA=Math.min(1,(z-zA)/10), eB=Math.min(1,(zB-z)/10); r*=Math.sqrt(Math.max(0,1-Math.pow(1-Math.min(eA,eB),2))); wProf.push(new THREE.Vector2(Math.max(r,.001),z)); }
+const wGeo=new THREE.LatheGeometry(wProf,72); wGeo.rotateX(Math.PI/2); wGeo.scale(29.6,21.6,1);
+const wrist=add(scene,wGeo,new THREE.MeshPhysicalMaterial({color:0xcfa58a,roughness:.55,sheen:new THREE.Color(0x6b4a38),clearcoat:.1}),[0,-23,0]); wrist.visible=false;
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(600,600),new THREE.ShadowMaterial({opacity:.28})); ground.rotation.x=-Math.PI/2; ground.position.y=bottomY-3.4; ground.receiveShadow=true; scene.add(ground);
+
+
+// ---------- photo set: honed stone surface and atmospheric depth for the still renders ----------
+const stoneTex=canvasTex(1024,1024,(g,W)=>{ g.fillStyle='#d9d2c6'; g.fillRect(0,0,W,W);
+  for(let i=0;i<5000;i++){ const x=rnd(i+5)*W,y=rnd(i+905)*W,r=1+rnd(i+15)*6, v=200+rnd(i+25)*30; g.fillStyle=`rgba(${v},${v-8},${v-20},.35)`; g.beginPath(); g.ellipse(x,y,r*3,r,0,0,Math.PI*2); g.fill(); }
+  for(let k=0;k<26;k++){ let y=rnd(k+300)*W; g.strokeStyle=`rgba(150,135,112,${0.10+rnd(k)*0.18})`; g.lineWidth=1+rnd(k+3)*3; g.beginPath(); g.moveTo(0,y); for(let x=0;x<=W;x+=32){ y+=(rnd(k*97+x)-0.5)*10; g.lineTo(x,y); } g.stroke(); }
+  for(let i=0;i<260;i++){ const x=rnd(i+77)*W,y=rnd(i+177)*W; g.fillStyle='rgba(120,105,85,.25)'; g.beginPath(); g.arc(x,y,0.8+rnd(i)*2.2,0,Math.PI*2); g.fill(); } });
+stoneTex.wrapS=stoneTex.wrapT=THREE.RepeatWrapping; stoneTex.repeat.set(2,2);
+const surface=new THREE.Mesh(new THREE.PlaneGeometry(900,900),new THREE.MeshStandardMaterial({map:stoneTex,roughness:.82,metalness:0,color:0xffffff}));
+surface.rotation.x=-Math.PI/2; surface.position.y=ground.position.y; surface.receiveShadow=true; surface.visible=false; scene.add(surface);
+function setPhoto(on,tone){ surface.visible=on; ground.visible=!on; scene.fog = on ? new THREE.Fog(tone||0xcfc8bc,320,900) : null; scene.background = on ? new THREE.Color(tone||0xcfc8bc) : null; }
+
+// ---------- state, finish, strap ----------
+let state='idle', explode=0, explodeGoal=0, xray=false;
+const lines={idle:['At rest.','A plain mother-of-pearl dial. Nobody can tell it\'s anything but a watch.'],
+  apart:['Outside your buddy radius.','The watch buzzes, and the 4 o\'clock marker glows lavender toward your circle.'],
+  home:['I\'m Home delivered.','You pressed the crown. A green sweep tells you your circle got it.'],
+  sos:['SOS sent.','You held the pusher for 3 seconds. The dial pulses red until a friend acknowledges.']};
+function setState(s){ state=s; document.querySelectorAll('[data-state]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.state===s))); const l=lines[s]; document.getElementById('stateline').innerHTML=`<b>${l[0]}</b> <span class="muted">${l[1]}</span>`; }
+function setFinish(f){ for(const m of [metal,metalSatin,handMat]) m.color.setHex(FIN[f]); document.querySelectorAll('[data-finish]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.finish===f))); }
+function setStrap(s){ leather.color.setHex(STRAPS[s][0]); leather.roughness=STRAPS[s][1]; document.querySelectorAll('[data-strap]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.strap===s))); }
+function setXray(on){ xray=on; xrayable.forEach(m=>{ m.material.transparent=on; m.material.opacity=on?.18:1; m.material.depthWrite=!on; m.material.needsUpdate=true; m.castShadow=!on; }); antG.visible=on; document.getElementById('btnXray').setAttribute('aria-pressed',String(on)); }
+function syncDial(t){
+  glows.forEach((g,h)=>{ let o=0, col=0xc9a2ff;
+    if(state==='apart'){ const d=Math.min(Math.abs(h-4),12-Math.abs(h-4)); const pulse=0.55+0.45*Math.abs(Math.sin(t*2.6)); o = d===0?pulse:d===1?0.25*pulse:0; }
+    else if(state==='sos'){ col=0xff3448; o=0.35+0.55*Math.abs(Math.sin(t*6)); }
+    else if(state==='home'){ col=0x4fe3a0; const sweep=((t*0.9)%1)*12; const dd=(h-sweep+12)%12; o = dd<3 ? (1-dd/3)*0.9 : 0; }
+    g.material.color.setHex(col); g.material.opacity=o; });
+}
+document.querySelectorAll('[data-state]').forEach(b=>b.addEventListener('click',()=>setState(b.dataset.state)));
+document.querySelectorAll('[data-finish]').forEach(b=>b.addEventListener('click',()=>setFinish(b.dataset.finish)));
+document.querySelectorAll('[data-strap]').forEach(b=>b.addEventListener('click',()=>setStrap(b.dataset.strap)));
+const VIEWS={hero:[0.85,0.95,150,[0,-6,0]], dial:[Math.PI/2,0.02,80,[0,9,0]], crown:[-0.25,1.25,70,[0,4,-12]]};
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ const v=VIEWS[b.dataset.view]; goal.theta=v[0]; goal.phi=v[1]; goal.radius=v[2]; target.set(...v[3]); }));
+const bEx=document.getElementById('btnExplode'); bEx.addEventListener('click',()=>{ explodeGoal=explodeGoal?0:1; bEx.setAttribute('aria-pressed',String(!!explodeGoal)); });
+document.getElementById('btnXray').addEventListener('click',()=>setXray(!xray));
+
+// ---------- orbit ----------
+let drag=false,lx=0,ly=0,spin=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+canvas.addEventListener('pointerdown',e=>{drag=true;spin=false;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{ if(!drag) return; goal.theta-=(e.clientX-lx)*0.008; goal.phi=Math.min(2.4,Math.max(0.02,goal.phi-(e.clientY-ly)*0.008)); lx=e.clientX; ly=e.clientY; });
+canvas.addEventListener('pointerup',()=>{drag=false;});
+canvas.addEventListener('wheel',e=>{ e.preventDefault(); goal.radius=Math.min(380,Math.max(40,goal.radius*(1+e.deltaY*0.001))); },{passive:false});
+let pd=0; canvas.addEventListener('touchmove',e=>{ if(e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); if(pd) goal.radius=Math.min(380,Math.max(40,goal.radius*pd/d)); pd=d; } },{passive:true});
+canvas.addEventListener('touchend',()=>{pd=0;});
+function resize(){ const w=stage.clientWidth,h=stage.clientHeight; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+addEventListener('resize',resize); resize();
+
+function applyExplode(){ parts.forEach(p=>{ p.g.position.y=p.base+p.ex*explode; }); strapG.visible=explode<0.4; caseBody.visible=true; }
+let last=performance.now(); const t0=last;
+function frame(now){ if(window.__paused){ requestAnimationFrame(frame); return; } const dt=Math.min(.05,(now-last)/1000); last=now; const t=(now-t0)/1000;
+  if(spin) goal.theta+=dt*0.18;
+  cam.theta+=(goal.theta-cam.theta)*Math.min(1,dt*6); cam.phi+=(goal.phi-cam.phi)*Math.min(1,dt*6); cam.radius+=(goal.radius-cam.radius)*Math.min(1,dt*6);
+  explode+=(explodeGoal-explode)*Math.min(1,dt*5); applyExplode();
+  const d=new Date(); setTime(d.getHours(),d.getMinutes(),d.getSeconds()+d.getMilliseconds()/1000);
+  syncDial(t); placeCam(); renderer.render(scene,camera); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+// hooks used to make the still renders
+window.FW={ view:(th,ph,r,tg)=>{ cam.theta=goal.theta=th; cam.phi=goal.phi=ph; cam.radius=goal.radius=r; if(tg) target.set(...tg); spin=false; },
+  state:setState, finish:setFinish, strap:setStrap, xray:setXray, wrist:v=>{ wrist.visible=v; }, explode:v=>{ explode=explodeGoal=v; applyExplode(); },
+  time:setTime, fov:f=>{ camera.fov=f; camera.updateProjectionMatrix(); }, exposure:v=>{ renderer.toneMappingExposure=v; },
+  ground:o=>{ ground.material.opacity=o; }, photo:setPhoto, stone:c=>{ surface.material.color.setHex(c); },
+  render:(t,w,h)=>{ window.__paused=true; renderer.setPixelRatio(1); renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); applyExplode(); syncDial(t); placeCam(); renderer.render(scene,camera); return canvas.toDataURL('image/png'); },
+  scene, THREE, dialPNG:()=>dialTex.image.toDataURL('image/png') };
+})();
+</script>
+</body></html>
