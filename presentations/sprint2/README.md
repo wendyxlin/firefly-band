@@ -25,3 +25,12 @@ The "How We Tested" slide walks through the Firefly_User_Test study (consent, Ta
 If you import a deck into Google Slides, the embedded videos are dropped. Upload the files in `media/` to Drive and insert them from there.
 
 `source/` holds the scripts that recorded the demos and built the decks.
+
+## Google Slides editions
+
+`google-slides/` holds a version of each deck made for Google Slides. When Google converts a .pptx, it drops embedded videos. In these editions, each video slide shows the poster frame with a ▶ badge instead.
+
+To make the Google Slides copy:
+1. Upload the file and the matching three MP4s from `media/` to the BTE Capstone Drive folder.
+2. Open the .pptx with Google Slides, then choose **File → Save as Google Slides**.
+3. On the film, app demo and website slides, choose **Insert → Video → Google Drive**, pick the matching MP4 and drag it over the poster.

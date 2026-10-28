@@ -8,6 +8,7 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from PIL import Image
 import qrcode
+GS = False
 
 SC = '/tmp/claude-0/-home-claude/05671788-1db4-51ad-86c7-0131427b2680/scratchpad'
 DK = SC + '/deck'; REC = DK + '/rec'; TPL = DK + '/tplimg'; OUT = DK + '/out'; os.makedirs(OUT, exist_ok=True); os.makedirs(DK + '/tmp', exist_ok=True)
@@ -134,6 +135,9 @@ class Deck:
         return p
     def movie(self, s, path, poster, x, y, w, h):
         pf = fit_crop(poster, w, h, name=os.path.basename(poster).rsplit('.', 1)[0] + '_poster')
+        if GS:   # Google Slides edition: poster + play badge; the Drive video is inserted on top in Google Slides
+            m = s.shapes.add_picture(pf, Inches(x), Inches(y), Inches(w), Inches(h)); m.line.color.rgb = INK; m.line.width = Pt(0.75)
+            self.circ(s, x + w / 2 - 0.35, y + h / 2 - 0.35, 0.7, CORAL, '\u25b6', 20); return m
         m = s.shapes.add_movie(path, Inches(x), Inches(y), Inches(w), Inches(h), poster_frame_image=pf, mime_type='video/mp4')
         m.line.color.rgb = INK; m.line.width = Pt(0.75); return m
     def qr(self, s, url, x, y, d):
@@ -145,7 +149,7 @@ class Deck:
         lst = self.p.slides._sldIdLst
         for sid in list(lst)[:self.n0]:
             self.p.part.drop_rel(sid.rId); lst.remove(sid)
-        fn = OUT + '/' + self.c['file'] + '.pptx'; self.p.save(fn); return fn
+        fn = OUT + '/' + self.c['file'] + ('_GoogleSlides' if GS else '') + '.pptx'; self.p.save(fn); return fn
 
 def build(key):
     c = D[key]; d = Deck(c); nm = c['name']; W_ = c['kind']
@@ -338,4 +342,5 @@ def build(key):
     return d.finish()
 
 if __name__ == '__main__':
+    GS = len(sys.argv) > 2 and sys.argv[2] == 'gs'
     print(build(sys.argv[1]))
