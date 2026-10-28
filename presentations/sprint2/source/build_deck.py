@@ -242,14 +242,14 @@ def build(key):
     d.movie(s, c['appdemo'], c['appdemo_poster'], 3.95, 1.3, 5.3, 2.98)
     d.tb(s, 3.95, 4.32, 5.3, 0.4, 'Recording of the app (click to play), backup for the live demo', size=9, color=GREY, align='c')
     # 11 Website + waitlist test
-    s = d.slide('CONTENT', 'Live Demo: Website + Waitlist Test', notes=f"3:15–3:40. Show {c['site_url']}: scroll to the buttons, the app, range, design. Then the waitlist test: type a test name, submit, and show the confirmation. The recording submits 'Test - Sprint 2 demo' (intercepted, so it didn't add a row). Live, submit a test entry and show it arriving in the Firefly waitlist Google Form responses. Say the real number of sign-ups so far.")
+    s = d.slide('CONTENT', 'Live Demo: Website + Waitlist Test', notes=f"3:15–3:35. Show {c['site_url']}: scroll to the buttons, the app, range, design. Then the waitlist test: type a test name, submit, and show the confirmation. The recording submits 'Test - Sprint 2 demo' (intercepted, so it didn't add a row). Live, submit a test entry and show it arriving in the Firefly waitlist Google Form responses. Say the real number of sign-ups so far.")
     d.movie(s, c['sitedemo'], c['sitedemo_poster'], 0.75, 1.3, 5.6, 3.15)
     d.tb(s, 0.75, 4.5, 5.6, 0.3, 'Recording: scroll the site, then submit a test sign-up (click to play)', size=9, color=GREY, align='c')
     d.box(s, 6.6, 1.3, 2.65, 1.55, fill=PEACH, line=None, radius=0.08)
     d.tb(s, 6.75, 1.38, 2.4, 1.4, '', lines=[('WAITLIST = DEMAND TEST', dict(size=9, bold=True, color=CORAL)), ('[ N ] sign-ups', dict(size=24, bold=True)), ('Same Google Form for every version: name, email, how often they go out, what matters most', dict(size=9, color=GREY))], spacing=2)
     d.qr(s, c['site_url'], 6.6, 3.05, 0.95); d.tb(s, 7.65, 3.1, 1.65, 0.9, '', lines=[('Open the site', dict(size=10, bold=True)), (c['site_url'].replace('https://', ''), dict(size=8, color=CORAL))])
     # 12 Process
-    s = d.slide('CONTENT', 'Process: Three Designs, One Product', notes="3:40–3:55. We iterated the form factor three times with agents doing the rebuilds (3D model, renders, app, site, film each time). Biggest technical challenge: 6-mile range with no phone. A wrist radio can't do it, so we added LTE-M cellular with Sidewalk as a fallback, and re-did the battery and weight budgets each time.")
+    s = d.slide('CONTENT', 'Process: Three Designs, One Product', notes="3:35–3:48. We iterated the form factor three times with agents doing the rebuilds (3D model, renders, app, site, film each time). Biggest technical challenge: 6-mile range with no phone. A wrist radio can't do it, so we added LTE-M cellular with Sidewalk as a fallback, and re-did the battery and weight budgets each time.")
     for i, (img, cap) in enumerate(c['process']):
         xx = 0.75 + i * 2.95
         p = img if os.path.exists(img) else c['hero']
@@ -259,31 +259,70 @@ def build(key):
     for i, (h, body, col) in enumerate([('DECISION', c['decision'], TEAL), ('BIGGEST CHALLENGE', '6 miles with a dead phone. Fix: LTE-M cellular + Sidewalk, new battery and weight budgets.', ORANGE), ('CUT', c['cut'], CORAL)]):
         xx = 0.75 + i * 2.88; d.box(s, xx, 3.4, 2.74, 1.35, fill=WHITE, line=INK, radius=0.06)
         d.tb(s, xx + 0.12, 3.47, 2.5, 1.25, '', lines=[(h, dict(size=9, bold=True, color=col)), (body, dict(size=10))], spacing=2)
+    # 13a How we tested (from Firefly_User_Test)
+    s = d.slide('CONTENT', 'How We Tested', notes="3:48–4:05. Our test is the Firefly_User_Test page: same laptop, same researcher, 10 testers, no hints. Consent and an anonymous code (P01–P10), no names. Task 1: phone dead in a crowded club, find a hidden friend on a 7×7 floor plan using only the LED, which flashes faster as you get closer; 120 s limit, asking for a hint is recorded. Task 2: the night is over, what do you naturally do? The first button pressed is recorded. Then a short survey and one direct quote. Be upfront: it is a simulation, so it tests whether people understand the interaction, not radio range." + (" For the watch, HOME is the crown and FIND is the app's Find button." if W_ == 'watch' else ""))
+    steps = [('1', 'Consent + code', 'Anonymous P01–P10. No names, no tracking.', TEAL),
+             ('2', 'Task 1 · Find a friend', 'Phone dead in a packed club. Move with arrows; the LED flashes faster as you get closer. 120 s, hints recorded.', CORAL),
+             ('3', 'Task 2 · Night is over', '“What would you naturally do?” No prompt. The first button pressed is recorded.', GREEN),
+             ('4', 'Quick survey', 'Clarity 1–5 · usefulness 1–5 · would you wear it? · one direct quote · what to change.', ORANGE)]
+    cw, gap = 1.95, 0.233
+    for i, (num, h, body, col) in enumerate(steps):
+        x = 0.75 + i * (cw + gap)
+        d.box(s, x, 1.3, cw, 2.3, fill=WHITE, line=INK, radius=0.06)
+        d.box(s, x + 0.08, 1.38, cw - 0.16, 1.0, fill=PEACH, line=None, radius=0.08)
+        d.circ(s, x - 0.1, 1.2, 0.32, col, num, 10)
+        if num == '1':
+            d.circ(s, x + 0.6, 1.5, 0.75, TEAL, 'P01', 12)
+            d.box(s, x + 1.42, 1.68, 0.2, 0.2, fill=WHITE, line=INK, shape=MSO_SHAPE.RECTANGLE); d.tb(s, x + 1.38, 1.62, 0.3, 0.3, '\u2713', size=11, bold=True, color=GREEN, align='c')
+        elif num == '2':
+            g = 0.118; gx = x + 0.56; gy = 1.45
+            for yy in range(7):
+                for xx in range(7):
+                    lab = 'BAR' if (xx, yy) == (0, 0) else 'WC' if (xx, yy) == (6, 0) else 'EXIT' if (xx, yy) == (6, 6) else ''
+                    you = (xx, yy) == (1, 1)
+                    d.box(s, gx + xx * g, gy + yy * g, g - 0.02, g - 0.02, fill=CORAL if you else (BLUSH if lab else WHITE), line=GREY, lw=0.3, radius=0.2)
+            d.circ(s, x + 1.48, 1.62, 0.16, ORANGE); d.tb(s, x + 1.3, 1.8, 0.55, 0.3, 'LED', size=7, bold=True, align='c')
+        elif num == '3':
+            d.box(s, x + 0.22, 1.55, 1.5, 0.66, fill=RGBColor(0xE6, 0xC0, 0x7A), line=RGBColor(0xB8, 0x89, 0x4A), lw=1.5, radius=0.5)
+            for k, (lab, xx) in enumerate([('FIND', x + 0.3), ('HOME', x + 1.18)]):
+                d.circ(s, xx, 1.62, 0.52, RGBColor(0xF6, 0xDD, 0xA7), lab, 7, RGBColor(0x51, 0x32, 0x25))
+            d.circ(s, x + 0.9, 1.81, 0.13, GREEN)
+        else:
+            d.tb(s, x + 0.15, 1.45, cw - 0.3, 0.9, '', lines=[('Clarity  \u25cf\u25cf\u25cf\u25cf\u25cb', dict(size=10)), ('Useful   \u25cf\u25cf\u25cf\u25cf\u25cf', dict(size=10)), ('Wear?  Yes \u00b7 Maybe \u00b7 No', dict(size=10)), ('\u201c\u2026in their words\u201d', dict(size=10, italic=True, color=GREY))])
+        d.tb(s, x + 0.1, 2.45, cw - 0.2, 0.32, h, size=11.5, bold=True)
+        d.tb(s, x + 0.1, 2.75, cw - 0.2, 0.85, body, size=9, color=GREY)
+        if i < 3: d.box(s, x + cw + 0.03, 2.35, 0.17, 0.2, fill=INK, line=None, shape=MSO_SHAPE.RIGHT_ARROW)
+    d.box(s, 0.75, 3.78, 4.15, 0.98, fill=PEACH, line=None, radius=0.08)
+    d.tb(s, 0.9, 3.83, 3.9, 0.9, '', lines=[('WHAT WE MEASURE', dict(size=9, bold=True, color=CORAL)), ('H1 · found the friend with no hint in \u2264 120 s (+ time, hint use)', dict(size=10)), ('H2 · first action = I\u2019m home (+ time to first action)', dict(size=10))], spacing=2)
+    d.box(s, 5.1, 3.78, 4.15, 0.98, fill=WHITE, line=INK, radius=0.08)
+    d.tb(s, 5.25, 3.83, 3.9, 0.9, '', lines=[('HONEST LIMITS', dict(size=9, bold=True, color=TEAL)), ('A simulation: fictional distances (not UWB), and no real check-in is sent. It tests whether the interaction is understandable, not radio range.' + (' Watch: HOME = crown, FIND = the app.' if W_ == 'watch' else ''), dict(size=9.5))], spacing=2)
     # 13 Validation
-    s = d.slide('CONTENT', '10 People Tried It', notes="3:55–4:20. FILL IN before presenting: the numbers come from the Firefly_User_Test dashboard (Export CSV). Colour one person orange per tester who passed (replace the grey icon with the orange one from the template). Read ONE quote; all ten are in the appendix. Our bar was 8/10 for H1 and H2.")
+    s = d.slide('CONTENT', '10 People Tried It', notes="4:05–4:25. FILL IN before presenting: the numbers come from the Firefly_User_Test dashboard (Export CSV: h1WithoutHelp, h1Seconds, h1HelpUsed, h2Independent, clarity, usefulness, wouldWear, directQuote). Colour one person orange per tester who passed (replace the grey icon with the orange one from the template). Read ONE quote; all ten are in the appendix. Our bar was 8/10 for H1 and H2.")
     rows = [('H1', 'found the hidden friend, no hints, ≤ 120 s'), ('H2', 'pressed I’m home first, unprompted'), ('', 'would wear it on a night out')]
     for r, (h, lab) in enumerate(rows):
         y = 1.38 + r * 0.72
         for k in range(10): d.pic(s, TPL + '/s11_175.png', 0.75 + k * 0.29, y, 0.25, 0.38, crop=False)
         d.tb(s, 3.75, y - 0.04, 1.2, 0.45, '[ _ /10]', size=20, bold=True, color=CORAL)
         d.tb(s, 4.95, y - 0.02, 4.3, 0.45, (h + ' · ' if h else '') + lab + ('  (bar: 8/10)' if h else ''), size=11, anchor='m')
-    d.box(s, 0.75, 3.62, 4.15, 1.12, fill=WHITE, line=INK, radius=0.06)
-    d.tb(s, 0.9, 3.66, 3.9, 1.05, '', lines=[('HOW WE TESTED', dict(size=9, bold=True, color=TEAL)), ('Task 1: lost in a club, phone dead. Find the friend using only the pulses.', dict(size=9.5)), ('Task 2: the night is over. What do you press?', dict(size=9.5)), ('Then a 3-question survey + one direct quote.', dict(size=9.5, color=GREY))], spacing=1)
+    for k, (lab, val) in enumerate([('Median find time', '[ _ s]'), ('Asked for a hint', '[ _ /10]'), ('Avg clarity', '[ _ /5]'), ('Avg usefulness', '[ _ /5]')]):
+        xx = 0.75 + (k % 2) * 2.1; yy = 3.62 + (k // 2) * 0.58
+        d.box(s, xx, yy, 2.0, 0.52, fill=WHITE, line=INK, radius=0.2)
+        d.tb(s, xx + 0.1, yy, 1.2, 0.52, lab, size=9, color=GREY, anchor='m'); d.tb(s, xx + 1.15, yy, 0.8, 0.52, val, size=12, bold=True, color=CORAL, anchor='m', align='r')
     d.box(s, 5.1, 3.62, 4.15, 1.12, fill=PEACH, line=None, radius=0.06)
     d.tb(s, 5.25, 3.7, 3.9, 1.0, '', lines=[('“[Strongest tester quote]”', dict(size=14, italic=True)), ('Tester, [age, how often they go out]', dict(size=9, color=GREY))], spacing=4)
     # 14 Learned
-    s = d.slide('CONTENT', 'What We Learned', notes="4:20–4:35. One line per icon. 'Validated' comes from the test results; fill it in. The other two are from the build itself.")
+    s = d.slide('CONTENT', 'What We Learned', notes="4:25–4:37. One line per icon. 'Validated' comes from the test results; fill it in. The other two are from the build itself.")
     for i, (img, h, body, col) in enumerate([(TPL + '/s12_213.png', 'Validated', '[from the 10 tests: which bet held up]', TEAL), (TPL + '/s12_217.png', 'Surprised us', c['surprise'], ORANGE), (TPL + '/s12_221.png', 'Would redo', c['redo'], CORAL)]):
         xx = 0.8 + i * 2.9; d.circ(s, xx + 0.7, 1.45, 1.2, col); d.pic(s, img, xx + 1.0, 1.75, 0.6, 0.6, crop=False)
         d.tb(s, xx, 2.85, 2.6, 0.4, h, size=15, bold=True, align='c'); d.tb(s, xx, 3.3, 2.6, 1.4, body, size=11, color=GREY, align='c')
     # 15 Next
-    s = d.slide('CONTENT', 'What’s Next', notes=f"4:35–4:52. Top three next steps. Biggest risk: {c['risk']} Go-to-market: start with friend groups that already go out together (club teams, Greek life, roommates), price $149–199 with no monthly fee (data bundled), convert the waitlist into pre-orders. Reorder the steps if testers asked for something else.")
+    s = d.slide('CONTENT', 'What’s Next', notes=f"4:37–4:53. Top three next steps. Biggest risk: {c['risk']} Go-to-market: start with friend groups that already go out together (club teams, Greek life, roommates), price $149–199 with no monthly fee (data bundled), convert the waitlist into pre-orders. Reorder the steps if testers asked for something else.")
     d.pic(s, TPL + '/s13_230.png', 0.75, 1.3, 8.5, 2.8, crop=False)
     for i, (h, sub) in enumerate(c['next']):
         xx = 0.95 + i * 2.75; d.tb(s, xx, 4.12, 2.6, 0.35, h, size=13, bold=True, align='c'); d.tb(s, xx, 4.44, 2.6, 0.3, sub, size=9, color=CORAL, align='c')
     d.tb(s, 0.75, 4.86, 8.5, 0.25, 'Biggest risk: ' + c['risk'] + '   ·   GTM: friend groups first, $149–199, no monthly fee', size=8.5, color=GREY, align='c')
     # 16 Close
-    s = d.slide('STATEMENT', notes="4:52–5:00. Close the loop with the opening story: same night, everyone accounted for. End on the image, then stop.")
+    s = d.slide('STATEMENT', notes="4:53–5:00. Close the loop with the opening story: same night, everyone accounted for. End on the image, then stop.")
     d.tb(s, 0.75, 0.95, 4.6, 0.9, '2:47 AM', size=48); d.tb(s, 4.6, 1.15, 4.6, 0.6, 'Everyone’s home.', size=24, italic=True, color=CORAL)
     d.pic(s, TPL + '/s14_245.png', 0.75, 2.1, 8.5, 3.0, crop=False)
     # 17 Appendix quotes

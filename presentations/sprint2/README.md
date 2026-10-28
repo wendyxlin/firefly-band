@@ -14,8 +14,10 @@ Each deck embeds three videos (click to play in PowerPoint or Keynote):
 
 There are also QR codes to the live site and app.
 
+The "How We Tested" slide walks through the Firefly_User_Test study (consent, Task 1 find a friend, Task 2 night is over, survey) and what it measures.
+
 **Before presenting, fill in:**
-- the test numbers and quote on "10 People Tried It", from the Firefly_User_Test dashboard's CSV export
+- the test numbers, the four stats (median find time, hints, clarity, usefulness) and the quote on "10 People Tried It", from the Firefly_User_Test CSV export
 - the "Validated" line on "What We Learned"
 - the number of waitlist sign-ups
 - the 10 quotes in the appendix
