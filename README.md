@@ -17,6 +17,12 @@ Firefly is a fine-jewelry gold bangle (~22 g): a cushion-shaped centerpiece step
 
 A proposal to disguise Firefly as a dress watch: the crown is Find, a pusher is Safety, the dial lights up, the antennas sit in the strap, and cellular gives 6-mile tracking. See [`design/watch/`](design/watch/) and its [feasibility check](design/watch/FEASIBILITY.md). Nothing else in the repo has changed for it yet.
 
+## Design in review: v2 "Afterglow" (two buttons)
+
+A second version based on the team's Afterglow demo. The watch has only two buttons: the **crown is I'm Home** and the **red-ringed pusher is SOS**. Separation alerts are automatic (buddy radius 10–30 m, measured with ultra-wideband). Finding friends and Come Find Me move into the app. It keeps the 6-mile cellular range.
+
+Everything for v2 lives in [`v2-bracelet/`](v2-bracelet/): website, app, 3D mockup, renders, a 68 s promo film, and the technical design with feasibility and BOM. The hosted copy is at https://wendyxlin.github.io/firefly-band/v2-bracelet/. Nothing outside that folder and `docs/v2-bracelet/` changed for it.
+
 ## Promo video
 [media/firefly-promo.mp4](media/firefly-promo.mp4): 66 seconds, 1080p, rendered from code in `media/promo-source/`. Shows the gold bangle and every feature: Find, Help and SOS, "I'm okay" check-ins and the home-safe roll call.
 

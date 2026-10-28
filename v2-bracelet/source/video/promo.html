@@ -1,0 +1,233 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Bodoni;font-weight:500;src:url(fonts/bodoni-moda-latin-500-normal.woff2)}
+@font-face{font-family:Bodoni;font-weight:500;font-style:italic;src:url(fonts/bodoni-moda-latin-500-italic.woff2)}
+@font-face{font-family:Inst;font-weight:400;src:url(fonts/instrument-sans-latin-400-normal.woff2)}
+@font-face{font-family:Inst;font-weight:500;src:url(fonts/instrument-sans-latin-500-normal.woff2)}
+@font-face{font-family:Inst;font-weight:600;src:url(fonts/instrument-sans-latin-600-normal.woff2)}
+@font-face{font-family:Inst;font-weight:700;src:url(fonts/instrument-sans-latin-700-normal.woff2)}
+@font-face{font-family:Mono;font-weight:500;src:url(fonts/jetbrains-mono-latin-500-normal.woff2)}
+html,body{margin:0;background:#100f16}
+canvas{display:block}
+</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+// Afterglow v2 promo: 68 s, 1920x1080, drawn frame by frame (renderAt(t)) so capture.py can export it at an exact frame rate.
+const W=1920,H=1080, c=document.getElementById('c').getContext('2d');
+const BG='#100f16', CARD='#1d1a27', CARD2='#262234', FG='#f8f3ff', MUTED='#b9adc9', LAV='#d6b4ff', LAV2='#c9a2ff', RED='#ff5d6e', GREEN='#7fe0ad', PINK='#ffb3d9', PEACH='#ffc9a8', SKY='#a9c8ff';
+const DUR=68;
+const T={night:0, drift:5, reveal:10, apart:16, find:22, home:28, who:34, sos:39, range:45, design:51, privacy:57, cta:61};
+const FRIENDS=[['Emma',PINK],['Sarah',LAV2],['Olivia',PEACH],['Chloe',SKY]];
+// ---------- assets ----------
+const IM={}; function load(name,src){ return new Promise(r=>{ const i=new Image(); i.onload=()=>{IM[name]=i;r();}; i.onerror=()=>r(); i.src=src; }); }
+const pad=n=>String(n).padStart(3,'0');
+const NF={apart:29, home:27, sos:13, turn:96};
+async function loadAll(){ const ps=[];
+  for(const [k,n] of Object.entries(NF)) for(let i=0;i<n;i++) ps.push(load(k+i,`frames/${k}_${pad(i)}.png`));
+  for(const s of ['hero','buttons','rose','home','sos','apart']) ps.push(load('st_'+s,`stills/v2-${s}.jpg`));
+  ps.push(document.fonts.load('500 40px Bodoni'),document.fonts.load('italic 500 40px Bodoni'),document.fonts.load('400 20px Inst'),document.fonts.load('500 20px Inst'),document.fonts.load('600 20px Inst'),document.fonts.load('700 20px Inst'),document.fonts.load('500 20px Mono'));
+  await Promise.all(ps); }
+// ---------- helpers ----------
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const eout=x=>1-Math.pow(1-clamp(x),3);
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+function fadeIO(t,a,b,f=0.5){ return Math.min(seg(t,a,a+f), 1-seg(t,b-f,b)); }
+function rand(i){ const x=Math.sin(i*127.1+311.7)*43758.5453; return x-Math.floor(x); }
+function text(str,x,y,{size=64,weight=500,font='Bodoni',color=FG,align='left',alpha=1,spacing=0,italic=false}={}){ c.save(); c.globalAlpha*=alpha; c.fillStyle=color; c.font=`${italic?'italic ':''}${weight} ${size}px ${font}`; c.textAlign=align; c.textBaseline='alphabetic'; if(spacing) c.letterSpacing=spacing+'px'; c.fillText(str,x,y); c.restore(); }
+function wrap(str,x,y,maxW,lh,opts){ c.save(); c.font=`${opts.weight||400} ${opts.size||36}px ${opts.font||'Inst'}`; const words=str.split(' '); let line='', yy=y; for(const w of words){ const test=line?line+' '+w:w; if(c.measureText(test).width>maxW && line){ text(line,x,yy,{font:'Inst',...opts}); line=w; yy+=lh; } else line=test; } if(line) text(line,x,yy,{font:'Inst',...opts}); c.restore(); return yy; }
+function rise(t,a,dur=0.7){ return {alpha:eout(seg(t,a,a+dur)), dy:(1-eout(seg(t,a,a+dur)))*30}; }
+function eyebrow(str,x,y,alpha,color=LAV,align='left'){ text(str.toUpperCase(),x,y,{size:24,weight:500,font:'Mono',color,alpha,spacing:5,align}); }
+function glow(x,y,r,color,a){ const g=c.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,color); g.addColorStop(1,'rgba(0,0,0,0)'); c.save(); c.globalAlpha*=a; c.fillStyle=g; c.fillRect(x-r,y-r,2*r,2*r); c.restore(); }
+function img(name,x,y,w,h,alpha=1){ const i=IM[name]; if(!i) return; c.save(); c.globalAlpha*=alpha; c.drawImage(i,x,y,w,h); c.restore(); }
+function cover(name,cx,cy,zoom,alpha){ const i=IM[name]; if(!i) return; const s=Math.max(W/i.width,H/i.height)*zoom; c.save(); c.globalAlpha*=alpha; c.drawImage(i,cx-i.width*s/2,cy-i.height*s/2,i.width*s,i.height*s); c.restore(); }
+function rr(x,y,w,h,r){ c.beginPath(); c.roundRect(x,y,w,h,r); }
+function check(x,y,s,color,alpha){ c.save(); c.globalAlpha*=alpha; c.strokeStyle=color; c.lineWidth=s*0.16; c.lineCap='round'; c.lineJoin='round'; c.beginPath(); c.moveTo(x-s*0.32,y); c.lineTo(x-s*0.08,y+s*0.24); c.lineTo(x+s*0.36,y-s*0.26); c.stroke(); c.restore(); }
+function avatar(x,y,r,name,col,alpha=1){ c.save(); c.globalAlpha*=alpha; c.fillStyle=col; c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.fill(); c.restore(); text(name[0],x,y+r*0.36,{size:r*1.0,weight:700,font:'Inst',color:'#1b1026',align:'center',alpha}); }
+function vignette(){ const g=c.createRadialGradient(W/2,H/2,H*0.35,W/2,H/2,H*0.95); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,0.5)'); c.fillStyle=g; c.fillRect(0,0,W,H); }
+function progressBar(t){ c.fillStyle='rgba(255,255,255,0.07)'; c.fillRect(0,H-4,W,4); c.fillStyle=LAV; c.fillRect(0,H-4,W*t/DUR,4); }
+function sideShade(a,fromRight,strong){ c.save(); c.globalAlpha=a;
+  if(fromRight){ const g=c.createLinearGradient(W*0.46,0,W*0.62,0); g.addColorStop(0,'rgba(16,15,22,0)'); g.addColorStop(1,'rgba(16,15,22,0.94)'); c.fillStyle=g; c.fillRect(W*0.46,0,W*0.54,H); c.fillStyle='rgba(16,15,22,0.94)'; c.fillRect(W*0.62,0,W*0.38,H); }
+  else { const e=strong?W*0.62:W*0.5, s0=strong?W*0.34:0; const g=c.createLinearGradient(e,0,s0,0); g.addColorStop(0,'rgba(16,15,22,0)'); g.addColorStop(1,'rgba(16,15,22,0.95)'); c.fillStyle=g; c.fillRect(s0,0,e-s0,H); if(strong){ c.fillStyle='rgba(16,15,22,0.95)'; c.fillRect(0,0,s0,H); } }
+  c.restore(); }
+function phoneFrame(){ c.fillStyle='#000'; rr(-10,-10,440,900,64); c.fill(); c.fillStyle='#16131d'; rr(0,0,420,880,56); c.fill(); c.fillStyle='#000'; rr(150,14,120,34,17); c.fill(); }
+function phoneTop(time,title,eye){ text(time,40,44,{size:22,weight:600,font:'Inst'}); text(eye,28,104,{size:17,weight:500,font:'Mono',color:LAV,spacing:4}); text(title,28,150,{size:40,weight:700,font:'Inst'}); }
+
+// ---------- scenes ----------
+function s1(t){ // the circle forms
+  const T0=T.night, T1=T.drift+0.2; const a=fadeIO(t,T0,T1,0.4); if(a<=0) return; c.save(); c.globalAlpha=a;
+  const r=rise(t,0.2); eyebrow('Friday',W/2,300+r.dy,r.alpha,LAV,'center');
+  text('11:02 PM',W/2,440+r.dy,{size:150,align:'center',alpha:r.alpha});
+  const cr=rise(t,1.2); c.save(); c.globalAlpha*=cr.alpha; c.fillStyle=CARD; rr(W/2-420,520+cr.dy,840,250,32); c.fill(); c.strokeStyle='#352c42'; c.lineWidth=2; c.stroke(); c.restore();
+  text("Girls' Night Out ✨",W/2-370,595+cr.dy,{size:44,weight:700,font:'Inst',alpha:cr.alpha});
+  text('Circle · 20 m buddy radius',W/2-370,640+cr.dy,{size:24,weight:500,font:'Mono',color:MUTED,alpha:cr.alpha});
+  FRIENDS.forEach(([n,col],i)=>{ const ap=eout(seg(t,1.8+i*0.35,2.2+i*0.35)); const x=W/2-330+i*190, y=712+cr.dy; avatar(x,y,30,n,col,ap*cr.alpha); text(n,x+42,y+9,{size:26,weight:600,font:'Inst',alpha:ap*cr.alpha}); });
+  const r2=rise(t,3.4); text("Everyone's in. The night can start.",W/2,880+r2.dy,{size:44,weight:500,font:'Inst',align:'center',color:MUTED,alpha:r2.alpha});
+  c.restore();
+}
+function s2(t){ // Sarah drifts
+  const T0=T.drift, T1=T.reveal+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return; c.save(); c.globalAlpha=a;
+  for(let i=0;i<240;i++){ const x=(rand(i)*W*1.1-60+Math.sin(t*0.6+i)*14); const y=(rand(i+500)*H*0.86+90+Math.cos(t*0.5+i*1.3)*10); c.fillStyle=`rgba(185,173,201,${0.12+0.22*rand(i+9)})`; c.beginPath(); c.arc(x,y,6+rand(i+3)*5,0,Math.PI*2); c.fill(); }
+  const cx=W*0.44, cy=H*0.56, R=230; const sep=ease(seg(t,T0+1.0,T0+3.2));
+  c.save(); c.setLineDash([12,12]); c.lineDashOffset=-t*20; c.strokeStyle=LAV; c.globalAlpha*=0.7; c.lineWidth=3; c.beginPath(); c.arc(cx,cy,R,0,Math.PI*2); c.stroke(); c.restore();
+  text('20 m',cx+R*0.72,cy-R*0.74,{size:26,weight:500,font:'Mono',color:LAV});
+  const pos=[[-0.35,-0.25],[0.25,0.1],[-0.1,0.38],[0.38,-0.32]];
+  FRIENDS.forEach(([n,col],i)=>{ let [dx,dy]=pos[i]; let x=cx+dx*R, y=cy+dy*R; if(n==='Sarah'){ x+=sep*520; y+=sep*60; } glow(x,y,70,col,0.35); avatar(x,y,20,n,col); text(n,x,y+50,{size:24,weight:600,font:'Inst',align:'center'}); });
+  glow(cx,cy,90,LAV,0.45); c.fillStyle=LAV; c.beginPath(); c.arc(cx,cy,14,0,Math.PI*2); c.fill(); text('you',cx+24,cy+8,{size:26,weight:500,font:'Mono',color:LAV});
+  const sx=cx+0.25*R+520, sy=cy+0.1*R+60, bat=eout(seg(t,T0+3.0,T0+3.5));
+  c.save(); c.globalAlpha*=bat; c.fillStyle=CARD; rr(sx-110,sy-120,220,60,30); c.fill(); c.restore(); text('🔋 4%',sx,sy-80,{size:28,weight:600,font:'Inst',align:'center',color:RED,alpha:bat});
+  c.fillStyle='rgba(16,15,22,0.6)'; c.fillRect(0,0,W,200);
+  const r=rise(t,T0+0.3); text('Then the night happens.',W/2,130+r.dy,{size:76,align:'center',alpha:r.alpha});
+  const r2=rise(t,T0+3.4); text("Sarah's outside the radius. Her phone is almost dead.",W/2,H-80+r2.dy,{size:42,weight:500,font:'Inst',align:'center',color:MUTED,alpha:r2.alpha});
+  c.restore();
+}
+function s3(t){ // reveal
+  const T0=T.reveal, T1=T.apart+0.2; const a=fadeIO(t,T0,T1,0.6); if(a<=0) return; const p=seg(t,T0,T1);
+  const k=Math.floor(p*95.99); const zoom=1.06+0.05*p;
+  c.save(); c.globalAlpha=a; c.translate(W/2+500,H/2); c.scale(zoom,zoom); c.translate(-W/2,-H/2); img('turn'+k,0,0,W,H); c.restore();
+  sideShade(a,false,true);
+  const fl=t>=T0?1-seg(t,T0,T0+0.7):0; if(fl>0){ c.save(); c.globalAlpha=fl*0.5; c.fillStyle=LAV; c.fillRect(0,0,W,H); c.restore(); }
+  const r=rise(t,T0+0.6,0.9); eyebrow('Introducing',140,250+r.dy,r.alpha*a);
+  text('Afterglow',134,400+r.dy,{size:150,alpha:r.alpha*a});
+  const r2=rise(t,T0+1.5); text('Stay close.',140,500+r2.dy,{size:64,alpha:r2.alpha*a}); text('Go out.',140,574+r2.dy,{size:64,italic:true,color:LAV,alpha:r2.alpha*a});
+  const r3=rise(t,T0+2.6); wrap('It looks like a dress watch. Under the crown is I\'m Home. Under the pusher is SOS.',140,680+r3.dy,640,54,{size:38,weight:400,color:MUTED,alpha:r3.alpha*a});
+}
+function featureLayout(t,a,seq,period,t0,eye,title,body,extra,eyeColor){
+  const n=NF[seq]; const k=Math.floor(((t-t0)*24)%n+n)%n; const z=1+0.04*seg(t,t0,t0+6);
+  c.save(); c.globalAlpha=a; c.translate(W*0.36,H/2); c.scale(z,z); c.translate(-W*0.36,-H/2); img(seq+k,-300,0,W,H); c.restore();
+  sideShade(a,true);
+  const x=W*0.585; const r=rise(t,t0+0.3); eyebrow(eye,x,250+r.dy,r.alpha*a,eyeColor||LAV);
+  c.save(); c.font='500 96px Bodoni'; const tw=c.measureText(title).width; c.restore(); text(title,x,360+r.dy,{size:Math.min(96,96*740/tw),alpha:r.alpha*a});
+  const r2=rise(t,t0+0.9); const yEnd=wrap(body,x,450+r2.dy,700,54,{size:38,weight:400,color:MUTED,alpha:r2.alpha*a});
+  if(extra) extra(x,yEnd);
+}
+function s4(t){ // separation, automatic
+  const T0=T.apart, T1=T.find+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  featureLayout(t,a,'apart',0,T0,'Automatic · buddy radius','Too far? It tells you.','Drift outside the radius for longer than the alert delay and your watch buzzes. The marker toward your circle glows lavender.',(x)=>{
+    const r=rise(t,T0+2.2); const al=a*r.alpha;
+    text('Radius',x,770+r.dy,{size:24,weight:500,font:'Mono',color:MUTED,alpha:al});
+    ['10 m','20 m','30 m'].forEach((s,i)=>{ const on=i===1; c.save(); c.globalAlpha=al; c.fillStyle=on?LAV:CARD2; rr(x+150+i*150,732+r.dy,134,54,27); c.fill(); c.restore(); text(s,x+217+i*150,768+r.dy,{size:26,weight:600,font:'Inst',align:'center',color:on?'#1b1026':FG,alpha:al}); });
+    text('Delay',x,860+r.dy,{size:24,weight:500,font:'Mono',color:MUTED,alpha:al});
+    ['1 min','2 min','5 min'].forEach((s,i)=>{ const on=i===1; c.save(); c.globalAlpha=al; c.fillStyle=on?LAV:CARD2; rr(x+150+i*150,822+r.dy,134,54,27); c.fill(); c.restore(); text(s,x+217+i*150,858+r.dy,{size:26,weight:600,font:'Inst',align:'center',color:on?'#1b1026':FG,alpha:al}); });
+    const r3=rise(t,T0+3.4); text('A bathroom trip won\'t set it off.',x,960+r3.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r3.alpha});
+  });
+}
+function findPhone(x,y,s,t,a){
+  const T0=T.find; c.save(); c.globalAlpha=a; c.translate(x,y); c.scale(s,s); phoneFrame();
+  phoneTop('1:12','Find your people.','AFTERGLOW ✦');
+  c.fillStyle=CARD; rr(20,190,380,600,30); c.fill();
+  FRIENDS.forEach(([n],i)=>{ const on=i===0; const w=c.measureText?82:82; c.fillStyle=on?LAV:CARD2; rr(36+i*90,214,82,40,20); c.fill(); text(n,77+i*90,241,{size:17,weight:600,font:'Inst',align:'center',color:on?'#1b1026':FG}); });
+  const d=Math.max(1,Math.round(14-13*ease(seg(t,T0+1.4,T0+4.6))));
+  text('Emma',40,312,{size:36,weight:700,font:'Inst'}); text(d<=1?'right here':`~${d} m away`,150,312,{size:36,weight:700,font:'Inst',color:LAV});
+  text('Distance from ultra-wideband,',40,350,{size:18,weight:400,font:'Inst',color:MUTED}); text('watch to watch. No map up close.',40,376,{size:18,weight:400,font:'Inst',color:MUTED});
+  const cx=210, cy=530; const rad=60+ (d/14)*70; const pulse=(t*1.4)%1;
+  c.save(); c.setLineDash([6,8]); c.strokeStyle='rgba(214,180,255,0.6)'; c.lineWidth=2; c.beginPath(); c.arc(cx,cy,135,0,Math.PI*2); c.stroke(); c.restore();
+  c.save(); c.strokeStyle=LAV; c.globalAlpha*=1-pulse; c.lineWidth=3; c.beginPath(); c.arc(cx,cy,rad+pulse*40,0,Math.PI*2); c.stroke(); c.restore();
+  c.strokeStyle=LAV; c.lineWidth=3; c.beginPath(); c.arc(cx,cy,rad,0,Math.PI*2); c.stroke();
+  text('You ↔ Emma',cx,cy+10,{size:22,weight:600,font:'Inst',align:'center'});
+  c.fillStyle=LAV; rr(36,690,170,64,22); c.fill(); text('Stop finding',121,730,{size:20,weight:700,font:'Inst',align:'center',color:'#1b1026'});
+  const cfm=eout(seg(t,T0+4.4,T0+4.8)); c.fillStyle=CARD2; rr(214,690,170,64,22); c.fill(); if(cfm>0) glow(299,722,120,LAV,0.4*cfm);
+  text('Come Find Me',299,730,{size:20,weight:700,font:'Inst',align:'center'});
+  c.restore(); }
+function s5(t){ // find (app)
+  const T0=T.find, T1=T.home+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  const r=rise(t,T0+0.2); findPhone(W*0.6,90+(1-eout(seg(t,T0,T0+0.9)))*80,1.02,t,a);
+  eyebrow('In the app',160,330+r.dy,r.alpha*a);
+  text('Find a friend',160,440+r.dy,{size:96,alpha:r.alpha*a}); text('up close.',160,545+r.dy,{size:96,italic:true,color:LAV,alpha:r.alpha*a});
+  const r2=rise(t,T0+1.2); wrap('Walk until the number drops. Emma\'s dial glows, so she knows to look up.',160,650+r2.dy,720,54,{size:38,weight:400,color:MUTED,alpha:r2.alpha*a});
+  const r3=rise(t,T0+4.4); text('Lost yourself? Tap Come Find Me.',160,880+r3.dy,{size:30,weight:500,font:'Mono',color:FG,alpha:r3.alpha*a});
+}
+function s6(t){ // crown = I'm Home
+  const T0=T.home, T1=T.who+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  featureLayout(t,a,'home',0,T0,"Crown · 3 o'clock","I'm Home.","Press the crown when you're through the door. Your circle gets it, and the dial sweeps green when it's delivered.",(x)=>{
+    const press=T0+2.6, sent=T0+3.4; const r=rise(t,press-0.4); const al=a*r.alpha;
+    const pr=seg(t,press,press+0.25)*(1-seg(t,press+0.25,press+0.5)); c.save(); c.globalAlpha=al; c.strokeStyle=GREEN; c.lineWidth=4; c.beginPath(); c.arc(x+32,776+r.dy,24-pr*6,0,Math.PI*2); c.stroke(); if(t>press) glow(x+32,776+r.dy,60,GREEN,0.4*(1-seg(t,press,press+1))); c.restore();
+    text(t<press?'press':'sent to your circle',x+76,786+r.dy,{size:30,weight:600,font:'Inst',color:t<press?FG:GREEN,alpha:al});
+    ['Emma','Sarah','Olivia'].forEach((n,i)=>{ const col=FRIENDS.find(f=>f[0]===n)[1]; const ti=sent+i*0.55; const on=eout(seg(t,ti,ti+0.35)); const xx=x+i*230, yy=870+r.dy;
+      c.save(); c.globalAlpha=al; c.fillStyle=CARD; rr(xx,yy-38,214,64,32); c.fill(); c.restore(); avatar(xx+32,yy-6,16,n,col,al); text(n,xx+58,yy+3,{size:26,weight:600,font:'Inst',alpha:al});
+      if(on>0){ glow(xx+180,yy-6,32,GREEN,0.5*a*on); check(xx+180,yy-6,28,GREEN,a*on); } });
+    const r2=rise(t,T0+4.4); text('Pressed by mistake? Press again within 5 s.',x,960+r2.dy,{size:27,weight:500,font:'Mono',color:MUTED,alpha:a*r2.alpha});
+  },GREEN);
+}
+function whoPhone(x,y,s,t,a){
+  const T0=T.who; const nudge=T0+1.8, sarah=T0+3.4;
+  c.save(); c.globalAlpha=a; c.translate(x,y); c.scale(s,s); phoneFrame();
+  phoneTop('2:11',"Who's home?",'CHECK-INS');
+  const done=t>=sarah; text(done?"Everyone's home.":'4 of 5 home',30,196,{size:24,weight:500,font:'Inst',color:done?GREEN:MUTED});
+  c.fillStyle=CARD2; rr(28,216,364,12,6); c.fill(); c.fillStyle=done?GREEN:LAV; rr(28,216,364*(0.8+0.2*eout(seg(t,sarah,sarah+0.6))),12,6); c.fill();
+  const rows=[['You','Home 1:52 AM',LAV],['Emma','Home 1:58 AM',PINK],['Olivia','Home 2:03 AM',PEACH],['Chloe','Home 2:06 AM',SKY],['Sarah','',LAV2]];
+  rows.forEach(([nm,st,col],i)=>{ const yy=250+i*100; c.fillStyle=CARD; rr(20,yy,380,86,22); c.fill(); avatar(62,yy+43,22,nm,col); text(nm,100,yy+38,{size:24,weight:600,font:'Inst'});
+    if(st){ const v=eout(seg(t,T0+0.3+i*0.2,T0+0.6+i*0.2)); text(st,100,yy+68,{size:18,weight:500,font:'Inst',color:GREEN,alpha:v}); check(360,yy+43,30,GREEN,v); }
+    else if(t>=sarah){ const v=eout(seg(t,sarah,sarah+0.4)); text('Home 2:11 AM',100,yy+68,{size:18,weight:500,font:'Inst',color:GREEN,alpha:v}); glow(360,yy+43,40,GREEN,0.5*v); check(360,yy+43,30,GREEN,v); }
+    else { const nd=t>=nudge; text(nd?'Pending · nudged':'Pending',100,yy+68,{size:18,weight:500,font:'Inst',color:LAV}); c.save(); c.strokeStyle=LAV; c.lineWidth=3; c.beginPath(); c.arc(360,yy+43,14,0,Math.PI*2); c.stroke(); c.restore(); if(nd){ const rip=((t-nudge)*1.2)%1; c.save(); c.globalAlpha*=1-rip; c.strokeStyle=LAV; c.lineWidth=3; c.beginPath(); c.arc(360,yy+43,14+rip*26,0,Math.PI*2); c.stroke(); c.restore(); } }
+  });
+  const bA=t>=sarah?0.35:1; c.save(); c.globalAlpha*=bA; c.fillStyle=LAV; rr(20,770,380,70,22); c.fill(); c.restore(); text('Nudge Sarah',210,815,{size:24,weight:700,font:'Inst',color:'#1b1026',align:'center',alpha:bA});
+  c.restore(); }
+function s7(t){ // who's home
+  const T0=T.who, T1=T.sos+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  const r=rise(t,T0+0.2); whoPhone(W*0.6,90+(1-eout(seg(t,T0,T0+0.9)))*80,1.02,t,a);
+  eyebrow('End of the night',160,330+r.dy,r.alpha*a,GREEN);
+  text('Nobody texts',160,440+r.dy,{size:96,alpha:r.alpha*a}); text('"home?" five times.',160,545+r.dy,{size:96,italic:true,color:LAV,alpha:r.alpha*a});
+  const r2=rise(t,T0+1.0); wrap('Every crown press lands in Who\'s home. Still waiting on someone? One tap nudges their watch.',160,650+r2.dy,760,54,{size:38,weight:400,color:MUTED,alpha:r2.alpha*a});
+}
+function s8(t){ // pusher = SOS
+  const T0=T.sos, T1=T.range+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  featureLayout(t,a,'sos',0,T0,"Pusher · 2 o'clock",'SOS, quietly.','Hold the red-ringed pusher for 3 seconds. Your circle and your backup contact get your live location until you\'re safe.',(x)=>{
+    const r=rise(t,T0+1.4); const hold=seg(t,T0+1.8,T0+3.8); const al=a*r.alpha;
+    c.save(); c.globalAlpha=al; c.strokeStyle=CARD2; c.lineWidth=10; c.beginPath(); c.arc(x+56,810+r.dy,44,0,Math.PI*2); c.stroke(); c.strokeStyle=RED; c.beginPath(); c.arc(x+56,810+r.dy,44,-Math.PI/2,-Math.PI/2+hold*Math.PI*2); c.stroke(); if(hold>=1) glow(x+56,810+r.dy,110,RED,0.35*(0.6+0.4*Math.abs(Math.sin(t*6)))); c.restore();
+    text(hold>=1?'SOS sent':(hold*3).toFixed(1)+' s',x+136,824+r.dy,{size:42,weight:700,font:'Inst',color:hold>=1?RED:FG,alpha:al});
+    const r2=rise(t,T0+2.4); text('5–10 s grace window: press 2× to cancel.',x,940+r2.dy,{size:27,weight:500,font:'Mono',color:MUTED,alpha:a*r2.alpha});
+  },RED);
+}
+function s9(t){ // range
+  const T0=T.range, T1=T.design+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return; c.save(); c.globalAlpha=a;
+  const r=rise(t,T0+0.2); eyebrow('Range',W/2,190+r.dy,r.alpha,LAV,'center'); text('Six miles. One bar.',W/2,300+r.dy,{size:104,align:'center',alpha:r.alpha});
+  const tiers=[['Ultra-wideband','0–30 m','Distance to the metre'],['LoRa radio','30 m–1 km','Watch to watch, no network'],['Built-in cellular','1 km–6+ mi','LTE-M gets into basements'],['Fallbacks','anywhere','Amazon Sidewalk, phone crowds']];
+  const x0=170, bw=1580, y0=520;
+  c.fillStyle=CARD2; rr(x0,y0,bw,14,7); c.fill();
+  const stops=[0,0.22,0.47,0.78,1];
+  tiers.forEach(([tech,dist,sub],i)=>{ const ti=T0+0.9+i*0.7; const on=eout(seg(t,ti,ti+0.6)); const xa=x0+bw*stops[i], xb=x0+bw*stops[i+1];
+    c.save(); c.globalAlpha*=on; c.fillStyle=i===3?'rgba(214,180,255,0.35)':`rgba(214,180,255,${0.95-i*0.22})`; rr(xa+3,y0,(xb-xa-6)*on,14,7); c.fill(); c.restore();
+    const cxm=(xa+xb)/2; text(tech.toUpperCase(),cxm,y0+80,{size:22,weight:500,font:'Mono',color:LAV,align:'center',alpha:on,spacing:3});
+    text(dist,cxm,y0+150,{size:60,align:'center',alpha:on}); text(sub,cxm,y0+200,{size:26,weight:500,font:'Inst',align:'center',color:MUTED,alpha:on});
+    if(i<3){ const pr=(t*0.7+i*0.33)%1; glow(xa+(xb-xa)*pr,y0+7,24,LAV,0.8*on); } });
+  const r2=rise(t,T0+3.6); text("SOS and I'm Home go out from the watch, even if your phone is dead.",W/2,H-150+r2.dy,{size:38,weight:500,font:'Inst',align:'center',color:FG,alpha:r2.alpha});
+  c.restore(); }
+function s10(t){ // design: real-material renders
+  const T0=T.design, T1=T.privacy+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  const shots=['st_buttons','st_rose','st_home']; const per=(T1-T0)/3;
+  shots.forEach((s,i)=>{ const s0=T0+i*per, s1=s0+per; const al=Math.min(seg(t,s0-0.3,s0+0.4), i===2?1:1-seg(t,s1-0.3,s1+0.4)); if(al<=0) return; cover(s,W*0.7,H/2,1.04+0.06*seg(t,s0,s1+0.5),a*al); });
+  sideShade(a,false,true);
+  const r=rise(t,T0+0.3); eyebrow('Design',140,300+r.dy,r.alpha*a); text("It's a watch first.",140,410+r.dy,{size:92,alpha:r.alpha*a});
+  const specs=['34 mm · mother-of-pearl dial','Two buttons, both hidden','About 30 g · 13 h on a heavy night','Yellow gold · rose gold · steel'];
+  specs.forEach((s,i)=>{ const q=rise(t,T0+1.0+i*0.4); text(s,140,520+i*66+q.dy,{size:38,weight:500,font:'Inst',color:i%2?MUTED:FG,alpha:q.alpha*a}); });
+  const q=rise(t,T0+3.0); text('Cycles renders, physically based materials',140,H-110+q.dy,{size:22,weight:500,font:'Mono',color:MUTED,alpha:q.alpha*a});
+}
+function s11(t){ // privacy
+  const T0=T.privacy, T1=T.cta+0.2; const a=fadeIO(t,T0,T1,0.5); if(a<=0) return;
+  const r=rise(t,T0+0.2); text('Shared for the night,',W/2,280+r.dy,{size:92,align:'center',alpha:r.alpha*a}); text('then gone.',W/2,380+r.dy,{size:92,italic:true,color:LAV,align:'center',alpha:r.alpha*a});
+  const lines=[['Only your circle sees you.','No public map, no followers.'],['End night stops sharing.','Nothing tracks you through the week.'],['Encrypted on the watch.','The networks carry it, they can\'t read it.']];
+  lines.forEach(([h,sub],i)=>{ const q=rise(t,T0+0.8+i*0.4); const y=520+i*150+q.dy; check(586,y-12,54,LAV,a*q.alpha);
+    text(h,650,y,{size:44,weight:600,font:'Inst',alpha:a*q.alpha}); text(sub,650,y+46,{size:30,weight:400,font:'Inst',color:MUTED,alpha:a*q.alpha}); });
+}
+function s12(t){ // CTA
+  const T0=T.cta; const a=Math.min(seg(t,T0,T0+0.6),1-seg(t,DUR-0.6,DUR)); if(a<=0) return; const p=seg(t,T0,DUR);
+  cover('st_hero',W*0.8,H*0.5,1.02+0.06*p,a*0.95);
+  sideShade(a,false,true);
+  const r=rise(t,T0+0.3,0.9); glow(330,330,260,LAV,0.16*a*r.alpha);
+  text('Afterglow',134,400+r.dy,{size:150,alpha:a*r.alpha});
+  const r2=rise(t,T0+1.0); text('Stay close.',140,500+r2.dy,{size:62,alpha:a*r2.alpha}); text('Go out.',470,500+r2.dy,{size:62,italic:true,color:LAV,alpha:a*r2.alpha});
+  const r3=rise(t,T0+1.8); c.save(); c.globalAlpha=a*r3.alpha; c.fillStyle=LAV; rr(140,590+r3.dy,440,96,48); c.fill(); c.restore(); text('Join the waitlist',360,651+r3.dy,{size:38,weight:700,font:'Inst',color:'#1b1026',align:'center',alpha:a*r3.alpha});
+  const r4=rise(t,T0+2.6); text("I'm Home  ·  SOS  ·  buddy radius  ·  find friends",142,800+r4.dy,{size:28,weight:500,font:'Mono',color:FG,alpha:a*r4.alpha});
+  const r5=rise(t,T0+3.0); text('6+ mile range  ·  no monthly fee',142,850+r5.dy,{size:28,weight:500,font:'Mono',color:MUTED,alpha:a*r5.alpha});
+}
+function renderAt(t){
+  c.globalAlpha=1; c.fillStyle=BG; c.fillRect(0,0,W,H);
+  s1(t); s2(t); s3(t); s4(t); s5(t); s6(t); s7(t); s8(t); s9(t); s10(t); s11(t); s12(t);
+  vignette(); progressBar(t);
+}
+window.ready = loadAll().then(()=>{ renderAt(0); return true; });
+window.renderAt = renderAt; window.DUR=DUR;
+</script>
+</body></html>
