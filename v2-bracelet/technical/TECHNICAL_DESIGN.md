@@ -44,7 +44,7 @@ The watch tries the layers in that order and never needs the wearer's phone to s
 | Item | Verdict | Notes |
 |---|---|---|
 | Two buttons | Feasible | Same switches and case as the v1 watch, only the firmware mapping changes. |
-| Buddy radius with UWB | Feasible | Distance between watches every 2 s for up to 4 friends. Accuracy is good enough for a 10 m radius; a body between the watches adds up to about 1 m of error, so the alert delay (1/2/5 min) absorbs dropouts. |
+| Buddy radius with UWB | Feasible at 10–20 m; 30 m is at the edge | Distance between watches every 2 s for up to 4 friends, accurate to about 10–30 cm in line of sight. On wrists in a packed club, bodies block the 6.5–8 GHz signal, so expect reliable readings to roughly 10–20 m and dropouts beyond. A dropout longer than the alert delay (1/2/5 min) counts as a separation, and the app words it as "connection lost" rather than "left the radius". This matches the 2026-10-28 build-plan addendum. |
 | Separation vs signal loss | Feasible, firmware rule | If UWB drops, the watch falls back to LoRa distance and the app shows "signal lost", not "left the radius". This follows the demo. |
 | Marker pointing toward the circle | **Outdoors only** | A single UWB antenna measures distance, not direction. Outdoors, the watch uses both GPS fixes and its compass. Indoors, it lights all markers in a slow lavender pulse instead. True indoor direction needs a 2-antenna PDoA chip (Qorvo DW3220), about +0.3 g and a bigger board; worth a later spin. |
 | Friend-finding in the app | Feasible | The phone shows the watch-to-watch UWB distance relayed over BLE. iPhones and Pixels with UWB could range directly, but that needs Apple's and Google's accessory programs. |
