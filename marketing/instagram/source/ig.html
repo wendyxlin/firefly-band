@@ -1,0 +1,156 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=DM+Sans&family=JetBrains+Mono">
+<style>
+:root{--cream:#f8f1ed;--cream2:#f2e6e0;--ink:#2a1f22;--muted:#7a6669;--rose:#b0566a;--pink:#f3c2c6;--night:#1a1215;--night2:#261a1e;--gold:#c99a55}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#888}
+.post{position:relative;overflow:hidden;font-family:"DM Sans",sans-serif;color:var(--ink);background:var(--cream)}
+.p45{width:1080px;height:1350px}.p916{width:1080px;height:1920px}.p11{width:1080px;height:1080px}
+.serif{font-family:"Cormorant Garamond",serif}
+.mono{font-family:"JetBrains Mono",monospace;letter-spacing:.18em;text-transform:uppercase}
+.dark{background:var(--night);color:#fbf1ee}
+.pinkbg{background:var(--pink);color:#2b1218}
+.brand{position:absolute;left:72px;bottom:60px;font:600 italic 46px "Cormorant Garamond",serif;display:flex;gap:12px;align-items:center}
+.brand span{font-style:normal;font-size:30px;color:var(--rose)}
+.dark .brand span{color:var(--pink)}
+.tagr{position:absolute;right:72px;bottom:72px;font-size:24px;letter-spacing:.16em;text-transform:uppercase;font-family:"JetBrains Mono",monospace;opacity:.75}
+.eyebrow{font-size:24px;color:var(--rose)}
+.dark .eyebrow{color:var(--pink)}
+h1{font-family:"Cormorant Garamond",serif;font-weight:500;line-height:.98;letter-spacing:-.01em}
+img{display:block}
+.fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+</style></head><body>
+<div id="stage"></div>
+<script>
+const R = '../../../v2-bracelet/renders/';
+const P = {
+// ---- grid posts, 1080x1350 ----
+p1: `<div class="post p45">
+  <img class="fill" src="${R}v2-hero.jpg" style="height:860px;top:auto;bottom:150px;object-position:center 60%">
+  <div style="position:absolute;left:72px;top:84px;right:72px">
+    <div class="mono eyebrow">a bracelet for nights out</div>
+    <h1 style="font-size:150px;font-style:italic;margin-top:22px">meet firefly.</h1>
+  </div>
+  <div class="brand">firefly <span>✦</span></div><div class="tagr">no screen · no monthly fee</div></div>`,
+p2: `<div class="post p45">
+  <img src="${R}v2-buttons.jpg" style="position:absolute;left:0;top:400px;width:1080px;height:600px;object-fit:cover">
+  <div style="position:absolute;left:72px;top:84px;right:72px">
+    <div class="mono eyebrow">how it works</div>
+    <h1 style="font-size:110px;margin-top:20px">two buttons.<br><i>zero screens.</i></h1>
+  </div>
+  <div style="position:absolute;left:72px;right:72px;top:1040px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;font-size:30px;line-height:1.25">
+    <div><b style="font-size:44px">●</b><br><b>press</b><br>find your friends</div>
+    <div><b style="font-size:44px">|</b><br><b>press</b><br>tell them you're home</div>
+    <div><b style="font-size:44px">● + |</b><br><b>hold 3 sec</b><br>quiet SOS</div>
+  </div>
+  <div class="brand" style="bottom:44px;font-size:38px">firefly <span>✦</span></div></div>`,
+p3: `<div class="post p45 dark">
+  <div class="glow" style="width:700px;height:700px;background:#b0566a;right:-200px;top:300px"></div>
+  <div style="position:absolute;right:72px;top:250px;width:520px;height:900px;border-radius:36px;overflow:hidden"><img src="${R}life-wrist.jpg" style="width:572px;height:900px;margin-left:-26px;object-fit:cover;object-position:center 75%"></div>
+  <div style="position:absolute;left:72px;top:96px;width:520px">
+    <div class="mono eyebrow">real talk</div>
+  </div>
+  <div style="position:absolute;left:72px;top:300px;width:420px">
+    <h1 style="font-size:84px">your phone:<br><span style="color:#ef7a86">3%</span></h1>
+    <h1 style="font-size:84px;margin-top:70px">your friends:<br><i style="color:var(--pink)">still findable.</i></h1>
+    <p style="font-size:30px;line-height:1.35;margin-top:48px;opacity:.8">firefly finds your group bracelet to bracelet. no battery, no signal, no problem.</p>
+  </div>
+  <div class="brand">firefly <span>✦</span></div></div>`,
+p4: `<div class="post p45">
+  <div style="position:absolute;left:72px;top:84px;right:72px">
+    <div class="mono eyebrow">four finishes</div>
+    <h1 style="font-size:132px;font-style:italic;margin-top:18px">pick your shade.</h1>
+  </div>
+  <div style="position:absolute;left:72px;right:72px;top:390px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    ${[['v2-hero','gold'],['v2-silver','silver'],['v2-rose','rose gold'],['v2-black','black']].map(([f,n])=>`<div><img src="${R}${f}.jpg" style="width:100%;height:330px;object-fit:cover;border-radius:28px"><div style="font-size:32px;margin-top:12px;font-weight:600">${n}</div></div>`).join('')}
+  </div>
+  <div class="brand" style="bottom:44px;font-size:38px">firefly <span>✦</span></div><div class="tagr" style="bottom:56px">which one are you?</div></div>`,
+p5: `<div class="post p45 pinkbg">
+  <div style="position:absolute;left:84px;right:84px;top:250px">
+    <div class="mono" style="font-size:24px;color:#8e3a4c">be honest</div>
+    <h1 style="font-size:140px;margin-top:40px">tag the friend who texts <i>“u home?”</i> at 2am</h1>
+    <p style="font-size:38px;margin-top:70px;line-height:1.3">they deserve to sleep too. one press of a firefly tells the whole group you made it.</p>
+  </div>
+  <div class="brand">firefly <span style="color:#8e3a4c">✦</span></div></div>`,
+p6: `<div class="post p45 dark">
+  <img src="${R}v2-home.jpg" style="position:absolute;left:0;top:430px;width:1080px;height:720px;object-fit:cover">
+  <div style="position:absolute;left:0;right:0;top:430px;height:200px;background:linear-gradient(var(--night),transparent)"></div>
+  <div style="position:absolute;left:72px;right:72px;top:96px">
+    <div class="mono eyebrow">pov</div>
+    <h1 style="font-size:92px;margin-top:22px">you left early and didn't have to text <i style="color:var(--pink)">six people</i> “home ✓”</h1>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(transparent,var(--night) 60%)"></div>
+  <div class="brand">firefly <span>✦</span></div><div class="tagr">green light = home</div></div>`,
+p7: `<div class="post p45" style="background:var(--cream2)">
+  <div class="serif" style="position:absolute;left:56px;top:40px;font-size:420px;line-height:1;color:var(--pink)">“</div>
+  <div style="position:absolute;left:96px;right:96px;top:330px">
+    <h1 style="font-size:96px;font-style:italic;line-height:1.05">I'm always the one texting everyone at 2 a.m. to see if they got home. This would let me actually go to sleep.</h1>
+    <p style="font-size:34px;margin-top:56px;font-weight:600">Trudi, 21</p>
+    <p style="font-size:28px;margin-top:6px;color:var(--muted)">one of 10 NYU students who tested firefly</p>
+  </div>
+  <div class="brand">firefly <span>✦</span></div></div>`,
+p8: `<div class="post p45" style="background:#0f0b0d;color:#fbf1ee">
+  <img src="${R}v2-sos.jpg" style="position:absolute;left:0;top:0;width:1080px;height:860px;object-fit:cover;object-position:center 40%">
+  <div style="position:absolute;left:0;right:0;top:560px;height:300px;background:linear-gradient(transparent,#0f0b0d)"></div>
+  <div style="position:absolute;left:72px;right:72px;top:820px">
+    <h1 style="font-size:104px">hold both. three seconds.<br><i style="color:#ef7a86">nobody has to know.</i></h1>
+  </div>
+  <div class="brand">firefly <span style="color:#ef7a86">✦</span></div><div class="tagr">quiet SOS</div></div>`,
+p9: `<div class="post p45 pinkbg">
+  <div style="position:absolute;left:72px;top:84px;right:72px">
+    <div class="mono" style="font-size:24px;color:#8e3a4c">better together</div>
+    <h1 style="font-size:150px;margin-top:18px">bring the <i>whole group.</i></h1>
+  </div>
+  <div style="position:absolute;left:72px;right:72px;top:560px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    ${['v2-hero','v2-silver','v2-rose','v2-black'].map(f=>`<img src="${R}${f}.jpg" style="width:100%;height:300px;object-fit:cover;border-radius:24px">`).join('')}
+  </div>
+  <div style="position:absolute;left:72px;right:72px;top:930px;font-size:40px;line-height:1.35">
+    <b>squad of 4 · save 20%</b><br>firefly finds friends who wear one too.
+  </div>
+  <div class="brand">firefly <span style="color:#8e3a4c">✦</span></div><div class="tagr">link in bio</div></div>`,
+// ---- story ads, 1080x1920 ----
+adA: `<div class="post p916 dark">
+  <div class="glow" style="width:900px;height:900px;background:#b0566a;left:-300px;top:600px"></div>
+  <div style="position:absolute;left:140px;top:660px;width:800px;height:920px;border-radius:44px;overflow:hidden"><img src="${R}life-wrist.jpg" style="width:880px;height:920px;margin-left:-40px;object-fit:cover;object-position:center 72%"></div>
+  <div style="position:absolute;left:84px;right:84px;top:200px">
+    <h1 style="font-size:120px">phone at <span style="color:#ef7a86">3%</span>?<br><i style="color:var(--pink)">your friends can still find you.</i></h1>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;bottom:150px;display:flex;justify-content:space-between;align-items:center">
+    <div style="font:600 italic 56px 'Cormorant Garamond',serif">firefly <span style="font-style:normal;color:var(--pink);font-size:36px">✦</span></div>
+    <div style="background:var(--pink);color:#2b1218;font-weight:700;font-size:38px;padding:24px 40px;border-radius:999px">shop firefly →</div>
+  </div></div>`,
+adB: `<div class="post p916">
+  <img src="${R}v2-home.jpg" style="position:absolute;left:0;top:700px;width:1080px;height:720px;object-fit:cover">
+  <div style="position:absolute;left:84px;right:84px;top:200px">
+    <div class="mono eyebrow">no more “home?” texts</div>
+    <h1 style="font-size:130px;margin-top:30px">text me when you're home. <i style="color:var(--rose)">without the text.</i></h1>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;top:1480px;font-size:40px;line-height:1.3">one press. green light. your whole group knows you made it.</div>
+  <div style="position:absolute;left:84px;right:84px;bottom:150px;display:flex;justify-content:space-between;align-items:center">
+    <div style="font:600 italic 56px 'Cormorant Garamond',serif">firefly <span style="font-style:normal;color:var(--rose);font-size:36px">✦</span></div>
+    <div style="background:var(--rose);color:#fff;font-weight:700;font-size:38px;padding:24px 40px;border-radius:999px">shop firefly →</div>
+  </div></div>`,
+adC: `<div class="post p916 dark">
+  <img src="${R}life-jewelry.jpg" style="position:absolute;left:84px;right:84px;top:780px;width:912px;height:520px;object-fit:cover;object-position:center 0%;border-radius:44px">
+  <div style="position:absolute;left:84px;right:84px;top:200px">
+    <h1 style="font-size:128px">looks like jewelry.<br><i style="color:var(--pink)">works like a lifeline.</i></h1>
+  </div>
+  <div style="position:absolute;left:84px;right:84px;top:1370px;font-size:40px;line-height:1.35;opacity:.85">find your friends, tell them you're home, quiet SOS. even when your phone dies.</div>
+  <div style="position:absolute;left:84px;right:84px;bottom:150px;display:flex;justify-content:space-between;align-items:center">
+    <div style="font:600 italic 56px 'Cormorant Garamond',serif">firefly <span style="font-style:normal;color:var(--pink);font-size:36px">✦</span></div>
+    <div style="background:var(--pink);color:#2b1218;font-weight:700;font-size:38px;padding:24px 40px;border-radius:999px">shop firefly →</div>
+  </div></div>`,
+// ---- profile + highlights ----
+avatar: `<div class="post p11" style="background:var(--pink);display:grid;place-items:center">
+  <div style="font:600 italic 520px/1 'Cormorant Garamond',serif;color:#2b1218;margin-top:-60px">f<span style="font-style:normal;font-size:230px;color:#b0566a;vertical-align:top">✦</span></div></div>`,
+};
+const HL = [['how','how it<br>works'],['shades','shades'],['squad','squad'],['faq','faq']];
+HL.forEach(([k,t])=>{ P['hl_'+k] = `<div class="post p916" style="background:var(--cream2);display:grid;place-items:center">
+  <div style="width:640px;height:640px;border-radius:50%;background:var(--pink);display:grid;place-items:center;text-align:center">
+  <div><div style="font-size:120px;color:#b0566a">✦</div><div style="font:600 italic 120px/0.95 'Cormorant Garamond',serif;color:#2b1218">${t}</div></div></div></div>`; });
+const id = location.hash.slice(1);
+document.getElementById('stage').innerHTML = P[id] || '';
+window.IDS = Object.keys(P);
+</script></body></html>
