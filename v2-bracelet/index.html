@@ -3,187 +3,348 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Firefly · Stay connected. Go further together.</title>
-<meta name="description" content="Firefly is a slim gold bracelet with two buttons: find your friends, tell them you're home, and send a quiet SOS, even when your phones die.">
+<title>Firefly Bracelet · Shop</title>
+<meta name="description" content="Firefly is a slim gold bracelet with two buttons: find your friends, tell them you're home, and send a quiet SOS, even when your phones die. No monthly fee.">
 <meta name="theme-color" content="#f8f1ed">
+<meta property="og:title" content="Firefly Bracelet">
+<meta property="og:description" content="Find your friends and tell them you're home, even when your phones die.">
+<meta property="og:image" content="https://wendyxlin.github.io/firefly-band/v2-bracelet/renders/v2-hero.jpg">
 <link rel="icon" href="app/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Firefly v2 site. Blush and cream with gold, following the team's v2 design board. Light by default; a dark theme follows the system. */
+/* Firefly shop. Blush and cream with gold, following the team's v2 design board. Light by default; a dark theme follows the system.
+   Sprint 3 out-of-stock test: add to cart works, checkout shows "sold out" and logs each step to the team's Google Form. */
 :root{
   --bg:#f8f1ed; --bg2:#f2e6e0; --surface:#ffffff; --ink:#2a1f22; --muted:#6e5d60; --line:#ecdcd5;
   --accent:#b0566a; --accent-ink:#ffffff; --pink:#f3c2c6; --pink-ink:#2b1218; --red:#b2333f; --green:#2f8a5f; --gold:#c99a55;
   --display:"Cormorant Garamond","Cormorant",Garamond,Georgia,serif; --body:"DM Sans",system-ui,-apple-system,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --shadow:0 30px 60px -30px rgba(60,20,30,.35);
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#161113; --bg2:#1d1619; --surface:#231b1e; --ink:#fbf1ee; --muted:#c7b1b3; --line:#3a2c30; --accent:#f2a7b3; --accent-ink:#2b1218; --pink:#5a3a41; --pink-ink:#fbe9ec; --red:#ef7a86; --green:#7fe0ad; color-scheme:dark } }
-:root[data-theme="dark"]{ --bg:#161113; --bg2:#1d1619; --surface:#231b1e; --ink:#fbf1ee; --muted:#c7b1b3; --line:#3a2c30; --accent:#f2a7b3; --accent-ink:#2b1218; --pink:#5a3a41; --pink-ink:#fbe9ec; --red:#ef7a86; --green:#7fe0ad; color-scheme:dark }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#161113; --bg2:#1d1619; --surface:#231b1e; --ink:#fbf1ee; --muted:#c7b1b3; --line:#3a2c30; --accent:#f2a7b3; --accent-ink:#2b1218; --pink:#5a3a41; --pink-ink:#fbe9ec; --red:#ef7a86; --green:#7fe0ad; --shadow:0 30px 60px -30px rgba(0,0,0,.7); color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#161113; --bg2:#1d1619; --surface:#231b1e; --ink:#fbf1ee; --muted:#c7b1b3; --line:#3a2c30; --accent:#f2a7b3; --accent-ink:#2b1218; --pink:#5a3a41; --pink-ink:#fbe9ec; --red:#ef7a86; --green:#7fe0ad; --shadow:0 30px 60px -30px rgba(0,0,0,.7); color-scheme:dark }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
 img,video{max-width:100%;height:auto;display:block}
 a{color:inherit}
-.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;line-height:1.02;text-wrap:balance}
-h1{font-size:clamp(3rem,7.5vw,5.8rem);font-style:italic;letter-spacing:-.01em}
-h2{font-size:clamp(2.1rem,4.4vw,3.4rem);letter-spacing:-.005em}
-h3{font-size:1.5rem;font-weight:600}
+button{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;line-height:1.04;text-wrap:balance}
+h1{font-size:clamp(2.6rem,5vw,3.8rem);letter-spacing:-.01em}
+h2{font-size:clamp(2rem,4.2vw,3.2rem);letter-spacing:-.005em}
+h3{font-size:1.45rem;font-weight:600}
 p{margin:0}
-.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 .muted{color:var(--muted)}
-section{padding-block:clamp(64px,10vw,120px)}
-.sec-head{display:grid;gap:14px;max-width:720px;margin-bottom:44px}
-.sec-head p{color:var(--muted);font-size:1.08rem}
-nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--line) 80%,transparent)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
-.brand{font-family:var(--display);font-style:italic;font-size:1.6rem;text-decoration:none;color:var(--ink);font-weight:600}
+section{padding-block:clamp(56px,9vw,104px)}
+.sec-head{display:grid;gap:12px;max-width:720px;margin-bottom:40px}
+.sec-head p{color:var(--muted);font-size:1.06rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:13px 24px;font:600 .96rem var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.06)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
+.btn-ghost:hover{border-color:var(--accent)}
+.btn-block{width:100%;padding:16px 24px;font-size:1.02rem}
+.btn[disabled]{opacity:.6;cursor:default}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* announcement + nav */
+.announce{background:var(--ink);color:var(--bg);font-size:.82rem;text-align:center;padding:8px 16px}
+.announce b{font-weight:600}
+nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--line) 80%,transparent)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
+.brand{font-family:var(--display);font-style:italic;font-size:1.65rem;text-decoration:none;color:var(--ink);font-weight:600}
 .brand span{color:var(--accent);font-style:normal;font-size:1rem}
 nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:.92rem}
 nav ul a{text-decoration:none;color:var(--muted)}
 nav ul a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 22px;font:600 .95rem var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s ease}
-.btn:active{transform:scale(.97)}
-.btn-primary{background:var(--accent);color:var(--accent-ink)}
-.btn-ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
-.btn-ghost:hover{border-color:var(--accent)}
-nav .btn{padding:8px 16px;font-size:.86rem}
-@media (max-width:820px){ nav ul{display:none} }
-.hero{padding-block:clamp(36px,6vw,72px) clamp(56px,8vw,96px)}
-.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
-.hero-copy{display:grid;gap:22px}
-.hero-copy .lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--muted);max-width:46ch}
-.cta{display:flex;gap:12px;flex-wrap:wrap}
-.hero-art{display:grid;grid-template-columns:.8fr 1fr;gap:12px;align-items:end}
-.hero-art figure{margin:0;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
-.hero-art .tall img{aspect-ratio:11/20;object-fit:cover;width:100%}
-.hero-art .wide img{aspect-ratio:3/2;object-fit:cover;width:100%}
-.hero-art .stack{display:grid;gap:12px}
-.facts{display:flex;gap:28px;flex-wrap:wrap;margin-top:6px}
-.facts div{display:grid}
-.facts b{font-family:var(--display);font-size:2rem;font-weight:600;line-height:1}
-.facts span{font-size:.82rem;color:var(--muted)}
-@media (max-width:900px){ .hero .wrap{grid-template-columns:1fr} }
-.film{background:var(--bg2);border-block:1px solid var(--line)}
-.film-frame{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#000;aspect-ratio:16/9}
-.film-frame video{width:100%;height:100%;object-fit:cover}
+.cart-btn{position:relative;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600;font-size:.9rem}
+.cart-btn svg{width:18px;height:18px}
+.badge{min-width:20px;height:20px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:.72rem;display:inline-grid;place-items:center;padding:0 6px}
+.badge[data-zero="1"]{background:var(--bg2);color:var(--muted)}
+@media (max-width:860px){ nav ul{display:none} }
+
+/* product page */
+.pdp{padding-block:clamp(24px,4vw,48px) clamp(48px,7vw,80px)}
+.pdp .wrap{display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.gallery-main{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--bg2);aspect-ratio:3/2;position:relative}
+.gallery-main img{width:100%;height:100%;object-fit:cover;transition:opacity .2s ease}
+.gallery-main .tag{position:absolute;left:14px;top:14px;background:var(--surface);color:var(--ink);font:600 .74rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--line)}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+.thumbs button{padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg2);cursor:pointer;aspect-ratio:1/1}
+.thumbs button[aria-current="true"]{outline:2px solid var(--accent);outline-offset:1px}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.buy{position:sticky;top:84px;display:grid;gap:20px}
+.buy .lead{color:var(--muted);font-size:1.04rem}
+.price-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.price{font-family:var(--display);font-size:2.4rem;font-weight:600;line-height:1}
+.price-was{color:var(--muted);text-decoration:line-through;font-size:1.05rem}
+.price-note{font-size:.88rem;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--green) 14%,var(--surface));color:var(--green);border-radius:999px;padding:4px 10px;font-size:.8rem;font-weight:600}
+.opt-label{display:flex;justify-content:space-between;font-size:.88rem;font-weight:600}
+.opt-label span{color:var(--muted);font-weight:400}
+.swatches{display:flex;gap:12px;margin-top:10px}
+.swatch{width:42px;height:42px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.swatch[aria-checked="true"]{box-shadow:0 0 0 2px var(--accent)}
+.packs{display:grid;gap:10px;margin-top:10px}
+.pack{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
+.pack[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.pack .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+.pack[aria-checked="true"] .dot{border:5px solid var(--accent)}
+.pack b{display:block;font-size:.98rem}
+.pack small{color:var(--muted);font-size:.82rem}
+.pack .pp{text-align:right}
+.pack .pp b{font-family:var(--display);font-size:1.35rem}
+.pack .save{display:inline-block;margin-left:6px;font:600 .68rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.qty-row{display:flex;gap:12px;align-items:stretch}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.stepper button{width:44px;height:100%;min-height:52px;border:0;background:none;font-size:1.2rem;cursor:pointer}
+.stepper output{min-width:28px;text-align:center;font-weight:600}
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;font-size:.88rem;color:var(--muted);padding-top:4px}
+.perks div{display:flex;gap:8px;align-items:flex-start}
+.perks div::before{content:"✦";color:var(--accent);font-size:.75rem;margin-top:3px}
+.mini-quote{border-left:3px solid var(--pink);padding:4px 0 4px 14px;font-size:.92rem;color:var(--muted)}
+.mini-quote q{font-family:var(--display);font-size:1.2rem;font-style:italic;color:var(--ink);display:block;line-height:1.2}
+@media (max-width:920px){ .pdp .wrap{grid-template-columns:1fr} .buy{position:static} }
+
+/* content blocks */
+.strip{background:var(--bg2);border-block:1px solid var(--line);padding-block:22px}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;font-size:.92rem}
+.strip b{display:block;font-family:var(--display);font-size:1.5rem;font-weight:600;line-height:1.1}
+.strip span{color:var(--muted)}
+@media (max-width:760px){ .strip .wrap{grid-template-columns:1fr 1fr} }
 .quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.quote{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;display:grid;gap:14px}
-.quote p:first-child{font-family:var(--display);font-size:1.6rem;line-height:1.15;font-style:italic}
-.quote p:last-child{font-size:.9rem;color:var(--muted)}
+.quote{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;display:grid;gap:14px;align-content:space-between}
+.quote p:first-child{font-family:var(--display);font-size:1.5rem;line-height:1.18;font-style:italic}
+.quote p:last-child{font-size:.88rem;color:var(--muted)}
 @media (max-width:820px){ .quote-grid{grid-template-columns:1fr} }
 .feat-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
 .feat-grid figure{margin:0;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
 .gestures{display:grid;gap:12px}
 .g{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center}
-.g .ico{width:56px;height:56px;border-radius:50%;background:var(--pink);color:var(--pink-ink);display:grid;place-items:center;font:600 .78rem var(--mono);text-align:center;line-height:1.1}
+.g .ico{width:56px;height:56px;border-radius:50%;background:var(--pink);color:var(--pink-ink);display:grid;place-items:center;font:600 .76rem var(--mono);text-align:center;line-height:1.1}
 .g.sos .ico{background:color-mix(in srgb,var(--red) 22%,var(--surface));color:var(--red)}
-.g h3{font-size:1.35rem}
-.g p{color:var(--muted);font-size:.95rem}
+.g h3{font-size:1.3rem}
+.g p{color:var(--muted);font-size:.94rem}
 @media (max-width:900px){ .feat-grid{grid-template-columns:1fr} }
-.life{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.film{background:var(--bg2);border-block:1px solid var(--line)}
+.film-frame{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#000;aspect-ratio:16/9}
+.film-frame video{width:100%;height:100%;object-fit:cover}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.shot{display:grid;gap:12px}
+.shot .phone{border-radius:34px;overflow:hidden;border:1px solid var(--line);background:#16131d;box-shadow:var(--shadow)}
+.shot .phone img{width:100%;aspect-ratio:780/1688;object-fit:cover;object-position:top}
+.shot p{color:var(--muted);font-size:.93rem}
+@media (max-width:900px){ .app-grid{grid-template-columns:1fr;max-width:420px;margin-inline:auto} }
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:8px;align-content:start}
+.tier .dist{font-family:var(--display);font-size:1.9rem;font-weight:600;line-height:1}
+.tier .tech{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.tier p{color:var(--muted);font-size:.9rem}
+@media (max-width:900px){ .tiers{grid-template-columns:1fr 1fr} }
+@media (max-width:520px){ .tiers{grid-template-columns:1fr} }
+.looks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.look{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;cursor:pointer;text-align:left;padding:0}
+.look img{aspect-ratio:3/2;object-fit:cover;width:100%}
+.look figcaption,.look span{display:flex;justify-content:space-between;padding:12px 14px;font-size:.92rem}
+.look em{font-style:normal;color:var(--accent);font-weight:600}
+@media (max-width:820px){ .looks{grid-template-columns:1fr 1fr} }
+.life{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
 .life figure{margin:0;border-radius:20px;overflow:hidden;border:1px solid var(--line)}
 .life img{width:100%;aspect-ratio:1/1;object-fit:cover}
 @media (max-width:700px){ .life{grid-template-columns:1fr} }
-.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.shot{display:grid;gap:14px}
-.shot .phone{border-radius:34px;overflow:hidden;border:1px solid var(--line);background:#16131d;box-shadow:0 30px 60px -30px rgba(60,20,30,.45)}
-.shot .phone img{width:100%;aspect-ratio:780/1688;object-fit:cover;object-position:top}
-.shot p{color:var(--muted);font-size:.94rem}
-@media (max-width:900px){ .app-grid{grid-template-columns:1fr;max-width:420px;margin-inline:auto} }
-.range{background:var(--bg2);border-block:1px solid var(--line)}
-.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tier{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:8px;align-content:start}
-.tier .dist{font-family:var(--display);font-size:2rem;font-weight:600;line-height:1}
-.tier .tech{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
-.tier p{color:var(--muted);font-size:.92rem}
-.range-bar{height:10px;border-radius:999px;margin:34px 0 10px;background:linear-gradient(90deg,var(--accent) 0 18%,color-mix(in srgb,var(--accent) 60%,var(--bg2)) 18% 42%,color-mix(in srgb,var(--accent) 32%,var(--bg2)) 42% 100%)}
-.range-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-@media (max-width:900px){ .tiers{grid-template-columns:1fr 1fr} }
-@media (max-width:520px){ .tiers{grid-template-columns:1fr} }
-.gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
-.gallery figure{margin:0;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--bg2);position:relative}
-.gallery img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/2}
-.gallery figcaption{position:absolute;left:10px;bottom:10px;font-size:.78rem;background:rgba(42,31,34,.72);color:#fbf1ee;padding:4px 10px;border-radius:999px}
-.g-a{grid-column:span 4}.g-b{grid-column:span 2}.g-c,.g-d,.g-e{grid-column:span 2}
-.g-b img{aspect-ratio:auto;height:100%}
-@media (max-width:820px){ .gallery{grid-template-columns:1fr 1fr} .g-a{grid-column:span 2}.g-b,.g-c,.g-d,.g-e{grid-column:span 1} .g-b img{aspect-ratio:3/2} }
-.colours{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
-.colours figure{margin:0;text-align:center}
-.colours img{border-radius:16px;border:1px solid var(--line);aspect-ratio:3/2;object-fit:cover;width:100%}
-.colours figcaption{margin-top:8px;font-size:.9rem;color:var(--muted)}
-@media (max-width:700px){ .colours{grid-template-columns:1fr 1fr} }
-.spec{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
-.spec div{border-top:1px solid var(--line);padding-top:14px}
-.spec b{display:block;font-family:var(--display);font-size:1.8rem;font-weight:600}
-.spec span{font-size:.86rem;color:var(--muted)}
-@media (max-width:820px){ .spec{grid-template-columns:1fr 1fr} }
+.box-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.inbox{display:grid;gap:10px}
+.inbox div{display:flex;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.inbox span{color:var(--muted);font-size:.9rem}
+table.compare{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;font-size:.94rem}
+.compare th,.compare td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line)}
+.compare tr:last-child td{border-bottom:0}
+.compare th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.compare td b{font-family:var(--display);font-size:1.25rem}
+@media (max-width:820px){ .box-grid{grid-template-columns:1fr} }
 .priv{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .priv div{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:8px}
-.priv p{color:var(--muted);font-size:.94rem}
+.priv p{color:var(--muted);font-size:.93rem}
 @media (max-width:820px){ .priv{grid-template-columns:1fr} }
-.wl-box{background:radial-gradient(700px 400px at 85% 0%,color-mix(in srgb,var(--pink) 60%,transparent),transparent 70%),var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:1fr 1.1fr;gap:44px}
-.wl-box form{display:grid;gap:14px}
-label{display:grid;gap:6px;font-size:.88rem;color:var(--muted)}
-input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
-input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-#wlNote{font-size:.9rem;min-height:1.4em}
-@media (max-width:900px){ .wl-box{grid-template-columns:1fr} .row2{grid-template-columns:1fr} }
 .faq{display:grid;gap:10px;max-width:820px}
 details{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:18px 22px}
 summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
 summary::-webkit-details-marker{display:none}
 summary::after{content:"+";color:var(--accent);font-family:var(--mono)}
 details[open] summary::after{content:"–"}
-details p{color:var(--muted);margin-top:10px;font-size:.96rem}
-footer{border-top:1px solid var(--line);padding-block:40px 56px;font-size:.9rem;color:var(--muted)}
+details p{color:var(--muted);margin-top:10px;font-size:.95rem}
+.wl-box{background:radial-gradient(700px 400px at 85% 0%,color-mix(in srgb,var(--pink) 60%,transparent),transparent 70%),var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:1fr 1.1fr;gap:40px}
+.wl-box form{display:grid;gap:14px}
+label{display:grid;gap:6px;font-size:.88rem;color:var(--muted)}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.note{font-size:.9rem;min-height:1.4em}
+@media (max-width:900px){ .wl-box{grid-template-columns:1fr} .row2{grid-template-columns:1fr} }
+footer{border-top:1px solid var(--line);padding-block:40px calc(56px + 80px);font-size:.9rem;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
-footer a{color:var(--muted)}
 footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wrap}
+@media (min-width:921px){ footer{padding-bottom:56px} }
+
+/* sticky mobile bar */
+.sticky-buy{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:12px;transform:translateY(110%);transition:transform .25s ease}
+.sticky-buy.show{transform:none}
+.sticky-buy .s-name{flex:1;display:grid;line-height:1.2}
+.sticky-buy .s-name b{font-family:var(--display);font-size:1.25rem}
+.sticky-buy .s-name span{font-size:.8rem;color:var(--muted)}
+@media (max-width:920px){ .sticky-buy{display:flex} }
+
+/* cart drawer + dialogs */
+.scrim{position:fixed;inset:0;background:rgba(20,10,14,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.scrim.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--bg);z-index:41;display:grid;grid-template-rows:auto 1fr auto;transform:translateX(102%);transition:transform .25s ease;box-shadow:var(--shadow)}
+.drawer.show{transform:none}
+.drawer header,.drawer footer{padding:18px 20px;border-bottom:1px solid var(--line)}
+.drawer footer{border-top:1px solid var(--line);border-bottom:0;display:grid;gap:12px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));color:var(--ink);font-size:1rem}
+.drawer header{display:flex;justify-content:space-between;align-items:center}
+.drawer header h3{font-size:1.6rem}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:1.2rem;line-height:1}
+.lines{overflow:auto;padding:12px 20px;display:grid;gap:12px;align-content:start}
+.line{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px}
+.line img{width:72px;height:72px;object-fit:cover;border-radius:10px}
+.line b{display:block;font-size:.95rem}
+.line small{color:var(--muted);font-size:.82rem}
+.line .lp{text-align:right;display:grid;gap:6px;justify-items:end}
+.line .mini{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px}
+.line .mini button{width:30px;height:30px;border:0;background:none;cursor:pointer}
+.line .rm{background:none;border:0;color:var(--muted);font-size:.8rem;text-decoration:underline;cursor:pointer;padding:0}
+.empty{color:var(--muted);text-align:center;padding:40px 10px;display:grid;gap:14px;justify-items:center}
+.totals{display:flex;justify-content:space-between;font-size:1rem}
+.totals b{font-family:var(--display);font-size:1.5rem}
+.fine{font-size:.8rem;color:var(--muted);text-align:center}
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;pointer-events:none}
+.modal .card{pointer-events:auto;width:min(520px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:26px;padding:clamp(22px,4vw,34px);display:grid;gap:16px;box-shadow:var(--shadow);transform:translateY(12px) scale(.98);opacity:0;transition:all .2s ease}
+.modal.show .card{transform:none;opacity:1}
+.modal[hidden]{display:none}
+.oos-top{display:flex;justify-content:space-between;align-items:start;gap:16px}
+.oos-img{border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:3/1.4;position:relative}
+.oos-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.7)}
+.oos-img span{position:absolute;inset:auto auto 12px 12px;background:var(--ink);color:var(--bg);font:600 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.notify{display:flex;gap:10px}
+.notify input{flex:1}
+@media (max-width:480px){ .notify{flex-direction:column} }
+.toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.9rem;z-index:60;opacity:0;transition:all .2s ease;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
 </style>
 </head>
 <body>
+<div class="announce"><b>First batch</b> · No monthly fee, cellular included · Save 20% on a Squad pack</div>
 <nav>
   <div class="wrap">
     <a class="brand" href="#top">Firefly <span>✦</span></a>
     <ul>
-      <li><a href="#bracelet">The bracelet</a></li>
+      <li><a href="#top">Shop</a></li>
+      <li><a href="#how">How it works</a></li>
       <li><a href="#app">The app</a></li>
-      <li><a href="#range">Range</a></li>
-      <li><a href="#design">Design</a></li>
+      <li><a href="#looks">Colours</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+    <button class="cart-btn" id="cartBtn" type="button" aria-label="Open cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>
+      Cart <span class="badge" id="cartCount" data-zero="1">0</span>
+    </button>
   </div>
 </nav>
 
-<header class="hero" id="top">
+<main id="top">
+<section class="pdp" aria-label="Firefly Bracelet">
   <div class="wrap">
-    <div class="hero-copy">
-      <span class="eyebrow">A bracelet for nights out</span>
-      <h1>Stay connected. Go further together.</h1>
-      <p class="lead">A slim gold bracelet that helps you find your friends and lets them know when you get home, even when your phones die. Two buttons, one tiny light, no screen.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
-        <a class="btn btn-ghost" href="app/">Try the app demo</a>
-      </div>
-      <div class="facts">
-        <div><b>2</b><span>buttons, no screen</span></div>
-        <div><b>6+ mi</b><span>tracking range</span></div>
-        <div><b>~15 g</b><span>on the wrist</span></div>
-      </div>
+    <div>
+      <div class="gallery-main"><img id="mainImg" src="renders/v2-hero.jpg" alt="Firefly bracelet in gold" width="1500" height="1000"><span class="tag">First batch</span></div>
+      <div class="thumbs" id="thumbs"></div>
     </div>
-    <div class="hero-art">
-      <figure class="tall"><img src="renders/life-wrist.jpg" alt="The Firefly bracelet in gold on a wrist at a bar" width="550" height="1000"></figure>
-      <div class="stack">
-        <figure class="wide"><img src="renders/v2-hero.jpg" alt="Firefly bracelet in polished gold, product render" width="1500" height="1000"></figure>
-        <figure class="wide"><img src="renders/v2-buttons.jpg" alt="Close-up of the two buttons and the light between them" width="1500" height="1000"></figure>
+    <div class="buy">
+      <div style="display:grid;gap:10px">
+        <span class="eyebrow">A bracelet for nights out</span>
+        <h1>Firefly Bracelet</h1>
+        <p class="lead">Find your friends, tell them you're home and send a quiet SOS, even when your phones die. Two buttons, one tiny light, no screen.</p>
+      </div>
+      <div style="display:grid;gap:6px">
+        <div class="price-row"><span class="price" id="price">$169</span><span class="price-was" id="priceWas" hidden></span><span class="pill">No monthly fee</span></div>
+        <p class="price-note" id="priceNote">Per bracelet. Cellular data is included for life.</p>
+      </div>
+      <div>
+        <div class="opt-label">Colour <span id="colourName">Gold</span></div>
+        <div class="swatches" role="radiogroup" aria-label="Colour" id="swatches"></div>
+      </div>
+      <div>
+        <div class="opt-label">Pack <span>Firefly finds friends who wear one too</span></div>
+        <div class="packs" role="radiogroup" aria-label="Pack" id="packs"></div>
+      </div>
+      <div class="qty-row">
+        <div class="stepper" aria-label="Quantity">
+          <button type="button" id="qMinus" aria-label="Fewer">−</button>
+          <output id="qty" aria-live="polite">1</output>
+          <button type="button" id="qPlus" aria-label="More">+</button>
+        </div>
+        <button class="btn btn-primary btn-block" id="addBtn" type="button">Add to cart · <span id="addTotal">$169</span></button>
+      </div>
+      <div class="perks">
+        <div>Works with a dead phone</div>
+        <div>6+ mile range on one bar</div>
+        <div>About 9 hours on a heavy night</div>
+        <div>Splash-proof, ~15 g</div>
+      </div>
+      <div class="mini-quote"><q>It doesn't look like a tracker. I'd actually wear this with a going out outfit.</q>Andrea, one of 10 NYU students in our user test</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div><b>2 buttons</b><span>Find friends · I'm home · SOS</span></div>
+    <div><b>8 of 10</b><span>testers found a hidden friend with no hints</span></div>
+    <div><b>9 of 10</b><span>pressed I'm home first, unprompted</span></div>
+    <div><b>$0 a month</b><span>cellular included for life</span></div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why it exists</span>
+      <h2>The group chat goes quiet right when it matters.</h2>
+      <p>We interviewed NYU students who go out often, then put Firefly in front of 10 of them. In their words:</p>
+    </div>
+    <div class="quote-grid">
+      <div class="quote"><p>"I'm always the one texting everyone at 2 a.m. to see if they got home. This would let me actually go to sleep."</p><p>Trudi, 21, goes out 3× a week</p></div>
+      <div class="quote"><p>"Pressing one button is way easier than typing 'home' into a group chat when I'm tired."</p><p>Ellie, user test</p></div>
+      <div class="quote"><p>"I like that it's me saying I'm home, not my friends watching my location all night."</p><p>Molly, user test</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="padding-top:0">
+  <div class="wrap feat-grid">
+    <figure><img src="renders/v2-find.jpg" alt="The bracelet's light glowing pink while finding friends" width="1500" height="1000" loading="lazy"></figure>
+    <div>
+      <div class="sec-head" style="margin-bottom:24px">
+        <span class="eyebrow">How it works</span>
+        <h2>Two buttons. You'll know them by touch.</h2>
+      </div>
+      <div class="gestures">
+        <div class="g"><div class="ico">B1<br>×1</div><div><h3>Find friends</h3><p>Press Button 1 (the dot). It buzzes and the light pulses faster as you get closer.</p></div></div>
+        <div class="g"><div class="ico">B1<br>×2</div><div><h3>Come find me</h3><p>Press it twice. Your group's bracelets buzz, and their app shows how far away you are.</p></div></div>
+        <div class="g"><div class="ico">B2<br>×1</div><div><h3>I'm home</h3><p>Press Button 2 (the line). The light turns green when your group has it.</p></div></div>
+        <div class="g sos"><div class="ico">both<br>3 s</div><div><h3>Quiet SOS</h3><p>Hold both for 3 seconds. Your location goes to your group and a backup contact.</p></div></div>
       </div>
     </div>
   </div>
-</header>
+</section>
 
 <section class="film" id="film">
   <div class="wrap">
@@ -192,111 +353,82 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
       <h2>One night, start to finish.</h2>
       <p>The group forms, someone drifts, a friend asks to be found, and everyone gets home.</p>
     </div>
-    <div class="film-frame">
-      <video src="media/firefly-v2-promo.mp4" poster="renders/v2-hero.jpg" controls playsinline preload="metadata"></video>
-    </div>
+    <div class="film-frame"><video src="media/firefly-v2-promo.mp4" poster="renders/v2-hero.jpg" controls playsinline preload="none"></video></div>
   </div>
 </section>
 
-<section id="why">
+<section id="looks">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Why it exists</span>
-      <h2>The group chat goes quiet right when it matters.</h2>
-      <p>We interviewed NYU students who go out often. The same three things came up every time.</p>
+      <span class="eyebrow">Colours</span>
+      <h2>Minimal. Stylish. Meaningful.</h2>
+      <p>A 3.2 mm band and a soft capsule on top. Pick a colour to see it up top.</p>
     </div>
-    <div class="quote-grid">
-      <div class="quote"><p>"My phone died and I couldn't find anyone."</p><p>Phones die, signal drops in basements, and texts arrive twenty minutes late.</p></div>
-      <div class="quote"><p>"Text me when you're home."</p><p>Everyone says it. Half the group forgets, and one friend ends up chasing everyone.</p></div>
-      <div class="quote"><p>"I didn't want to make a scene."</p><p>Unlocking a phone to ask for help is obvious. Holding two buttons on a bracelet isn't.</p></div>
+    <div class="looks" id="looksGrid"></div>
+    <div class="life">
+      <figure><img src="renders/life-minimal.jpg" alt="Gold bracelet on a wrist" loading="lazy"></figure>
+      <figure><img src="renders/life-jewelry.jpg" alt="Silver bracelet styled as jewelry" loading="lazy"></figure>
+      <figure><img src="renders/life-nightout.jpg" alt="Rose gold bracelet on a night out" loading="lazy"></figure>
     </div>
-  </div>
-</section>
-
-<section id="bracelet" style="padding-top:0">
-  <div class="wrap feat-grid">
-    <figure><img src="renders/v2-find.jpg" alt="The bracelet's light glowing pink while finding friends" width="1500" height="1000"></figure>
-    <div>
-      <div class="sec-head" style="margin-bottom:26px">
-        <span class="eyebrow">The bracelet</span>
-        <h2>Two buttons. You'll know them by touch.</h2>
-      </div>
-      <div class="gestures">
-        <div class="g"><div class="ico">B1<br>×1</div><div><h3>Find friends</h3><p>Press Button 1 (the one with the dot). It buzzes and the light pulses faster as you get closer.</p></div></div>
-        <div class="g"><div class="ico">B1<br>×2</div><div><h3>Come find me</h3><p>Press it twice. Your group's bracelets buzz twice, and their app shows how far away you are.</p></div></div>
-        <div class="g"><div class="ico">B2<br>×1</div><div><h3>I'm home</h3><p>Press Button 2 (the one with the line). The light turns green when your group has it. Press twice within 5 s to cancel.</p></div></div>
-        <div class="g sos"><div class="ico">both<br>3 s</div><div><h3>Quiet SOS</h3><p>Hold both buttons for 3 seconds. After a short grace window, your location goes to your group and a backup contact.</p></div></div>
-      </div>
-    </div>
-  </div>
-  <div class="wrap life">
-    <figure><img src="renders/life-minimal.jpg" alt="Minimal. Stylish. Meaningful. Gold bracelet on a wrist" loading="lazy"></figure>
-    <figure><img src="renders/life-jewelry.jpg" alt="Looks like jewelry. Works when it matters. Silver bracelet" loading="lazy"></figure>
-    <figure><img src="renders/life-nightout.jpg" alt="Designed for your night out. Rose gold bracelet" loading="lazy"></figure>
   </div>
 </section>
 
 <section id="app" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">The companion app</span>
+      <span class="eyebrow">The free companion app</span>
       <h2>Create a group, check on your friends, see who's home.</h2>
-      <p>One friend with battery is enough. Everything ends when the night does.</p>
+      <p>One friend with battery is enough. Everything ends when the night does. <a href="app/">Try the app demo</a>.</p>
     </div>
     <div class="app-grid">
-      <div class="shot"><div class="phone"><img src="renders/app-group.jpg" alt="My Group screen with a separation alert for Sophia" loading="lazy" width="780" height="1688"></div><h3>My Group</h3><p>Who's nearby, who asked to be found, and who's home. If someone drifts outside the radius (10–30 m) for longer than the delay, everyone knows.</p></div>
+      <div class="shot"><div class="phone"><img src="renders/app-group.jpg" alt="My Group screen with a separation alert" loading="lazy" width="780" height="1688"></div><h3>My Group</h3><p>Who's nearby, who asked to be found, and who's home. If someone drifts too far for too long, everyone knows.</p></div>
       <div class="shot"><div class="phone"><img src="renders/app-find.jpg" alt="Find Friends screen: getting closer, 2 metres away" loading="lazy" width="780" height="1688"></div><h3>Find Friends</h3><p>"Getting closer… 3 meters away." Ultra-wideband between bracelets measures distance to the metre.</p></div>
       <div class="shot"><div class="phone"><img src="renders/app-checkins.jpg" alt="Check-ins screen showing who has made it home" loading="lazy" width="780" height="1688"></div><h3>Who's home?</h3><p>Every Button 2 press lands here. Nudge anyone still out without a single text.</p></div>
     </div>
   </div>
 </section>
 
-<section class="range" id="range">
+<section class="film" id="range">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Range</span>
       <h2>Six miles and more, even with one bar.</h2>
-      <p>The bracelet picks the best way to reach your group. It doesn't need your phone to send I'm home or SOS.</p>
+      <p>The bracelet picks the best way to reach your group, and never needs your phone for I'm home or SOS.</p>
     </div>
     <div class="tiers">
-      <div class="tier"><span class="tech">Ultra-wideband</span><span class="dist">0–30 m</span><p>Distance to the metre between bracelets. Powers Find friends and separation alerts.</p></div>
-      <div class="tier"><span class="tech">LoRa radio</span><span class="dist">30 m–1 km</span><p>Bracelet to bracelet across a packed venue or a few blocks, no network needed.</p></div>
-      <div class="tier"><span class="tech">Built-in cellular</span><span class="dist">1 km–6+ mi</span><p>LTE-M and NB-IoT are built for weak signal: they get through basements where calls drop.</p></div>
-      <div class="tier"><span class="tech">Fallbacks</span><span class="dist">Anywhere</span><p>With no cell signal at all, the last position goes out over community networks like Amazon Sidewalk.</p></div>
+      <div class="tier"><span class="tech">Ultra-wideband</span><span class="dist">0–30 m</span><p>Distance to the metre between bracelets.</p></div>
+      <div class="tier"><span class="tech">LoRa radio</span><span class="dist">30 m–1 km</span><p>Bracelet to bracelet across a packed venue, no network.</p></div>
+      <div class="tier"><span class="tech">Built-in cellular</span><span class="dist">1 km–6+ mi</span><p>LTE-M is built for weak signal and basements.</p></div>
+      <div class="tier"><span class="tech">Fallbacks</span><span class="dist">Anywhere</span><p>Community networks like Amazon Sidewalk.</p></div>
     </div>
-    <div class="range-bar" aria-hidden="true"></div>
-    <div class="range-labels" aria-hidden="true"><span>0 m</span><span>30 m</span><span>1 km</span><span>6+ miles</span></div>
   </div>
 </section>
 
-<section id="design">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Design</span>
-      <h2>Minimal. Stylish. Meaningful.</h2>
-      <p>A 3.2 mm band and a soft capsule on top. The radios and battery hide inside the capsule and a slim clasp under the wrist; the band itself is the antenna.</p>
+<section id="packs-compare">
+  <div class="wrap box-grid">
+    <div>
+      <div class="sec-head" style="margin-bottom:20px">
+        <span class="eyebrow">Better together</span>
+        <h2>Get the whole group on it.</h2>
+        <p>Finding works between bracelets, so most groups buy together. The bigger the pack, the less each one costs.</p>
+      </div>
+      <table class="compare" id="compareTable">
+        <thead><tr><th>Pack</th><th>Each</th><th>Total</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
-    <div class="gallery">
-      <figure class="g-a"><img src="renders/v2-buttons.jpg" alt="Button 1 with an engraved dot, the light, Button 2 with an engraved line" loading="lazy"><figcaption>Button 1 (dot) · light · Button 2 (line)</figcaption></figure>
-      <figure class="g-b"><img src="renders/v2-rose.jpg" alt="Rose gold bracelet" loading="lazy"><figcaption>Rose gold</figcaption></figure>
-      <figure class="g-c"><img src="renders/v2-find.jpg" alt="Light pulsing pink while finding" loading="lazy"><figcaption>Finding: pink</figcaption></figure>
-      <figure class="g-d"><img src="renders/v2-home.jpg" alt="Light glowing green after I'm home" loading="lazy"><figcaption>I'm home: green</figcaption></figure>
-      <figure class="g-e"><img src="renders/v2-sos.jpg" alt="Black bracelet with the light blinking red" loading="lazy"><figcaption>SOS: red</figcaption></figure>
+    <div>
+      <div class="sec-head" style="margin-bottom:20px">
+        <span class="eyebrow">In the box</span>
+        <h2>Everything for the first night.</h2>
+      </div>
+      <div class="inbox">
+        <div><b>Firefly bracelet</b><span>in the colour you pick</span></div>
+        <div><b>Magnetic charger</b><span>snaps onto the underside</span></div>
+        <div><b>Cellular, built in</b><span>no SIM, no monthly bill</span></div>
+        <div><b>Quick-start card</b><span>pair in the app in a minute</span></div>
+      </div>
     </div>
-    <h3 style="margin-top:44px">Colour options</h3>
-    <div class="colours">
-      <figure><img src="renders/v2-hero.jpg" alt="Gold" loading="lazy"><figcaption>Gold</figcaption></figure>
-      <figure><img src="renders/v2-silver.jpg" alt="Silver" loading="lazy"><figcaption>Silver</figcaption></figure>
-      <figure><img src="renders/v2-rose.jpg" alt="Rose gold" loading="lazy"><figcaption>Rose gold</figcaption></figure>
-      <figure><img src="renders/v2-black.jpg" alt="Black" loading="lazy"><figcaption>Black</figcaption></figure>
-    </div>
-    <div class="spec">
-      <div><b>40 × 13.6 mm</b><span>capsule, 6.8 mm tall</span></div>
-      <div><b>~15 g</b><span>in titanium</span></div>
-      <div><b>~9 h</b><span>on a heavy night, longer on a quiet one</span></div>
-      <div><b>4 colours</b><span>gold, silver, rose gold, black</span></div>
-    </div>
-    <p style="margin-top:28px"><a class="btn btn-ghost" href="mockup/">Open the 3D design review</a></p>
   </div>
 </section>
 
@@ -304,45 +436,9 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Privacy</span><h2>Shared for the night, then gone.</h2></div>
     <div class="priv">
-      <div><h3>Only your group</h3><p>Location goes to the people you added tonight. There is no public map and no follower list.</p></div>
-      <div><h3>Ends with the night</h3><p>The group key expires at the end of the night and sharing stops.</p></div>
-      <div><h3>Encrypted on the bracelet</h3><p>Positions are encrypted before they leave, so the networks that carry them can't read them.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="waitlist" style="padding-top:0">
-  <div class="wrap">
-    <div class="wl-box">
-      <div class="sec-head" style="margin:0">
-        <span class="eyebrow">Waitlist</span>
-        <h2>Be the first in your group.</h2>
-        <p>We're a student team at NYU Stern building the first batch. Tell us how you go out and we'll let you know when Firefly is ready.</p>
-      </div>
-      <form id="wl" novalidate>
-        <div class="row2">
-          <label>Name<input id="wlName" name="name" autocomplete="name" required></label>
-          <label>Email<input id="wlEmail" name="email" type="email" autocomplete="email" required></label>
-        </div>
-        <label>How often do you go out?
-          <select id="wlFreq" name="freq">
-            <option>Most weekends</option>
-            <option>A few times a month</option>
-            <option>Once a month or less</option>
-            <option>Only for big events</option>
-          </select>
-        </label>
-        <label>What matters most to you?
-          <select id="wlWhy" name="why">
-            <option>Finding friends when my phone dies</option>
-            <option>A discreet way to ask for help</option>
-            <option>Knowing everyone got home</option>
-            <option>It has to look good</option>
-          </select>
-        </label>
-        <button class="btn btn-primary" id="wlBtn" type="submit">Join the waitlist</button>
-        <p id="wlNote" class="muted" role="status"></p>
-      </form>
+      <div><h3>Only your group</h3><p>Location goes only to the people you added tonight. No public map, no followers.</p></div>
+      <div><h3>Ends with the night</h3><p>The group key expires when the night ends and sharing stops.</p></div>
+      <div><h3>Encrypted on the bracelet</h3><p>Positions are encrypted before they leave, so the networks carrying them can't read them.</p></div>
     </div>
   </div>
 </section>
@@ -351,59 +447,319 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions</h2></div>
     <div class="faq">
-      <details><summary>Where is the SOS button?</summary><p>There isn't a separate one. Hold both buttons for 3 seconds. That can't happen by accident in a bag, and nobody around you can tell. You get 5–10 seconds to cancel by pressing either button twice.</p></details>
-      <details><summary>What if I press I'm home by accident?</summary><p>Press Button 2 twice within 5 seconds and it's cancelled before anyone is told.</p></details>
-      <details><summary>Does it work if my phone is dead?</summary><p>Yes. Find friends, come find me, I'm home and SOS all go out from the bracelet itself, over its own radio or cellular connection.</p></details>
-      <details><summary>How far away can my friends find me?</summary><p>Up close (0–30 m) the app shows a distance to the metre. Across a venue or a few blocks it uses bracelet-to-bracelet radio. Beyond a kilometre, built-in cellular covers six miles and more, and it is designed for weak, one-bar signal.</p></details>
+      <details><summary>When does it ship?</summary><p>The first batch is still being made by our student team at NYU Stern. Add Firefly to your cart to reserve your place on the notify list; nothing is charged.</p></details>
       <details><summary>Is there a monthly fee?</summary><p>No. A small amount of cellular data is bundled for the bracelet's lifetime. Location messages are tiny.</p></details>
-      <details><summary>How long does the battery last?</summary><p>About 9 hours on a heavy night with lots of finding and cellular check-ins, and more than a day on a quiet one. A magnetic charger snaps onto the underside.</p></details>
-      <details><summary>Does everyone in my group need one?</summary><p>Friends without a bracelet can join the group in the app and see check-ins and SOS alerts. Distance finding and bracelet-to-bracelet radio need a bracelet on both wrists.</p></details>
+      <details><summary>Does it work if my phone is dead?</summary><p>Yes. Find friends, come find me, I'm home and SOS all go out from the bracelet itself.</p></details>
+      <details><summary>Does everyone in my group need one?</summary><p>Friends without a bracelet can join the group in the app and see check-ins and SOS alerts. Distance finding needs a bracelet on both wrists, which is why packs are cheaper.</p></details>
+      <details><summary>Where is the SOS button?</summary><p>There isn't a separate one. Hold both buttons for 3 seconds. It can't happen by accident in a bag, and nobody around you can tell. You get 5–10 seconds to cancel.</p></details>
+      <details><summary>How long does the battery last?</summary><p>About 9 hours on a heavy night with lots of finding, and more than a day on a quiet one.</p></details>
     </div>
   </div>
 </section>
+
+<section id="waitlist" style="padding-top:0">
+  <div class="wrap">
+    <div class="wl-box">
+      <div class="sec-head" style="margin:0">
+        <span class="eyebrow">Not ready yet?</span>
+        <h2>Join the waitlist.</h2>
+        <p>Tell us how you go out and we'll email you when Firefly is ready.</p>
+      </div>
+      <form id="wl" novalidate>
+        <div class="row2">
+          <label>Name<input id="wlName" name="name" autocomplete="name" required></label>
+          <label>Email<input id="wlEmail" name="email" type="email" autocomplete="email" required></label>
+        </div>
+        <label>How often do you go out?
+          <select id="wlFreq" name="freq"><option>Most weekends</option><option>A few times a month</option><option>Once a month or less</option><option>Only for big events</option></select>
+        </label>
+        <label>What matters most to you?
+          <select id="wlWhy" name="why"><option>Finding friends when my phone dies</option><option>A discreet way to ask for help</option><option>Knowing everyone got home</option><option>It has to look good</option></select>
+        </label>
+        <button class="btn btn-primary" id="wlBtn" type="submit">Join the waitlist</button>
+        <p id="wlNote" class="note muted" role="status"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
 
 <footer>
   <div class="wrap">
     <div>
       <div class="brand" style="margin-bottom:8px">Firefly <span>✦</span></div>
-      <p>Concept by an NYU Stern BTE Capstone team. Version 2 design, not yet for sale.</p>
+      <p>Made by an NYU Stern BTE Capstone team. Not yet for sale; checkout reserves a spot on the notify list and charges nothing.</p>
     </div>
     <ul>
       <li><a href="app/">App demo</a></li>
       <li><a href="mockup/">3D design review</a></li>
-      <li><a href="media/firefly-v2-promo.mp4">Film (mp4)</a></li>
       <li><a href="https://github.com/wendyxlin/firefly-band/tree/main/v2-bracelet">Source</a></li>
     </ul>
   </div>
 </footer>
 
+<div class="sticky-buy" id="stickyBuy" aria-hidden="true">
+  <div class="s-name"><b>Firefly</b><span id="stickyMeta">Gold · Single · $169</span></div>
+  <button class="btn btn-primary" id="stickyAdd" type="button">Add to cart</button>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <header><h3 id="cartTitle">Your cart</h3><button class="x" id="cartClose" type="button" aria-label="Close cart">×</button></header>
+  <div class="lines" id="lines"></div>
+  <footer>
+    <div class="totals"><span>Subtotal</span><b id="subtotal">$0</b></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn" type="button">Checkout</button>
+    <p class="fine">Taxes and shipping calculated at checkout.</p>
+  </footer>
+</aside>
+
+<div class="modal" id="oos" hidden role="dialog" aria-modal="true" aria-labelledby="oosTitle">
+  <div class="card">
+    <div class="oos-top">
+      <div style="display:grid;gap:8px"><span class="eyebrow">First batch</span><h2 id="oosTitle">Sold out, for now.</h2></div>
+      <button class="x" id="oosClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="oos-img"><img id="oosImg" src="renders/v2-hero.jpg" alt=""><span>Sold out</span></div>
+    <p class="muted">Thanks for trying to order. Firefly is made by a student team at NYU Stern, and our first batch isn't available yet. <b style="color:var(--ink)">You haven't been charged anything.</b></p>
+    <form class="notify" id="notifyForm" novalidate>
+      <input id="notifyEmail" type="email" autocomplete="email" placeholder="you@school.edu" aria-label="Email">
+      <button class="btn btn-primary" id="notifyBtn" type="submit">Notify me</button>
+    </form>
+    <p class="note" id="notifyNote" role="status"></p>
+    <div style="display:grid;gap:10px">
+      <p style="font-weight:600;font-size:.95rem">Quick question: what's the most you'd pay for one bracelet?</p>
+      <div class="chips" id="payChips"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
 <script>
-// Waitlist: same Google Form as v1, so all responses land in one sheet.
-const WAITLIST_FORM = {
+// ---------- setup ----------
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  sget(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+  sset(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+};
+const params = new URLSearchParams(location.search);
+
+// Price test: each visitor sees one of three prices, kept on return visits. ?p=129|169|199 forces one (used in ad links).
+const PRICES = [129, 169, 199], LETTER = { 129: 'A', 169: 'B', 199: 'C' };
+let price = Number(params.get('p'));
+if (!PRICES.includes(price)) price = store.get('ff3.price', null);
+if (!PRICES.includes(price)) price = PRICES[Math.floor(Math.random() * PRICES.length)];
+store.set('ff3.price', price);
+const variant = LETTER[price];
+let vid = store.get('ff3.vid', null);
+if (!vid) { vid = Math.random().toString(36).slice(2, 10); store.set('ff3.vid', vid); }
+const src = params.get('utm_source') || store.get('ff3.src', '') || (document.referrer ? new URL(document.referrer).hostname : 'direct');
+const content = params.get('utm_content') || store.get('ff3.content', '');
+if (params.get('utm_source')) store.set('ff3.src', src);
+if (params.get('utm_content')) store.set('ff3.content', content);
+const isTest = params.has('test') || store.get('ff3.test', false);
+if (params.has('test')) store.set('ff3.test', true);
+
+const COLOURS = {
+  gold:   { name: 'Gold',      swatch: 'linear-gradient(135deg,#f2d79a,#b98a3e)', img: 'renders/v2-hero.jpg' },
+  silver: { name: 'Silver',    swatch: 'linear-gradient(135deg,#f4f4f6,#a9adb5)', img: 'renders/v2-silver.jpg' },
+  rose:   { name: 'Rose gold', swatch: 'linear-gradient(135deg,#f6cfc2,#c4826f)', img: 'renders/v2-rose.jpg' },
+  black:  { name: 'Black',     swatch: 'linear-gradient(135deg,#55505a,#121014)', img: 'renders/v2-black.jpg' }
+};
+const PACKS = {
+  single: { name: 'Single', n: 1, off: 0,   note: '1 bracelet' },
+  duo:    { name: 'Duo',    n: 2, off: .10, note: '2 bracelets · you + your person' },
+  squad:  { name: 'Squad',  n: 4, off: .20, note: '4 bracelets · the whole group' }
+};
+const packPrice = p => Math.round(price * PACKS[p].n * (1 - PACKS[p].off));
+const money = n => '$' + n.toLocaleString('en-US');
+const EXTRA = ['renders/v2-buttons.jpg', 'renders/life-wrist.jpg', 'renders/v2-find.jpg', 'renders/v2-home.jpg'];
+
+let state = { colour: 'gold', pack: 'single', qty: 1, img: 0 };
+let cart = store.get('ff3.cart', []).filter(l => COLOURS[l.colour] && PACKS[l.pack] && l.qty > 0);
+
+// ---------- logging to the team's Google Form (one row per step) ----------
+const FORM = {
   action: 'https://docs.google.com/forms/d/e/1FAIpQLSeDMEhQfYmbDYZgqmqvd1ChsJuqbGd5-0xR9vZAamRsAIr4uA/formResponse',
   fields: { name: 'entry.1823843195', email: 'entry.872874016', freq: 'entry.1188101906', why: 'entry.494191741' }
 };
-const $ = id => document.getElementById(id);
+function cartSummary() { return cart.map(l => `${l.qty}x ${l.pack} ${l.colour}`).join(' + ') || 'empty'; }
+function cartTotal() { return cart.reduce((s, l) => s + packPrice(l.pack) * l.qty, 0); }
+function cartUnits() { return cart.reduce((s, l) => s + PACKS[l.pack].n * l.qty, 0); }
+function log(event, opts = {}) {
+  const detail = [`price=${price}`, `variant=${variant}`, `vid=${vid}`, `src=${src}`, content && `ad=${content}`,
+    opts.pack && `pack=${opts.pack}`, opts.colour && `colour=${opts.colour}`, opts.qty && `qty=${opts.qty}`,
+    `cart=${cartSummary()}`, `cart_total=${cartTotal()}`, `bracelets=${cartUnits()}`].filter(Boolean).join('; ');
+  const body = new URLSearchParams();
+  body.append(FORM.fields.name, `${isTest ? '[shop-test]' : '[shop]'} ${event}`);
+  if (opts.email) body.append(FORM.fields.email, opts.email);
+  body.append(FORM.fields.freq, detail);
+  if (opts.note) body.append(FORM.fields.why, opts.note);
+  try { fetch(FORM.action, { method: 'POST', mode: 'no-cors', body, keepalive: true }); } catch (e) {}
+}
+if (!store.sget('ff3.viewed')) { store.sset('ff3.viewed', '1'); log('page_view'); }
+
+// ---------- product options ----------
+function renderSwatches() {
+  $('swatches').innerHTML = Object.entries(COLOURS).map(([k, c]) =>
+    `<button class="swatch" type="button" role="radio" aria-checked="${k === state.colour}" aria-label="${c.name}" data-colour="${k}" style="background:${c.swatch}"></button>`).join('');
+  $('looksGrid').innerHTML = Object.entries(COLOURS).map(([k, c]) =>
+    `<button class="look" type="button" data-colour="${k}"><img src="${c.img}" alt="Firefly in ${c.name}" loading="lazy"><span>${c.name}<em>${money(price)}</em></span></button>`).join('');
+}
+function renderPacks() {
+  $('packs').innerHTML = Object.entries(PACKS).map(([k, p]) => {
+    const total = packPrice(k), each = Math.round(total / p.n);
+    return `<button class="pack" type="button" role="radio" aria-checked="${k === state.pack}" data-pack="${k}">
+      <span class="dot" aria-hidden="true"></span>
+      <span><b>${p.name}${p.off ? `<span class="save">Save ${Math.round(p.off * 100)}%</span>` : ''}</b><small>${p.note}</small></span>
+      <span class="pp"><b>${money(total)}</b><small>${p.n > 1 ? money(each) + ' each' : 'per bracelet'}</small></span></button>`;
+  }).join('');
+  $('compareTable').querySelector('tbody').innerHTML = Object.entries(PACKS).map(([k, p]) =>
+    `<tr><td>${p.name} · ${p.n} bracelet${p.n > 1 ? 's' : ''}${p.off ? ` <span class="pill" style="margin-left:6px">Save ${Math.round(p.off * 100)}%</span>` : ''}</td><td>${money(Math.round(packPrice(k) / p.n))}</td><td><b>${money(packPrice(k))}</b></td></tr>`).join('');
+}
+function renderGallery() {
+  const imgs = [COLOURS[state.colour].img, ...EXTRA];
+  $('thumbs').innerHTML = imgs.map((src, i) => `<button type="button" aria-label="Photo ${i + 1}" aria-current="${i === state.img}" data-img="${i}"><img src="${src}" alt="" loading="lazy"></button>`).join('');
+  const main = $('mainImg'), next = imgs[state.img];
+  if (!main.src.endsWith(next)) { main.style.opacity = .35; main.onload = () => { main.style.opacity = 1; }; main.src = next; }
+  main.alt = `Firefly bracelet in ${COLOURS[state.colour].name}`;
+}
+function renderBuy() {
+  const total = packPrice(state.pack) * state.qty, p = PACKS[state.pack];
+  $('price').textContent = money(packPrice(state.pack));
+  const full = price * p.n;
+  $('priceWas').hidden = !p.off; $('priceWas').textContent = money(full);
+  $('priceNote').textContent = p.n > 1 ? `${p.n} bracelets, ${money(Math.round(packPrice(state.pack) / p.n))} each. Cellular data included for life.` : 'Per bracelet. Cellular data is included for life.';
+  $('colourName').textContent = COLOURS[state.colour].name;
+  $('qty').textContent = state.qty;
+  $('addTotal').textContent = money(total);
+  $('stickyMeta').textContent = `${COLOURS[state.colour].name} · ${p.name} · ${money(total)}`;
+}
+function renderAll() { renderSwatches(); renderPacks(); renderGallery(); renderBuy(); }
+
+document.addEventListener('click', e => {
+  const sw = e.target.closest('[data-colour]');
+  if (sw) {
+    state.colour = sw.dataset.colour; state.img = 0; renderSwatches(); renderGallery(); renderBuy();
+    if (sw.classList.contains('look')) document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  const pk = e.target.closest('[data-pack]');
+  if (pk) { state.pack = pk.dataset.pack; renderPacks(); renderBuy(); return; }
+  const th = e.target.closest('[data-img]');
+  if (th) { state.img = Number(th.dataset.img); renderGallery(); }
+});
+$('qMinus').onclick = () => { state.qty = Math.max(1, state.qty - 1); renderBuy(); };
+$('qPlus').onclick = () => { state.qty = Math.min(10, state.qty + 1); renderBuy(); };
+
+// ---------- cart ----------
+function saveCart() { store.set('ff3.cart', cart); }
+function renderCart() {
+  const n = cart.reduce((s, l) => s + l.qty, 0);
+  $('cartCount').textContent = n; $('cartCount').dataset.zero = n ? '0' : '1';
+  if (!cart.length) {
+    $('lines').innerHTML = `<div class="empty"><p>Your cart is empty.</p><button class="btn btn-ghost" type="button" id="keepShopping">Shop Firefly</button></div>`;
+    $('keepShopping').onclick = closeCart;
+  } else {
+    $('lines').innerHTML = cart.map((l, i) => `<div class="line">
+      <img src="${COLOURS[l.colour].img}" alt="">
+      <div><b>Firefly · ${PACKS[l.pack].name}</b><small>${COLOURS[l.colour].name} · ${PACKS[l.pack].n} bracelet${PACKS[l.pack].n > 1 ? 's' : ''}</small></div>
+      <div class="lp"><b>${money(packPrice(l.pack) * l.qty)}</b>
+        <div class="mini"><button type="button" data-dec="${i}" aria-label="Fewer">−</button><span>${l.qty}</span><button type="button" data-inc="${i}" aria-label="More">+</button></div>
+        <button class="rm" type="button" data-rm="${i}">Remove</button></div></div>`).join('');
+  }
+  $('subtotal').textContent = money(cartTotal());
+  $('checkoutBtn').disabled = !cart.length;
+}
+$('lines').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.inc) cart[t.dataset.inc].qty = Math.min(10, cart[t.dataset.inc].qty + 1);
+  if (t.dataset.dec) { const l = cart[t.dataset.dec]; l.qty -= 1; if (l.qty < 1) cart.splice(t.dataset.dec, 1); }
+  if (t.dataset.rm) cart.splice(t.dataset.rm, 1);
+  saveCart(); renderCart();
+});
+let lastFocus = null;
+function openCart() {
+  lastFocus = document.activeElement;
+  $('scrim').classList.add('show'); $('drawer').classList.add('show'); $('drawer').setAttribute('aria-hidden', 'false');
+  document.body.classList.add('locked'); setTimeout(() => $('cartClose').focus(), 50);
+}
+function closeCart() {
+  $('scrim').classList.remove('show'); $('drawer').classList.remove('show'); $('drawer').setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('locked'); if (lastFocus) lastFocus.focus();
+}
+function addToCart() {
+  const same = cart.find(l => l.colour === state.colour && l.pack === state.pack);
+  if (same) same.qty = Math.min(10, same.qty + state.qty); else cart.push({ colour: state.colour, pack: state.pack, qty: state.qty });
+  saveCart(); renderCart();
+  log('add_to_cart', { pack: state.pack, colour: state.colour, qty: state.qty });
+  openCart();
+}
+$('addBtn').onclick = addToCart;
+$('stickyAdd').onclick = addToCart;
+$('cartBtn').onclick = openCart;
+$('cartClose').onclick = closeCart;
+$('scrim').onclick = () => { closeCart(); closeOos(); };
+
+// ---------- checkout -> out of stock ----------
+const PAY = ['Under $100', '$100–129', '$130–149', '$150–169', '$170–199', '$200+'];
+$('payChips').innerHTML = PAY.map(p => `<button class="chip" type="button" aria-pressed="false">${p}</button>`).join('');
+$('payChips').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  [...$('payChips').children].forEach(b => b.setAttribute('aria-pressed', String(b === c)));
+  log('price_answer', { note: `would pay: ${c.textContent}` });
+  $('notifyNote').textContent = 'Thanks, that really helps us set the price.'; $('notifyNote').style.color = 'var(--green)';
+});
+function openOos() {
+  closeCart();
+  $('oosImg').src = COLOURS[(cart[0] || state).colour].img;
+  const m = $('oos'); m.hidden = false; document.body.classList.add('locked');
+  $('scrim').classList.add('show'); requestAnimationFrame(() => m.classList.add('show'));
+  setTimeout(() => $('notifyEmail').focus(), 80);
+}
+function closeOos() {
+  const m = $('oos'); if (m.hidden) return;
+  m.classList.remove('show'); $('scrim').classList.remove('show'); document.body.classList.remove('locked');
+  setTimeout(() => { m.hidden = true; }, 200);
+}
+$('checkoutBtn').onclick = () => { if (!cart.length) return; log('checkout'); openOos(); };
+$('oosClose').onclick = closeOos;
+$('notifyForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = $('notifyEmail').value.trim(), note = $('notifyNote');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { note.textContent = 'Add a valid email.'; note.style.color = 'var(--red)'; return; }
+  log('notify', { email });
+  note.textContent = "You're on the list. We'll email you as soon as the first batch is ready."; note.style.color = 'var(--green)';
+  $('notifyBtn').disabled = true; $('notifyBtn').textContent = 'Saved ✦';
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeOos(); closeCart(); } });
+
+// ---------- waitlist (same form, plain rows as before) ----------
 $('wl').addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('wlName').value.trim(), email = $('wlEmail').value.trim(), note = $('wlNote');
   if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { note.textContent = 'Add your name and a valid email.'; note.style.color = 'var(--red)'; return; }
   const fd = new FormData();
-  fd.append(WAITLIST_FORM.fields.name, name);
-  fd.append(WAITLIST_FORM.fields.email, email);
-  fd.append(WAITLIST_FORM.fields.freq, $('wlFreq').value);
-  fd.append(WAITLIST_FORM.fields.why, $('wlWhy').value);
+  fd.append(FORM.fields.name, name); fd.append(FORM.fields.email, email);
+  fd.append(FORM.fields.freq, $('wlFreq').value); fd.append(FORM.fields.why, $('wlWhy').value);
   $('wlBtn').disabled = true; $('wlBtn').textContent = 'Sending…'; note.textContent = ''; note.style.color = '';
   try {
-    await fetch(WAITLIST_FORM.action, { method: 'POST', mode: 'no-cors', body: fd });
-    $('wl').reset();
-    note.textContent = "You're on the list. We'll email you when Firefly is ready."; note.style.color = 'var(--green)';
-    $('wlBtn').textContent = 'Joined ✦';
+    await fetch(FORM.action, { method: 'POST', mode: 'no-cors', body: fd });
+    $('wl').reset(); note.textContent = "You're on the list. We'll email you when Firefly is ready."; note.style.color = 'var(--green)'; $('wlBtn').textContent = 'Joined ✦';
   } catch (err) {
     note.textContent = "That didn't go through. Check your connection and try again."; note.style.color = 'var(--red)';
     $('wlBtn').disabled = false; $('wlBtn').textContent = 'Join the waitlist';
   }
 });
+
+// ---------- small things ----------
+let toastTimer;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200); }
+const sticky = $('stickyBuy');
+new IntersectionObserver(([en]) => { sticky.classList.toggle('show', !en.isIntersecting); sticky.setAttribute('aria-hidden', String(en.isIntersecting)); }).observe($('addBtn'));
+renderAll(); renderCart();
 </script>
 </body>
 </html>
