@@ -585,6 +585,26 @@ const FORM = {
   action: 'https://docs.google.com/forms/d/e/1FAIpQLSeDMEhQfYmbDYZgqmqvd1ChsJuqbGd5-0xR9vZAamRsAIr4uA/formResponse',
   fields: { name: 'entry.1823843195', email: 'entry.872874016', freq: 'entry.1188101906', why: 'entry.494191741' }
 };
+// ---------- PostHog analytics (same steps as the Google Form, plus page views, clicks and session replays) ----------
+// Paste the project API key from PostHog > Settings > Project (starts with phc_; it is meant to be public).
+// Use https://eu.i.posthog.com as the host if the PostHog project is in the EU region.
+const POSTHOG = { key: '', host: 'https://us.i.posthog.com' };
+if (POSTHOG.key) {
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister identify setPersonProperties reset get_distinct_id get_session_id opt_in_capturing opt_out_capturing has_opted_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init(POSTHOG.key, { api_host: POSTHOG.host, person_profiles: 'identified_only', session_recording: { maskAllInputs: true } });
+  // Attached to every event, so any PostHog chart can be split by price, ad or channel.
+  posthog.register({ price, price_variant: variant, src, ad: content || 'none', is_test: !!isTest, visitor_id: vid });
+}
+function track(event, opts = {}) {
+  if (!POSTHOG.key || !window.posthog) return;
+  const props = { cart_total: cartTotal(), bracelets: cartUnits(), cart: cartSummary() };
+  if (opts.pack) props.pack = opts.pack;
+  if (opts.colour) props.colour = opts.colour;
+  if (opts.qty) props.qty = opts.qty;
+  if (opts.note) props.would_pay = opts.note.replace('would pay: ', '');
+  if (opts.email) props.left_email = true; // the email itself only goes to the Google Form
+  try { posthog.capture(event, props); } catch (e) {}
+}
 function cartSummary() { return cart.map(l => `${l.qty}x ${l.pack} ${l.colour}`).join(' + ') || 'empty'; }
 function cartTotal() { return cart.reduce((s, l) => s + packPrice(l.pack) * l.qty, 0); }
 function cartUnits() { return cart.reduce((s, l) => s + PACKS[l.pack].n * l.qty, 0); }
@@ -598,6 +618,7 @@ function log(event, opts = {}) {
   body.append(FORM.fields.freq, detail);
   if (opts.note) body.append(FORM.fields.why, opts.note);
   try { fetch(FORM.action, { method: 'POST', mode: 'no-cors', body, keepalive: true }); } catch (e) {}
+  if (event !== 'page_view') track(event, opts); // PostHog records page views on its own
 }
 if (!store.sget('ff3.viewed')) { store.sset('ff3.viewed', '1'); log('page_view'); }
 
