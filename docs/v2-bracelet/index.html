@@ -502,7 +502,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
 </footer>
 
 <div class="sticky-buy" id="stickyBuy" aria-hidden="true">
-  <div class="s-name"><b>Firefly</b><span id="stickyMeta">Gold · 2-Pack</span></div>
+  <div class="s-name"><b>Firefly</b><span id="stickyMeta">Gold · Single</span></div>
   <button class="btn btn-primary" id="stickyAdd" type="button">Add to cart</button>
 </div>
 
@@ -572,6 +572,7 @@ const COLOURS = {
   black:  { name: 'Black',     swatch: 'linear-gradient(135deg,#55505a,#121014)', img: 'renders/v2-black.jpg' }
 };
 const PACKS = {
+  single: { name: 'Single', n: 1, off: 0, note: '1 bracelet' },
   two:  { name: '2-Pack', n: 2, off: .10, note: '2 bracelets · you + your person' },
   four: { name: '4-Pack', n: 4, off: .20, note: '4 bracelets · the whole group' },
   six:  { name: '6-Pack', n: 6, off: .25, note: '6 bracelets · the big friend group' }
@@ -580,7 +581,7 @@ const packPrice = p => Math.round(price * PACKS[p].n * (1 - PACKS[p].off));
 const money = n => '$' + n.toLocaleString('en-US');
 const EXTRA = ['renders/v2-buttons.jpg', 'renders/life-wrist.jpg', 'renders/v2-find.jpg', 'renders/v2-home.jpg'];
 
-let state = { colour: 'gold', pack: 'two', qty: 1, img: 0 };
+let state = { colour: 'gold', pack: 'single', qty: 1, img: 0 };
 let cart = store.get('ff3.cart', []).filter(l => COLOURS[l.colour] && PACKS[l.pack] && l.qty > 0);
 
 // ---------- logging to the team's Google Form (one row per step) ----------
