@@ -90,6 +90,7 @@ nav ul a:hover{color:var(--ink)}
 .swatches{display:flex;gap:12px;margin-top:10px}
 .swatch{width:42px;height:42px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
 .swatch[aria-checked="true"]{box-shadow:0 0 0 2px var(--accent)}
+.crumbs{font-size:.8rem;color:var(--muted)}.crumbs a{color:inherit;text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--ink)}
 .packs{display:grid;gap:10px;margin-top:10px}
 .pack{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
 .pack[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
@@ -242,7 +243,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
 </style>
 </head>
 <body>
-<div class="announce"><b>First batch</b> · No monthly fee, cellular included · Save 20% on a Squad pack</div>
+<div class="announce"><b>First batch</b> · No monthly fee, cellular included · Save up to 25% with a 6-Pack</div>
 <nav>
   <div class="wrap">
     <a class="brand" href="#top">Firefly <span>✦</span></a>
@@ -269,13 +270,14 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
     </div>
     <div class="buy">
       <div style="display:grid;gap:10px">
+        <div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="#top">Home</a> / <a href="#looks">Bracelets</a> / <span>Firefly Bracelet</span></div>
         <span class="eyebrow">A bracelet for nights out</span>
         <h1>Firefly Bracelet</h1>
         <p class="lead">Find your friends, tell them you're home and send a quiet SOS, even when your phones die. Two buttons, one tiny light, no screen.</p>
       </div>
       <div style="display:grid;gap:6px">
         <div class="price-row"><span class="price" id="price">$169</span><span class="price-was" id="priceWas" hidden></span><span class="pill">No monthly fee</span></div>
-        <p class="price-note" id="priceNote">Per bracelet. Cellular data is included for life.</p>
+        <p class="price-note" id="priceNote">Cellular data is included for life.</p>
       </div>
       <div>
         <div class="opt-label">Colour <span id="colourName">Gold</span></div>
@@ -293,6 +295,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
         </div>
         <button class="btn btn-primary btn-block" id="addBtn" type="button">Add to cart · <span id="addTotal">$169</span></button>
       </div>
+      <button class="btn btn-ghost btn-block" id="buyNowBtn" type="button">Buy it now</button>
       <div class="perks">
         <div>Works with a dead phone</div>
         <div>6+ mile range on one bar</div>
@@ -447,7 +450,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions</h2></div>
     <div class="faq">
-      <details><summary>When does it ship?</summary><p>The first batch is still being made by our student team at NYU Stern. Add Firefly to your cart to reserve your place on the notify list; nothing is charged.</p></details>
+      <details><summary>When does it ship?</summary><p>The first batch is still being made by our student team at NYU Stern. Add Firefly to your cart to join the waitlist at checkout; nothing is charged.</p></details>
       <details><summary>Is there a monthly fee?</summary><p>No. A small amount of cellular data is bundled for the bracelet's lifetime. Location messages are tiny.</p></details>
       <details><summary>Does it work if my phone is dead?</summary><p>Yes. Find friends, come find me, I'm home and SOS all go out from the bracelet itself.</p></details>
       <details><summary>Does everyone in my group need one?</summary><p>Friends without a bracelet can join the group in the app and see check-ins and SOS alerts. Distance finding needs a bracelet on both wrists, which is why packs are cheaper.</p></details>
@@ -488,7 +491,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
   <div class="wrap">
     <div>
       <div class="brand" style="margin-bottom:8px">Firefly <span>✦</span></div>
-      <p>Made by an NYU Stern BTE Capstone team. Not yet for sale; checkout reserves a spot on the notify list and charges nothing.</p>
+      <p>Made by an NYU Stern BTE Capstone team. Not yet for sale; checkout shows it as out of stock, offers the waitlist and charges nothing.</p>
     </div>
     <ul>
       <li><a href="app/">App demo</a></li>
@@ -499,7 +502,7 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
 </footer>
 
 <div class="sticky-buy" id="stickyBuy" aria-hidden="true">
-  <div class="s-name"><b>Firefly</b><span id="stickyMeta">Gold · Single · $169</span></div>
+  <div class="s-name"><b>Firefly</b><span id="stickyMeta">Gold · 2-Pack</span></div>
   <button class="btn btn-primary" id="stickyAdd" type="button">Add to cart</button>
 </div>
 
@@ -517,14 +520,14 @@ footer ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wra
 <div class="modal" id="oos" hidden role="dialog" aria-modal="true" aria-labelledby="oosTitle">
   <div class="card">
     <div class="oos-top">
-      <div style="display:grid;gap:8px"><span class="eyebrow">First batch</span><h2 id="oosTitle">Sold out, for now.</h2></div>
+      <div style="display:grid;gap:8px"><span class="eyebrow">First batch</span><h2 id="oosTitle">Out of stock.</h2></div>
       <button class="x" id="oosClose" type="button" aria-label="Close">×</button>
     </div>
-    <div class="oos-img"><img id="oosImg" src="renders/v2-hero.jpg" alt=""><span>Sold out</span></div>
-    <p class="muted">Thanks for trying to order. Firefly is made by a student team at NYU Stern, and our first batch isn't available yet. <b style="color:var(--ink)">You haven't been charged anything.</b></p>
+    <div class="oos-img"><img id="oosImg" src="renders/v2-hero.jpg" alt=""><span>Out of stock</span></div>
+    <p class="muted">Thanks for trying to order. Firefly is made by a student team at NYU Stern, and our first batch isn't available yet. <b style="color:var(--ink)">You haven't been charged anything.</b> Join the waitlist and we'll email you when it's ready.</p>
     <form class="notify" id="notifyForm" novalidate>
       <input id="notifyEmail" type="email" autocomplete="email" placeholder="you@school.edu" aria-label="Email">
-      <button class="btn btn-primary" id="notifyBtn" type="submit">Notify me</button>
+      <button class="btn btn-primary" id="notifyBtn" type="submit">Join the waitlist</button>
     </form>
     <p class="note" id="notifyNote" role="status"></p>
     <div style="display:grid;gap:10px">
@@ -569,15 +572,15 @@ const COLOURS = {
   black:  { name: 'Black',     swatch: 'linear-gradient(135deg,#55505a,#121014)', img: 'renders/v2-black.jpg' }
 };
 const PACKS = {
-  single: { name: 'Single', n: 1, off: 0,   note: '1 bracelet' },
-  duo:    { name: 'Duo',    n: 2, off: .10, note: '2 bracelets · you + your person' },
-  squad:  { name: 'Squad',  n: 4, off: .20, note: '4 bracelets · the whole group' }
+  two:  { name: '2-Pack', n: 2, off: .10, note: '2 bracelets · you + your person' },
+  four: { name: '4-Pack', n: 4, off: .20, note: '4 bracelets · the whole group' },
+  six:  { name: '6-Pack', n: 6, off: .25, note: '6 bracelets · the big friend group' }
 };
 const packPrice = p => Math.round(price * PACKS[p].n * (1 - PACKS[p].off));
 const money = n => '$' + n.toLocaleString('en-US');
 const EXTRA = ['renders/v2-buttons.jpg', 'renders/life-wrist.jpg', 'renders/v2-find.jpg', 'renders/v2-home.jpg'];
 
-let state = { colour: 'gold', pack: 'single', qty: 1, img: 0 };
+let state = { colour: 'gold', pack: 'two', qty: 1, img: 0 };
 let cart = store.get('ff3.cart', []).filter(l => COLOURS[l.colour] && PACKS[l.pack] && l.qty > 0);
 
 // ---------- logging to the team's Google Form (one row per step) ----------
@@ -711,15 +714,15 @@ function closeCart() {
   $('scrim').classList.remove('show'); $('drawer').classList.remove('show'); $('drawer').setAttribute('aria-hidden', 'true');
   document.body.classList.remove('locked'); if (lastFocus) lastFocus.focus();
 }
-function addToCart() {
+function addToCart(open) {
   const same = cart.find(l => l.colour === state.colour && l.pack === state.pack);
   if (same) same.qty = Math.min(10, same.qty + state.qty); else cart.push({ colour: state.colour, pack: state.pack, qty: state.qty });
   saveCart(); renderCart();
   log('add_to_cart', { pack: state.pack, colour: state.colour, qty: state.qty });
-  openCart();
+  if (open !== false) openCart();
 }
-$('addBtn').onclick = addToCart;
-$('stickyAdd').onclick = addToCart;
+$('addBtn').onclick = () => addToCart();
+$('stickyAdd').onclick = () => addToCart();
 $('cartBtn').onclick = openCart;
 $('cartClose').onclick = closeCart;
 $('scrim').onclick = () => { closeCart(); closeOos(); };
@@ -746,14 +749,15 @@ function closeOos() {
   setTimeout(() => { m.hidden = true; }, 200);
 }
 $('checkoutBtn').onclick = () => { if (!cart.length) return; log('checkout'); openOos(); };
+$('buyNowBtn').onclick = () => { addToCart(false); log('checkout'); openOos(); };
 $('oosClose').onclick = closeOos;
 $('notifyForm').addEventListener('submit', e => {
   e.preventDefault();
   const email = $('notifyEmail').value.trim(), note = $('notifyNote');
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { note.textContent = 'Add a valid email.'; note.style.color = 'var(--red)'; return; }
   log('notify', { email });
-  note.textContent = "You're on the list. We'll email you as soon as the first batch is ready."; note.style.color = 'var(--green)';
-  $('notifyBtn').disabled = true; $('notifyBtn').textContent = 'Saved ✦';
+  note.textContent = "You're on the waitlist. We'll email you as soon as the first batch is ready."; note.style.color = 'var(--green)';
+  $('notifyBtn').disabled = true; $('notifyBtn').textContent = 'On the waitlist ✦';
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeOos(); closeCart(); } });
 
