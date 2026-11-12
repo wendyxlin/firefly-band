@@ -58,7 +58,28 @@ Other links, so every visit is tagged in the sheet:
 - Flyers / QR codes: `...v2-bracelet/?utm_source=flyer`
 - Instagram stories (organic link sticker): `...v2-bracelet/?utm_source=ig_story`
 
-## Reels (film on a phone, 7–15 seconds, trending audio)
+## Reels (ready to post, 9:16, 1080 × 1920)
+
+Four finished reels are in `reels/`, each with a cover image. They copy the formats that sell products to the same audience right now: a hook in the first second, 7–15 seconds long, big on-screen text so they work with sound off, one message each, and a clear "link in bio" ending. They have no music, so add a trending sound in the Instagram app when you post (keep it quiet under the text).
+
+| # | File | Format it copies | Caption |
+| --- | --- | --- | --- |
+| 1 | `reel1-u-home.mp4` (11 s) | "POV" text-message hook, then the product as the fix | pov: you're the friend who can't sleep until everyone's home. firefly = one button, green light, whole group knows. no texts. link in bio ✦ #nightout #collegelife #girlsnight |
+| 2 | `reel2-three-reasons.mp4` (13 s) | Numbered "3 reasons" list, the format safety brands like She's Birdie use | 3 reasons firefly is coming on every night out. which one sold you? 1, 2 or 3 👇 link in bio ✦ #nyu #nightout #besties |
+| 3 | `reel3-pick-your-shade.mp4` (7 s) | Fast colour reveal with a comment prompt, the jewelry-brand staple | gold, silver, rose gold or black. comment your shade 👇 #jewelry #goldjewelry #nightout |
+| 4 | `reel4-phone-died.mp4` (12 s) | Problem → product demo | your phone died. your friends didn't lose you. firefly finds your group bracelet to bracelet, no phone needed. link in bio ✦ #collegelife #nycnightlife |
+
+**As ads:** boost Reel 1, 2 and 4 with the same settings as the story ads (ages 18–24, about 5 miles around Washington Square, button "Shop now"). Links, so each reel is tagged in the sheet and PostHog:
+
+- Reel 1: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R1`
+- Reel 2: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R2`
+- Reel 4: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R4`
+
+Post each one first as a Trial Reel (shown to non-followers only), check watch time and link clicks after 24 hours, and put the ad money behind the best one.
+
+### Film these too (real people beat graphics)
+
+Videos with a real person filmed on a phone usually beat polished graphics, so film these three with the team and use the reels above as the script:
 
 1. **"the group parent at 2am"**: phone screen with "u home?" sent to five chats, then cut to a wrist pressing the line button and the light going green. Text on screen: "or… one button."
 2. **"pick your shade"**: screen-record the 3D model (https://wendyxlin.github.io/firefly-band/v2-bracelet/mockup/) spinning through the four finishes, one beat per colour. Text: "which one are you?"
@@ -92,4 +113,4 @@ Every shop visit, add to cart, checkout click and notify-me email lands as a `[s
 
 ## Rebuilding the images
 
-`source/ig.html` draws every post from the renders in `v2-bracelet/renders`; `source/render.py` screenshots each one with Playwright. Edit the copy in `ig.html` and re-run to update a post.
+`source/reels.html`, `source/reels_render.py` and `source/reels_encode.py` build the reels the same way. `source/ig.html` draws every post from the renders in `v2-bracelet/renders`; `source/render.py` screenshots each one with Playwright. Edit the copy in `ig.html` and re-run to update a post.

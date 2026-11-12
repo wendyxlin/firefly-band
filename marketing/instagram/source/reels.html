@@ -1,0 +1,77 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=DM+Sans&family=JetBrains+Mono">
+<style>
+:root{--cream:#f8f1ed;--ink:#2a1f22;--rose:#b0566a;--pink:#f3c2c6;--night:#1a1215}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#888}
+.f{position:relative;overflow:hidden;width:1080px;height:1920px;font-family:"DM Sans",sans-serif;color:#fff;background:var(--night)}
+.fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,12,15,.72) 0%,rgba(20,12,15,.15) 34%,rgba(20,12,15,.1) 60%,rgba(20,12,15,.8) 100%)}
+.light{background:var(--cream);color:var(--ink)}
+/* text stays inside the Reels safe zone: 270px top, 420px bottom, 120px right */
+.cap{position:absolute;left:72px;right:130px;top:290px;font-weight:700;font-size:82px;line-height:1.06;letter-spacing:-.02em;text-shadow:0 4px 30px rgba(0,0,0,.45)}
+.light .cap{text-shadow:none}
+.cap i{font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;font-size:1.16em}
+.cap .pk{color:var(--pink)} .light .cap .pk{color:var(--rose)}
+.sub{position:absolute;left:72px;right:130px;bottom:470px;font-size:46px;line-height:1.2;font-weight:500;text-shadow:0 3px 24px rgba(0,0,0,.5)}
+.light .sub{text-shadow:none}
+.num{display:inline-flex;width:110px;height:110px;border-radius:50%;background:var(--pink);color:#2b1218;align-items:center;justify-content:center;font-size:64px;font-weight:700;margin-bottom:26px;text-shadow:none}
+.brand{position:absolute;left:72px;bottom:470px;font:600 italic 64px "Cormorant Garamond",serif}
+.brand span{font-style:normal;font-size:40px;color:var(--pink)}
+.pill{display:inline-block;background:#fff;color:#2a1f22;border-radius:999px;padding:22px 44px;font-size:42px;font-weight:700;text-shadow:none}
+.chat{position:absolute;left:60px;right:60px;top:640px;display:flex;flex-direction:column;gap:22px;align-items:flex-end}
+.b{background:#0a84ff;color:#fff;border-radius:44px;padding:26px 40px;font-size:54px;max-width:780px}
+.meta{font-size:30px;color:#9a8f92;margin-right:14px}
+.phone{position:absolute;left:50%;transform:translateX(-50%);top:600px;width:520px;height:1126px;border-radius:64px;border:12px solid #2b2226;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);background:#000}
+.phone img{width:100%;height:100%;object-fit:cover}
+.card{position:absolute;left:0;right:0;top:640px;height:720px}
+.card img{width:100%;height:100%;object-fit:cover}
+.batt{position:absolute;left:50%;top:760px;transform:translateX(-50%);width:420px;height:200px;border:12px solid #fff;border-radius:40px}
+.batt:after{content:"";position:absolute;right:-40px;top:54px;width:22px;height:70px;background:#fff;border-radius:0 12px 12px 0}
+.batt b{position:absolute;left:14px;top:14px;bottom:14px;width:26px;background:#ff453a;border-radius:16px}
+.stack{position:absolute;left:0;right:0;top:290px;bottom:440px;display:flex;flex-direction:column;gap:44px}
+.scap{padding:0 130px 0 72px;font-weight:700;font-size:74px;line-height:1.08;letter-spacing:-.02em}
+.scap i{font-family:"Cormorant Garamond",serif;font-weight:500;font-style:italic;font-size:1.16em}.scap .pk{color:var(--pink)}
+.scap .num{width:96px;height:96px;font-size:56px;margin-bottom:18px}
+.simg{flex:1;min-height:0;overflow:hidden}.simg img{width:100%;height:100%;object-fit:cover}
+.ssub{padding:0 130px 0 72px;font-size:44px;font-weight:500;color:#e9dcdf}
+.srow{padding:0 130px 0 72px;display:flex;justify-content:space-between;align-items:center}
+.sbrand{font:600 italic 64px "Cormorant Garamond",serif}.sbrand span{font-style:normal;font-size:40px;color:var(--pink)}
+</style></head><body><div id="stage"></div><script>
+const R='../../../v2-bracelet/renders/';
+const img=(f,pos='center',extra='')=>`<img class="fill" src="${R}${f}" style="object-position:${pos};${extra}">`;
+const stack=(f,pos,cap,sub,extra='')=>`<div class="f"><div class="stack"><div class="scap">${cap}</div><div class="simg"><img src="${R}${f}" style="object-position:${pos}"></div>${sub?`<div class="ssub">${sub}</div>`:''}${extra}</div></div>`;
+const wrist=(cap,sub)=>`<div class="f"><img class="fill" src="${R}life-wrist.jpg" style="left:-70px;width:calc(100% + 70px);object-position:center 55%"><div class="shade"></div><div class="cap">${cap}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`;
+const end=(line)=>stack('v2-hero.jpg','center',line,'no screen. no monthly fee.',`<div class="srow"><div class="sbrand">firefly <span>✦</span></div><span class="pill">link in bio</span></div>`);
+const chat=(n)=>`<div class="f"><div class="cap" style="font-size:70px">pov: it's 2am and she <span class="pk">still</span> hasn't texted</div>
+  <div class="chat">${['u home??','hello???','PLS answer i can\'t sleep'].slice(0,n).map(t=>`<div class="b">${t}</div>`).join('')}${n==3?'<div class="meta">Delivered</div>':''}</div></div>`;
+const shade=(f,name,pos)=>`<div class="f light"><div class="card" style="top:520px;height:880px">${`<img src="${R}${f}" style="object-position:${pos}">`}</div>
+  <div class="cap">which one<br>are <i class="pk">you?</i></div>
+  <div class="sub" style="font-size:96px;font-weight:700;bottom:400px;top:1440px">${name}</div></div>`;
+const F={
+// Reel 1: "u home?"
+r1a:chat(1), r1b:chat(2), r1c:chat(3),
+r1d:stack('v2-home.jpg','center',`or… <i class="pk">one button.</i>`,`press the line. green light = "i'm home".`),
+r1e:`<div class="f"><div class="cap" style="font-size:72px">and the whole group<br>sees it. <span class="pk">no texts.</span></div><div class="phone"><img src="${R}app-checkins.jpg"></div></div>`,
+r1f:end(`the bracelet that says <i class="pk">"i'm home"</i> for you`),
+// Reel 2: 3 reasons
+r2a:wrist(`<span class="pk">3 reasons</span> this bracelet is coming on every night out`),
+r2b:stack('v2-find.jpg','center',`<div class="num">1</div><br>it finds your friends when your <span class="pk">phone is dead</span>`,`buzzes faster as you get closer.`),
+r2c:stack('v2-home.jpg','center',`<div class="num">2</div><br>one press = <span class="pk">"i'm home"</span>`,`no more "u home?" texts at 3am.`),
+r2d:stack('v2-rose.jpg','center',`<div class="num">3</div><br>it just looks like <i class="pk">jewelry</i>`,`gold, silver, rose gold or black.`),
+r2e:end(`meet <i class="pk">firefly.</i>`),
+// Reel 3: pick your shade
+r3a:shade('v2-hero.jpg','gold','55% center'), r3b:shade('v2-silver.jpg','silver','50% center'),
+r3c:shade('v2-rose.jpg','rose gold','50% center'), r3d:shade('v2-black.jpg','black','45% center'),
+r3e:`<div class="f light"><div class="card" style="top:820px;height:320px;background:#fff"><img src="${R}board-lineup.jpg" style="object-fit:contain;width:102%;margin-left:-1%"></div>
+  <div class="cap">comment your<br><i class="pk">shade</i> ↓</div><div class="brand" style="color:#2a1f22">firefly <span style="color:#b0566a">✦</span></div>
+  <div style="position:absolute;right:130px;bottom:470px"><span class="pill" style="background:#2a1f22;color:#fff">link in bio</span></div></div>`,
+// Reel 4: phone at 1%
+r4a:`<div class="f"><div class="cap">your phone at<br>the club:</div><div class="batt"><b></b></div><div class="sub" style="top:1040px;bottom:auto;text-align:center;right:72px;font-size:150px;font-weight:700;color:#ff453a">1%</div></div>`,
+r4b:`<div class="f" style="background:#000"><div class="cap">your phone<br>10 minutes later:</div><div class="sub" style="top:900px;bottom:auto;text-align:center;right:72px;font-size:64px;color:#6b6165">(dead.)</div></div>`,
+r4c:stack('v2-find.jpg','center',`your bracelet:<br><span class="pk">still finding your friends.</span>`,`bracelet to bracelet. no phone needed.`),
+r4d:wrist(`it buzzes <span class="pk">faster</span> the closer you get`,`no screen. just follow the buzz.`),
+r4e:end(`your phone died.<br>your friends <i class="pk">didn't lose you.</i>`),
+};
+const IDS=Object.keys(F); const id=location.hash.slice(1); document.getElementById('stage').innerHTML=F[id]||'';
+</script></body></html>
