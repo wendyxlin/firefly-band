@@ -12,7 +12,7 @@ Everything to launch Firefly's Instagram for college students: profile, 9 launch
 | Name | Firefly ✦ bracelet for nights out |
 | Category | Jewelry / Watches (Business account, so ad insights work) |
 | Bio (119 of 150 characters) | find your friends + tell them you're home, even when your phone dies ✦ no screen, no monthly fee · made by NYU students |
-| Link | https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_bio |
+| Link | https://wearfirefly.github.io/?utm_source=ig_bio |
 | Profile picture | `profile-picture.jpg` |
 | Story highlights | `highlight-how-it-works.jpg`, `highlight-shades.jpg`, `highlight-squad.jpg`, `highlight-faq.jpg` |
 
@@ -47,17 +47,17 @@ Hashtags (pick 3–5, at the end of the caption): #nyu #nyustern #collegelife #n
 
 | Ad | File | Message | Link |
 | --- | --- | --- | --- |
-| A | `ad-A-finding.jpg` | phone at 3%? your friends can still find you. | https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=A |
-| B | `ad-B-home.jpg` | text me when you're home. without the text. | https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=B |
-| C | `ad-C-jewelry.jpg` | looks like jewelry. works like a lifeline. | https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=C |
+| A | `ad-A-finding.jpg` | phone at 3%? your friends can still find you. | https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=A |
+| B | `ad-B-home.jpg` | text me when you're home. without the text. | https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=B |
+| C | `ad-C-jewelry.jpg` | looks like jewelry. works like a lifeline. | https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=C |
 
 Settings: Stories and Reels placements, ages 18–24, within about 5 miles of Washington Square, $20 per ad over the same 5–7 days, button "Shop now". Don't add `?p=` to ad links, so each ad's visitors still get the random price and the two tests stay independent.
 
 Other links, so every visit is tagged in the sheet:
 
-- Group chats: `...v2-bracelet/?utm_source=groupchat`
-- Flyers / QR codes: `...v2-bracelet/?utm_source=flyer`
-- Instagram stories (organic link sticker): `...v2-bracelet/?utm_source=ig_story`
+- Group chats: `https://wearfirefly.github.io/?utm_source=groupchat`
+- Flyers / QR codes: `https://wearfirefly.github.io/?utm_source=flyer`
+- Instagram stories (organic link sticker): `https://wearfirefly.github.io/?utm_source=ig_story`
 
 ## Reels (ready to post, 9:16, 1080 × 1920)
 
@@ -72,9 +72,9 @@ Four finished reels are in `reels/`, each with a cover image. They copy the form
 
 **As ads:** boost Reel 1, 2 and 4 with the same settings as the story ads (ages 18–24, about 5 miles around Washington Square, button "Shop now"). Links, so each reel is tagged in the sheet and PostHog:
 
-- Reel 1: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R1`
-- Reel 2: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R2`
-- Reel 4: `https://wendyxlin.github.io/firefly-band/v2-bracelet/?utm_source=ig_ad&utm_content=R4`
+- Reel 1: `https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=R1`
+- Reel 2: `https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=R2`
+- Reel 4: `https://wearfirefly.github.io/?utm_source=ig_ad&utm_content=R4`
 
 Post each one first as a Trial Reel (shown to non-followers only), check watch time and link clicks after 24 hours, and put the ad money behind the best one.
 
@@ -83,7 +83,7 @@ Post each one first as a Trial Reel (shown to non-followers only), check watch t
 Videos with a real person filmed on a phone usually beat polished graphics, so film these three with the team and use the reels above as the script:
 
 1. **"the group parent at 2am"**: phone screen with "u home?" sent to five chats, then cut to a wrist pressing the line button and the light going green. Text on screen: "or… one button."
-2. **"pick your shade"**: screen-record the 3D model (https://wendyxlin.github.io/firefly-band/v2-bracelet/mockup/) spinning through the four finishes, one beat per colour. Text: "which one are you?"
+2. **"pick your shade"**: screen-record the 3D model (https://wearfirefly.github.io/mockup/) spinning through the four finishes, one beat per colour. Text: "which one are you?"
 3. **"phone died at the club"**: three quick clips (dark venue, 1% battery screen, friends' wrists buzzing). Text: "your phone died. your friends didn't lose you." End card: link in bio.
 
 ## Stories (daily, 3–5 frames)
