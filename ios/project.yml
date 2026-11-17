@@ -4,11 +4,17 @@ options:
   bundleIdPrefix: com.example.firefly   # change to your own reverse-domain id
   deploymentTarget:
     iOS: "17.0"
+packages:
+  PostHog:
+    url: https://github.com/PostHog/posthog-ios.git
+    from: "3.59.3"
 targets:
   Firefly:
     type: application
     platform: iOS
     sources: [Firefly]
+    dependencies:
+      - package: PostHog
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.firefly.app

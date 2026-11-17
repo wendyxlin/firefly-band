@@ -1,6 +1,7 @@
 import Foundation
 import CoreBluetooth
 import Combine
+import PostHog
 
 /// Talks to the wearer's own band over Bluetooth LE.
 /// The band is the bridge: it forwards LoRa packets from the rest of the group and sends the app's commands out.
@@ -28,6 +29,8 @@ final class BandConnection: NSObject, ObservableObject {
     func startPairing() {
         guard central.state == .poweredOn else { return }
         state = .scanning
+        PostHogSDK.shared.capture("band_pairing_started")
+        PostHogSDK.shared.logger?.info("band pairing scan started", attributes: ["component": "bluetooth_pairing"])
         central.scanForPeripherals(withServices: [FireflyProtocol.serviceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
         DispatchQueue.main.asyncAfter(deadline: .now() + 20) { [weak self] in
             guard let self, self.state == .scanning else { return }
@@ -39,6 +42,7 @@ final class BandConnection: NSObject, ObservableObject {
         if let band { central.cancelPeripheralConnection(band) }
         UserDefaults.standard.removeObject(forKey: savedKey)
         band = nil; state = .idle
+        PostHogSDK.shared.capture("band_forgotten")
     }
 
     func send(_ type: FireflyProtocol.MessageType, to target: UInt8 = 0xFF) {
@@ -72,6 +76,8 @@ extension BandConnection: CBCentralManagerDelegate {
         guard RSSI.intValue > -60 else { return }
         central.stopScan()
         UserDefaults.standard.set(peripheral.identifier.uuidString, forKey: savedKey)
+        PostHogSDK.shared.capture("band_paired")
+        PostHogSDK.shared.logger?.info("band pairing candidate selected", attributes: ["component": "bluetooth_pairing", "signal_strength": "strong"])
         connect(peripheral)
     }
 
@@ -81,6 +87,7 @@ extension BandConnection: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        PostHogSDK.shared.logger?.warn("band disconnected; reconnecting", attributes: ["component": "bluetooth_connection", "reported_error": error != nil])
         state = .connecting
         central.connect(peripheral, options: nil)
     }
