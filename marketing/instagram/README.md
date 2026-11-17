@@ -37,6 +37,7 @@ Post them in this order (1 first). Post 1–3 on launch day so the profile never
 | 7 | `post7-trudi-quote.jpg` | we put firefly in front of 10 NYU students. this is what Trudi said. 8 of 10 found a hidden friend with no hints, and 9 of 10 pressed "i'm home" first without being told. |
 | 8 | `post8-quiet-sos.jpg` | hold both buttons for three seconds. your location goes to your group and a backup contact. nobody around you can tell. you get a few seconds to cancel. |
 | 9 | `post9-squad.jpg` | firefly finds friends who wear one too, so bring the whole group: squad of 4, save 20%. link in bio ✦ |
+| 10 | `post10-packs.jpg` | more friends, less each. firefly now comes as a single, 2-pack, 4-pack or 6-pack, and the bigger the pack, the less each one costs (up to 25% off). tag the group chat 👇 link in bio ✦ |
 
 Hashtags (pick 3–5, at the end of the caption): #nyu #nyustern #collegelife #nightout #girlsnightout #nycnightlife #besties
 

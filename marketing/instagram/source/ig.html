@@ -111,6 +111,17 @@ p9: `<div class="post p45 pinkbg">
   </div>
   <div class="brand">firefly <span style="color:#8e3a4c">✦</span></div><div class="tagr">link in bio</div></div>`,
 // ---- story ads, 1080x1920 ----
+p10: `<div class="post p45 dark">
+  <div class="glow" style="width:620px;height:620px;left:-160px;top:-200px;background:#b0566a"></div>
+  <div style="position:absolute;left:72px;top:84px;right:72px">
+    <div class="mono eyebrow">now in packs</div>
+    <h1 style="font-size:124px;margin-top:20px">more friends,<br><i style="color:var(--pink)">less each.</i></h1>
+  </div>
+  <div style="position:absolute;left:0;top:500px;width:1080px;height:170px;overflow:hidden;background:#f4e6e0"><img src="${R}board-lineup.jpg" style="width:1130px;margin-left:-25px;margin-top:-2px"></div>
+  <div style="position:absolute;left:72px;right:72px;top:760px;display:grid;gap:18px">
+    ${[['single','just you','full price'],['2-pack','you + your person','save 10%'],['4-pack','the whole group','save 20%'],['6-pack','the big friend group','save 25%']].map(([a,b,c],i)=>`<div style="display:grid;grid-template-columns:230px 1fr auto;align-items:center;border:2px solid ${i==3?'var(--pink)':'rgba(251,241,238,.22)'};border-radius:26px;padding:22px 32px;font-size:32px"><b style="font-size:40px">${a}</b><span style="opacity:.75">${b}</span><b style="color:${i?'var(--pink)':'rgba(251,241,238,.6)'};font-family:'JetBrains Mono',monospace;font-size:28px;letter-spacing:.08em;text-transform:uppercase">${c}</b></div>`).join('')}
+  </div>
+  <div class="brand">firefly <span>✦</span></div><div class="tagr">link in bio</div></div>`,
 adA: `<div class="post p916 dark">
   <div class="glow" style="width:900px;height:900px;background:#b0566a;left:-300px;top:600px"></div>
   <div style="position:absolute;left:140px;top:660px;width:800px;height:920px;border-radius:44px;overflow:hidden"><img src="${R}life-wrist.jpg" style="width:880px;height:920px;margin-left:-40px;object-fit:cover;object-position:center 72%"></div>
