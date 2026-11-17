@@ -1,9 +1,22 @@
 import SwiftUI
 import MessageUI
+import PostHog
 
 @main
 struct FireflyApp: App {
     @StateObject private var store = GroupStore()
+
+    init() {
+        let config: PostHogConfig
+        if let host = ProcessInfo.processInfo.environment["POSTHOG_HOST"], !host.isEmpty {
+            config = PostHogConfig(projectToken: "phc_qF8FvwCg5irv67ZAXutiGTJ3PzkQNP9pfA84Z6tQLaYM", host: host)
+        } else {
+            config = PostHogConfig(projectToken: "phc_qF8FvwCg5irv67ZAXutiGTJ3PzkQNP9pfA84Z6tQLaYM")
+        }
+        config.errorTrackingConfig.autoCapture = true
+        config.logs.serviceName = "firefly-ios"
+        PostHogSDK.shared.setup(config)
+    }
 
     var body: some Scene {
         WindowGroup {

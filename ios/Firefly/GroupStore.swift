@@ -2,6 +2,7 @@ import Foundation
 import CoreLocation
 import Combine
 import UIKit
+import PostHog
 
 struct Friend: Identifiable, Equatable {
     enum Status: String { case ok = "okay", comeFindMe = "come find me", help = "needs help", sos = "SOS", outOfRange = "out of range" }
@@ -78,21 +79,30 @@ final class GroupStore: NSObject, ObservableObject {
     // MARK: Actions from the UI
     func ping(_ f: Friend) {
         band.send(.ping, to: f.id)
+        PostHogSDK.shared.capture("group_pinged", properties: ["target": "individual"])
         log(.find, f.id, "You pinged \(f.name)'s band: 3 buzzes, light on for 10 s")
     }
-    func pingAll() { band.send(.ping); log(.find, nil, "Pinged every band in range") }
+    func pingAll() {
+        band.send(.ping)
+        PostHogSDK.shared.capture("group_pinged", properties: ["target": "all"])
+        log(.find, nil, "Pinged every band in range")
+    }
     func askCheckIn() {
-        band.send(.askCheckIn); log(.find, nil, "Asked the group to check in")
+        band.send(.askCheckIn)
+        PostHogSDK.shared.capture("check_in_requested")
+        log(.find, nil, "Asked the group to check in")
         if demoMode { DispatchQueue.main.asyncAfter(deadline: .now() + 2) { self.simulate(.checkIn, from: 2) } }
     }
     func sendAsMe(_ t: FireflyProtocol.MessageType) {
         band.send(t)
+        PostHogSDK.shared.capture("status_sent", properties: ["message_type": t.rawValue])
         let text: String = switch t { case .checkIn: "You checked in: I'm okay"; case .comeFindMe: "You sent \"Come find me\""; case .help: "You sent a discreet \"I need help\""; case .sos: "You sent an SOS"; default: "Sent" }
         log(t == .sos ? .sos : t == .help ? .help : .ok, nil, text)
     }
     /// "I'm home": tell the group through the band, then text the chosen contacts from this phone.
     func imHome() {
         band.send(.home)
+        PostHogSDK.shared.capture("home_arrival_reported")
         meHomeAt = .now
         pendingHomeText = true
         log(.ok, nil, "You're home. The group was told over your band.")
@@ -110,11 +120,13 @@ final class GroupStore: NSObject, ObservableObject {
     func resolve(_ f: Friend) {
         update(f.id) { $0.status = .ok; $0.lastCheckIn = .now }
         band.send(.cancel, to: f.id)
+        PostHogSDK.shared.capture("alert_resolved", properties: ["alert_type": f.status.rawValue])
         log(.ok, f.id, "Alert cleared: \(f.name) found and okay")
         if activeAlert?.id == f.id { activeAlert = nil }
     }
     func endNight() {
         band.send(.leave)
+        PostHogSDK.shared.capture("night_ended")
         events.removeAll(); friends.removeAll(); activeAlert = nil
     }
 
