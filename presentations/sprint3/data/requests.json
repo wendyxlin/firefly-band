@@ -2,102 +2,93 @@
 {
 "replaceAllText": {
 "containsText": {
-"text": "Fairly sure: cold ads do not convert yet (94 visits, 0 carts).",
+"text": "Fairly sure: cold ads do not convert yet (135 visits, 0 carts).",
 "matchCase": true
 },
-"replaceText": "Fairly sure: cold ads do not convert yet (135 visits, 0 carts)."
+"replaceText": "Fairly sure: cold ads do not convert yet (148 visits, 0 carts)."
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "Solid: 139 real visitors, random prices, set bar.",
+"text": "Solid: 183 real visitors, random prices, set bar.",
 "matchCase": true
 },
-"replaceText": "Solid: 183 real visitors, random prices, set bar."
+"replaceText": "Solid: 200 real visitors, random prices, set bar."
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "Shop data, Nov 12–17 (as of Nov 17, 4:50 PM)",
+"text": "Shop data, Nov 12–17 (as of Nov 17, 10:48 PM)",
 "matchCase": true
 },
-"replaceText": "Shop data, Nov 12–17 (as of Nov 17, 10:48 PM)"
+"replaceText": "Shop data, Nov 12–18 (as of Nov 18, 10:48 PM)"
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "Revenue Test: 3 of 139 Clicked Checkout",
+"text": "Revenue Test: 3 of 183 Clicked Checkout",
 "matchCase": true
 },
-"replaceText": "Revenue Test: 3 of 183 Clicked Checkout"
+"replaceText": "Revenue Test: 3 of 200 Clicked Checkout"
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "2.2% clicked checkout. Our bar was 10%.",
+"text": "1.6% clicked checkout. Our bar was 10%.",
 "matchCase": true
 },
-"replaceText": "1.6% clicked checkout. Our bar was 10%."
+"replaceText": "1.5% clicked checkout. Our bar was 10%."
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "Paid: 68% of visitors, 0 add-to-carts.",
+"text": "3 ÷ 183 = 1.6%",
 "matchCase": true
 },
-"replaceText": "Paid: 74% of visitors, 0 add-to-carts."
+"replaceText": "3 ÷ 200 = 1.5%"
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "3 ÷ 139 = 2.2%",
+"text": "0 of 135",
 "matchCase": true
 },
-"replaceText": "3 ÷ 183 = 1.6%"
+"replaceText": "0 of 148"
 }
 },
 {
 "replaceAllText": {
 "containsText": {
-"text": "0 of 94",
+"text": "$0.12",
 "matchCase": true
 },
-"replaceText": "0 of 135"
-}
-},
-{
-"replaceAllText": {
-"containsText": {
-"text": "$0.16",
-"matchCase": true
-},
-"replaceText": "$0.12"
+"replaceText": "$0.11"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_price",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/257ad914adcd511579fb8600de8427a6187d787d/presentations/sprint3/charts/price.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/a5f721485b7e82fcd5fb38f504a01cc708d04f71/presentations/sprint3/charts/price.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_channel",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/257ad914adcd511579fb8600de8427a6187d787d/presentations/sprint3/charts/channel.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/a5f721485b7e82fcd5fb38f504a01cc708d04f71/presentations/sprint3/charts/channel.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_table",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/257ad914adcd511579fb8600de8427a6187d787d/presentations/sprint3/charts/table.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/a5f721485b7e82fcd5fb38f504a01cc708d04f71/presentations/sprint3/charts/table.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
@@ -113,7 +104,7 @@
 "insertText": {
 "objectId": "p4:notes_i3",
 "insertionIndex": 0,
-"text": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 183 visitors, 3 checkout clicks: 1.6%, well under our 10% bar. The surprise: nobody clicked at the cheapest price. All 3 clicks were at $169 and $199, so price was not what stopped people. 0 of the 3 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–17 (as of Nov 17, 10:48 PM). Since the last update: 44 more visitors and 0 more checkout clicks."
+"text": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 200 visitors, 3 checkout clicks: 1.5%, well under our 10% bar. The surprise: nobody clicked at the cheapest price. All 3 clicks were at $169 and $199, so price was not what stopped people. 0 of the 3 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–18 (as of Nov 18, 10:48 PM). Since the last update: 17 more visitors and 0 more checkout clicks."
 }
 },
 {
@@ -128,7 +119,7 @@
 "insertText": {
 "objectId": "p8:notes_i3",
 "insertionIndex": 0,
-"text": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 135 of our 183 visitors, about 74% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 31 visitors and 3 checkout clicks: 9.7%. Other sources brought 17 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–17 (as of Nov 17, 10:48 PM). Since the last update: 44 more visitors and 0 more checkout clicks. FILL IN the ad spend from Instagram before presenting."
+"text": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 148 of our 200 visitors, about 74% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 31 visitors and 3 checkout clicks: 9.7%. Other sources brought 21 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–18 (as of Nov 18, 10:48 PM). Since the last update: 17 more visitors and 0 more checkout clicks. FILL IN the ad spend from Instagram before presenting."
 }
 },
 {
@@ -143,7 +134,7 @@
 "insertText": {
 "objectId": "p9:notes_i3",
 "insertionIndex": 0,
-"text": "3:35–4:00. We are fairly confident that cold paid ads do not convert yet: 135 visitors and zero carts. But it was two ads over a few days, so we have not tested many messages. We are less confident in the organic number: 31 visitors is small, and some are probably friends of the team. Next we would test the warm channels we already tagged: group chats and flyers, a referral code for friend groups, a parent gift ad before the holidays, and showing ads again to people who already visited. Verdict: not a strong go-to-market yet. The channel that converts is small, and the channel that scales does not convert."
+"text": "3:35–4:00. We are fairly confident that cold paid ads do not convert yet: 148 visitors and zero carts. But it was two ads over a few days, so we have not tested many messages. We are less confident in the organic number: 31 visitors is small, and some are probably friends of the team. Next we would test the warm channels we already tagged: group chats and flyers, a referral code for friend groups, a parent gift ad before the holidays, and showing ads again to people who already visited. Verdict: not a strong go-to-market yet. The channel that converts is small, and the channel that scales does not convert."
 }
 },
 {
@@ -158,7 +149,7 @@
 "insertText": {
 "objectId": "p10:notes_i3",
 "insertionIndex": 0,
-"text": "4:00–4:35. The product side works. At $169, after about $80 to make, $5 in card fees, $10 shipping and $8 for returns, we keep about $66 per bracelet. It is a one-time purchase, so that $66 is the lifetime value. For a healthy three-to-one ratio we can spend at most $22 to win a customer. If one in three checkout clicks becomes a purchase, that means about $7 per checkout click. Our followers gave us 3 checkout clicks for free, but paid ads produced 0 checkout clicks from 135 visits, so paid acquisition cost is not measurable yet. Conclusion: we would make money on each bracelet, but we have not shown we can buy customers for less than we earn. The math is in the appendix."
+"text": "4:00–4:35. The product side works. At $169, after about $80 to make, $5 in card fees, $10 shipping and $8 for returns, we keep about $66 per bracelet. It is a one-time purchase, so that $66 is the lifetime value. For a healthy three-to-one ratio we can spend at most $22 to win a customer. If one in three checkout clicks becomes a purchase, that means about $7 per checkout click. Our followers gave us 3 checkout clicks for free, but paid ads produced 0 checkout clicks from 148 visits, so paid acquisition cost is not measurable yet. Conclusion: we would make money on each bracelet, but we have not shown we can buy customers for less than we earn. The math is in the appendix."
 }
 }
 ]
