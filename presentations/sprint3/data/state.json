@@ -1,21 +1,21 @@
 {
  "data": {
-  "asof": "Nov 12–18 (as of Nov 18, 10:48 PM)",
+  "asof": "Nov 12–19 (as of Nov 19, 10:48 PM)",
   "price": {
    "129": [
-    70,
-    0,
-    0
-   ],
-   "169": [
-    59,
-    1,
-    1
-   ],
-   "199": [
-    71,
+    74,
     2,
     2
+   ],
+   "169": [
+    64,
+    3,
+    3
+   ],
+   "199": [
+    75,
+    4,
+    4
    ]
   },
   "chan": {
@@ -25,43 +25,43 @@
     0
    ],
    "organic": [
-    31,
-    3,
-    3
+    43,
+    9,
+    9
    ],
    "other": [
-    21,
+    22,
     0,
     0
    ]
   },
-  "wait": 0,
-  "expanded": 1
+  "wait": 4,
+  "expanded": 2
  },
  "strings": {
-  "t4_title": "Revenue Test: 3 of 200 Clicked Checkout",
-  "asof": "Shop data, Nov 12–18 (as of Nov 18, 10:48 PM)",
-  "l4a": "1.5% clicked checkout. Our bar was 10%.",
-  "l4b": "Price was not the blocker: 0 clicks at $129.",
-  "l4c": "0 of 3 joined the waitlist afterwards.",
-  "s5a": "Solid: 200 real visitors, random prices, set bar.",
-  "s5b": "Weak: 3 clicks cannot rank three prices.",
+  "t4_title": "Revenue Test: 9 of 213 Clicked Checkout",
+  "asof": "Shop data, Nov 12–19 (as of Nov 19, 10:48 PM)",
+  "l4a": "4.2% clicked checkout. Our bar was 10%.",
+  "l4b": "By price: 2.7% at $129, 4.7% at $169, 5.3% at $199.",
+  "l4c": "4 of 9 joined the waitlist afterwards.",
+  "s5a": "Solid: 213 real visitors, random prices, set bar.",
+  "s5b": "Weak: 9 clicks cannot rank three prices.",
   "t8_title": "GTM Test: Ads Brought Traffic, Not Buyers",
-  "l8a": "Paid: 74% of visitors, 0 add-to-carts.",
-  "l8b": "Followers: 9.7% clicked checkout, under our 10% bar.",
+  "l8a": "Paid: 69% of visitors, 0 add-to-carts.",
+  "l8b": "Followers: 20.9% clicked checkout, our 10% bar.",
   "s9a": "Fairly sure: cold ads do not convert yet (148 visits, 0 carts).",
-  "s9c": "Organic is 31 visitors, and some may be friends.",
-  "u10org": "$0 · 3 clicks",
+  "s9c": "Organic is 43 visitors, and some may be friends.",
+  "u10org": "$0 · 9 clicks",
   "u10paid": "[add] · 0 clicks",
-  "m13a": "3 ÷ 200 = 1.5%",
-  "m13b": "$0.11",
+  "m13a": "9 ÷ 213 = 4.2%",
+  "m13b": "$0.31",
   "m13c": "0 of 148"
  },
  "notes": {
-  "p4": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 200 visitors, 3 checkout clicks: 1.5%, well under our 10% bar. The surprise: nobody clicked at the cheapest price. All 3 clicks were at $169 and $199, so price was not what stopped people. 0 of the 3 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–18 (as of Nov 18, 10:48 PM). Since the last update: 17 more visitors and 0 more checkout clicks.",
-  "p5": "1:45–2:10. Confidence is low to medium. We are confident most cold visitors will not buy at any of these prices. We are not confident about which price is best: 3 clicks cannot rank three prices, and a click is not a payment. Next we would test a $10 refundable deposit, which is real money; a parent as the payer; a payment plan; and a cheaper version without cellular. Verdict: the model is plausible but not proven. $169 keeps a healthy margin, but demand at that price is unproven.",
-  "p8": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 148 of our 200 visitors, about 74% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 31 visitors and 3 checkout clicks: 9.7%. Other sources brought 21 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–18 (as of Nov 18, 10:48 PM). Since the last update: 17 more visitors and 0 more checkout clicks. FILL IN the ad spend from Instagram before presenting.",
-  "p9": "3:35–4:00. We are fairly confident that cold paid ads do not convert yet: 148 visitors and zero carts. But it was two ads over a few days, so we have not tested many messages. We are less confident in the organic number: 31 visitors is small, and some are probably friends of the team. Next we would test the warm channels we already tagged: group chats and flyers, a referral code for friend groups, a parent gift ad before the holidays, and showing ads again to people who already visited. Verdict: not a strong go-to-market yet. The channel that converts is small, and the channel that scales does not convert.",
-  "p10": "4:00–4:35. The product side works. At $169, after about $80 to make, $5 in card fees, $10 shipping and $8 for returns, we keep about $66 per bracelet. It is a one-time purchase, so that $66 is the lifetime value. For a healthy three-to-one ratio we can spend at most $22 to win a customer. If one in three checkout clicks becomes a purchase, that means about $7 per checkout click. Our followers gave us 3 checkout clicks for free, but paid ads produced 0 checkout clicks from 148 visits, so paid acquisition cost is not measurable yet. Conclusion: we would make money on each bracelet, but we have not shown we can buy customers for less than we earn. The math is in the appendix."
+  "p4": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 213 visitors, 9 checkout clicks: 4.2%, well under our 10% bar. By price, checkout rates were 2.7% at $129, 4.7% at $169 and 5.3% at $199. 4 of the 9 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–19 (as of Nov 19, 10:48 PM). Since the last update: 13 more visitors and 6 more checkout clicks.",
+  "p5": "1:45–2:10. Confidence is low to medium. We are confident most cold visitors will not buy at any of these prices. We are not confident about which price is best: 9 clicks cannot rank three prices, and a click is not a payment. Next we would test a $10 refundable deposit, which is real money; a parent as the payer; a payment plan; and a cheaper version without cellular. Verdict: the model is plausible but not proven. $169 keeps a healthy margin, but demand at that price is unproven.",
+  "p8": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 148 of our 213 visitors, about 69% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 43 visitors and 9 checkout clicks: 20.9%. Other sources brought 22 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–19 (as of Nov 19, 10:48 PM). Since the last update: 13 more visitors and 6 more checkout clicks. FILL IN the ad spend from Instagram before presenting.",
+  "p9": "3:35–4:00. We are fairly confident that cold paid ads do not convert yet: 148 visitors and zero carts. But it was two ads over a few days, so we have not tested many messages. We are less confident in the organic number: 43 visitors is small, and some are probably friends of the team. Next we would test the warm channels we already tagged: group chats and flyers, a referral code for friend groups, a parent gift ad before the holidays, and showing ads again to people who already visited. Verdict: not a strong go-to-market yet. The channel that converts is small, and the channel that scales does not convert.",
+  "p10": "4:00–4:35. The product side works. At $169, after about $80 to make, $5 in card fees, $10 shipping and $8 for returns, we keep about $66 per bracelet. It is a one-time purchase, so that $66 is the lifetime value. For a healthy three-to-one ratio we can spend at most $22 to win a customer. If one in three checkout clicks becomes a purchase, that means about $7 per checkout click. Our followers gave us 9 checkout clicks for free, but paid ads produced 0 checkout clicks from 148 visits, so paid acquisition cost is not measurable yet. Conclusion: we would make money on each bracelet, but we have not shown we can buy customers for less than we earn. The math is in the appendix."
  }
 }
