@@ -2,30 +2,30 @@
 {
 "replaceAllText": {
 "containsText": {
-"text": "Shop data, Nov 12–19 (as of Nov 19, 10:48 PM)",
+"text": "Shop data, Nov 12–20 (as of Nov 20, 10:48 PM)",
 "matchCase": true
 },
-"replaceText": "Shop data, Nov 12–20 (as of Nov 20, 10:48 PM)"
+"replaceText": "Shop data, Nov 12–21 (as of Nov 21, 10:48 PM)"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_price",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/1744802a9d42ecb9b00c7c22c3d2b528e7ef2951/presentations/sprint3/charts/price.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/3ff4a6ed643711174d66b464fe68e6aaefbfb679/presentations/sprint3/charts/price.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_channel",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/1744802a9d42ecb9b00c7c22c3d2b528e7ef2951/presentations/sprint3/charts/channel.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/3ff4a6ed643711174d66b464fe68e6aaefbfb679/presentations/sprint3/charts/channel.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
 {
 "replaceImage": {
 "imageObjectId": "ff_chart_table",
-"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/1744802a9d42ecb9b00c7c22c3d2b528e7ef2951/presentations/sprint3/charts/table.png",
+"url": "https://raw.githubusercontent.com/wendyxlin/firefly-band/3ff4a6ed643711174d66b464fe68e6aaefbfb679/presentations/sprint3/charts/table.png",
 "imageReplaceMethod": "CENTER_INSIDE"
 }
 },
@@ -41,7 +41,7 @@
 "insertText": {
 "objectId": "p4:notes_i3",
 "insertionIndex": 0,
-"text": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 213 visitors, 9 checkout clicks: 4.2%, well under our 10% bar. By price, checkout rates were 2.7% at $129, 4.7% at $169 and 5.3% at $199. 4 of the 9 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–20 (as of Nov 20, 10:48 PM)."
+"text": "1:10–1:45. WILLINGNESS-TO-PAY RESULT. Each dot is one real visitor; coral dots clicked checkout. 213 visitors, 9 checkout clicks: 4.2%, well under our 10% bar. By price, checkout rates were 2.7% at $129, 4.7% at $169 and 5.3% at $199. 4 of the 9 left an email for the waitlist. What we changed because of this: we removed the price question nobody answered, rebuilt the out-of-stock screen around the waitlist, and added a Show more section and session replays so we can see where people drop off. Data: Nov 12–21 (as of Nov 21, 10:48 PM)."
 }
 },
 {
@@ -56,7 +56,7 @@
 "insertText": {
 "objectId": "p8:notes_i3",
 "insertionIndex": 0,
-"text": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 148 of our 213 visitors, about 69% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 43 visitors and 9 checkout clicks: 20.9%. Other sources brought 22 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–20 (as of Nov 20, 10:48 PM). FILL IN the ad spend from Instagram before presenting."
+"text": "3:00–3:35. CUSTOMER ACQUISITION RESULT. Paid ads brought 148 of our 213 visitors, about 69% of the traffic, and not one added to cart. Organic Instagram, people who came through the link in our bio, brought 43 visitors and 9 checkout clicks: 20.9%. Other sources brought 22 visitors and 0 checkout clicks. So a cold audience scrolling past an ad does not buy a $169 bracelet on first sight, but people who already follow us do click. What we changed: we moved the shop to a clean link, wearfirefly, because the old one showed a personal GitHub name; we set up a live dashboard that splits every visit by ad and channel; and we are moving effort from cold ads to warm channels. Data: Nov 12–21 (as of Nov 21, 10:48 PM). FILL IN the ad spend from Instagram before presenting."
 }
 }
 ]
