@@ -1,4 +1,4 @@
-# Sprint 3 deck update, Nov 12–21 (as of Nov 21, 10:48 PM)
+# Sprint 3 deck update, Nov 12–22 (as of Nov 22, 10:49 PM)
 
 - Total: 213 visitors, 9 add-to-carts, 9 checkout clicks (4.2%), 4 waitlist emails, 2 opened Show more.
 - Change since the deck last said: +0 visitors, +0 checkout clicks.
